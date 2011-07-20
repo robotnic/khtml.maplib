@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<title>KML - Placemark</title>
+
+<style type="text/css">
+</style>
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<!-- Configure map -->
+<script type="text/javascript">
+var mr = new Object(khtml.maplib);
+var map=null;
+function loadMap(){
+	var center = new khtml.maplib.LatLng(37.71904192681665,14.90128369746704);
+	// setup clean test environment
+	document.getElementById("map").innerHTML = "";
+	map = new mr.base.Map("map");
+	map.centerAndZoom(center, 8.5);
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET",'SamplesInMaps.kml',true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			kmlParser = new khtml.maplib.parser.Kml(xmlhttp.responseXML);
+			var overlays = kmlParser.parse();
+			map.featureCollection.appendChild(overlays);
+			document.body.appendChild(recurse(overlays));
+		}
+	};
+	xmlhttp.send(null);
+}
+
+function recurse(f){
+	var div=document.createElement("div");
+	div.style.marginLeft="20px";
+	if(f.properties && f.properties.name){
+		var textNode=document.createTextNode(f.properties.name);
+	}else{
+		if(f.geometry){
+			var textNode=document.createTextNode(f.geometry.type);
+		}else{
+			var textNode=document.createTextNode("");
+		}
+	}
+	if(f.properties && f.properties.description){
+		var description=f.properties.description;
+	}
+
+	div.appendChild(textNode);
+	div.setAttribute("title",description);
+	if(f.features){
+		for(var i=0;i<f.features.length;i++){
+			div.appendChild(recurse(f.features[i]));
+		}
+}
+	khtml.maplib.base.helpers.eventAttach(div,"mousedown",zoomto,f,true);
+	return div;
+}
+
+function zoomto(){
+	console.log(this);
+	if(this.bbox){
+		map.bounds(this.bbox);	
+	}
+}
+</script>
+</head>
+
+<body onload="loadMap()">
+<h1>Google KML Example</h1>
+<p>Source: http://kmlscribe.googlepages.com/SamplesInMaps.kml</p>
+<div>
+<!-- Map container -->
+<div id="map" style="position:absolute;top:70px;left:200px;bottom: 20px; right: 20px; margin:1em;"> 
+</div>
+
+</div>
+
+</body>
+</html>
