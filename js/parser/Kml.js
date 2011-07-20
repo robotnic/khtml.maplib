@@ -70,7 +70,6 @@ khtml.maplib.parser.Kml = function(KML) {
 		var layer = null;
 		var newLayer = null;
 		
-		console.log("parseNode: " + node.nodeName + ", " + node.tagName+","+node.localName);
 		
 		switch(node.nodeName) {
 			case "xml":
@@ -203,14 +202,12 @@ khtml.maplib.parser.Kml = function(KML) {
 	this.parseDocument = function(node) {
 		var doc = new khtml.maplib.overlay.FeatureCollection();
 
-		console.log("parseDocument: " + node.nodeName + ", " + node.tagName);
 		
 		for(var j = 0; j < node.childNodes.length; j++) {	
 			if(node.childNodes[j].nodeType!=1)continue; //white spaces
 			switch(node.childNodes[j].nodeName) {
 				case "name":
 					doc.name=node.childNodes[j].childNodes[0].nodeValue;
-					console.log(doc);
 					break;
 				case "open":
 					// Specifies if the folder is open/closed in Google Earths list view.
@@ -238,11 +235,9 @@ khtml.maplib.parser.Kml = function(KML) {
 					break;
 				case "Placemark":
 					var feature=this.parsePlacemark(node.childNodes[j]);
-					console.log(feature);
 					if(feature.type=="Feature" || feature.type=="Marker"){
 						doc.appendChild(feature);
 					}else{
-						console.log("was ist das:",feature);
 					}
 					break;
 				default:
@@ -282,7 +277,6 @@ khtml.maplib.parser.Kml = function(KML) {
 				switch(tagName){
 					case "color":
 						if(styleNode.nodeName=="LineStyle"){
-							 console.log("die farve",styleNode.childNodes[p].firstChild.nodeValue);
 							 style.stroke=hex2rgba(styleNode.childNodes[p].firstChild.nodeValue);
 						}
 						if(styleNode.nodeName=="PolyStyle") style.fill=hex2rgba(styleNode.childNodes[p].firstChild.nodeValue);
@@ -295,11 +289,9 @@ khtml.maplib.parser.Kml = function(KML) {
 						console.log("not implemented",tagName,styleNode[p]);
 				}
 			}
-			console.log("der linestyle",styleNode.tagName,style);
 			this.styles[id][styleNode.tagName]=style;
 			
 		}
-		console.log("styles fertig",this.styles);
 		
 		//khtml.maplib.base.Log.warn('parseStyle(): Warning - not implemented!');
 		return false;
@@ -336,7 +328,6 @@ khtml.maplib.parser.Kml = function(KML) {
 	 * @returns false if node is not a groundoverlay. Otherwise a new {khtml.maplib.overlay.Image} layer.
 	*/
 	this.parseGroundOverlay = function(node) {
-		console.log(node);
 		if(!node) return false;
 		if(!node.nodeName=="GroundOverlay") return false;
 		
@@ -417,7 +408,6 @@ khtml.maplib.parser.Kml = function(KML) {
 					break;
 				case "Polygon":
 					data = this.parsePolygon(pm.childNodes[j]);
-					console.log("mein poly",data);
 					break;
 				case "gx:drawOrder":
 					data.gxdraworder = pm.childNodes[j];
@@ -438,9 +428,7 @@ khtml.maplib.parser.Kml = function(KML) {
 					stylename=stylename.substring(1,stylename.length);
 				}
 				if(this.styles[stylename]){
-					console.log(this.styles,this.styles[stylename]);
 					if(this.styles[stylename][pm.childNodes[j].nodeName]){
-						console.log(this.styles[stylename][pm.childNodes[j].nodeName]);
 					}		
 				}
 			}
@@ -466,7 +454,6 @@ khtml.maplib.parser.Kml = function(KML) {
 	 * @returns {khtml.maplib.geometry.LineString}
 	*/
 	this.parseLineString = function(node) {
-		console.log("hehe",node);
 		try{
 		var styleUrl=node.parentNode.getElementsByTagName("styleUrl").item(0).firstChild.nodeValue;
 			styleUrl=styleUrl.substring(1,styleUrl.length);
@@ -486,16 +473,13 @@ khtml.maplib.parser.Kml = function(KML) {
 		lineString.className.baseVal =  "kml_linestring";
 		
 		//khtml.maplib.base.Log.log('LineString:', lineString);
-		console.log("linestring styleurl",styleUrl);	
 		if(this.styles[styleUrl]){
 			//console.log("fast",this.styles[styleUrl].LineStyle);
 			lineString.style=this.styles[styleUrl].LineStyle.style;
-			console.log(">>>>>",lineString.style);
 		}else{
 			lineString.style.stroke="blue";
 			lineString.style.strokeWidth=4;
 		}
-		console.log("öööööööööö",lineString);
 		return lineString;
 	}
 	
@@ -513,7 +497,6 @@ khtml.maplib.parser.Kml = function(KML) {
 			styleUrl=styleUrl.substring(1,styleUrl.length);
 		}catch(e){}
 		
-		console.log("++++++++++",node);			
 		var polygon = new khtml.maplib.geometry.Feature({type:"Polygon"});
 
 		for(var j = 0; j < node.childNodes.length; j++) {
@@ -521,7 +504,6 @@ khtml.maplib.parser.Kml = function(KML) {
 			switch(node.childNodes[j].nodeName) {
 				case "outerBoundaryIs":
 					var coordinates = this.parseCoordinates(node.childNodes[j]);
-					console.log(coordinates);
 					polygon.geometry.coordinates=coordinates[0];
 					break;
 				case "innerBoundaryIs":
@@ -613,7 +595,6 @@ khtml.maplib.parser.Kml = function(KML) {
 		img.setAttribute("src","http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png");
 		var point=new this.parseCoordinates(node)[0][0],img;
 		var marker=new khtml.maplib.overlay.Marker(point,img);
-		console.log(marker);
 		return marker;
 	}
 	
@@ -672,7 +653,6 @@ khtml.maplib.parser.Kml = function(KML) {
 	 * @returns {khtml.maplib.overlay.Feature}
 	*/
 	this.generateFeature = function(data) {
-		console.log("so ein komisches feature");
 		return false; //sosososo
 		if(!data) return false;
 		
@@ -802,7 +782,6 @@ khtml.maplib.parser.Kml = function(KML) {
 		var r=parseInt(hex.substring(2,4),16);
 		var g=parseInt(hex.substring(4,6),16);
 		var b=parseInt(hex.substring(6,8),16);
-		console.log(r,g,b,a);
 		var color="rgba("+r+","+g+","+b+","+a+")";	
 		return color;
 	}
