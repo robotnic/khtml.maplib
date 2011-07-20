@@ -1,0 +1,169 @@
+<html>
+<head>
+<style type="text/css">
+
+body{
+margin:0;
+}
+#navi{
+border:1px solid lightgrey;
+width:200px;
+}
+#navi div{
+	border-bottom:1px solid #efefef;
+	cursor:pointer;
+}
+#navi div:hover{
+	border-bottom:1px solid black;
+}
+#map{
+position:absolute;
+top:40px;
+width:50%;
+height:90%;
+}
+#map_canvas{
+top:40px;
+position:absolute;
+left:50%;
+width:50%;
+height:90%;
+}
+#mapDiv{
+display:none;
+position:absolute;
+left:66%;
+width:34%;
+height:100%;
+top:0px;
+}
+
+</style>
+<title>khtml simple</title>
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="../../khtml_all.js"> </script> 
+
+<script type="text/javascript">
+
+function start(){
+	initialize();
+	init();
+}
+
+function go(){
+	var number=parseInt(document.getElementById("number").value);
+	var coords=makeCoords(number,20);
+	makeLinesGoogle(coords);
+	makeLinesKhtml(coords);
+}
+function makeCoords(lines,points){
+	var ar=new Array();
+	for(var l=0;l<lines;l++){
+		ar[l]=new Array();
+		var lon=(Math.random() -0.5)*30;
+		var lat=(Math.random() -0.5)*30;
+		ar[l][0]=[lon,lat];
+		var speedX=0;
+		var speedY=0;
+		for(var p=1;p<points;p++){
+			speedX=speedX+(0.5 - Math.random())*0.1;	
+			speedY=speedY+(0.5 - Math.random())*0.1;	
+			lon=lon+speedX;
+			lat=lat+speedY;
+			ar[l][p]=[lon,lat];
+		}
+	}
+	return ar;	
+}
+var gmap=null;
+function initialize() {
+  var myLatLng = new google.maps.LatLng(48.2,56.5);
+  var myOptions = {
+    zoom: 2,
+    center: myLatLng,
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  };
+
+  gmap = new google.maps.Map(document.getElementById("map_canvas"),
+      myOptions);
+
+/*
+  var flightPlanCoordinates = [
+    new google.maps.LatLng(37.772323, -122.214897),
+    new google.maps.LatLng(21.291982, -157.821856),
+    new google.maps.LatLng(-18.142599, 178.431),
+    new google.maps.LatLng(-27.46758, 153.027892)
+  ];
+  var flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  flightPath.setMap(map);
+*/
+}
+
+function makeLinesGoogle(coords){
+	for(var l=0;l<coords.length;l++){
+		var line=new Array();
+		for(var p=0;p<coords[l].length;p++){
+			//console.log(coords[l]);
+			//console.log(coords[l][p][0],coords[l][p][1]);
+			line.push(new google.maps.LatLng(coords[l][p][1],coords[l][p][0]));
+		}
+		  var flightPath = new google.maps.Polyline({
+		    path: line,
+		    strokeColor: "#FF0000",
+		    strokeOpacity: 1.0,
+		    strokeWeight: 2
+		  });
+		  flightPath.setMap(gmap);
+	}
+}
+
+</script>
+<!--
+      <script type="text/javascript">
+      function GetMap()
+      {   
+
+         var map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), 
+                           {credentials: "Your Bing Maps Key",
+                            center: new Microsoft.Maps.Location(48.2,56.5),
+                            mapTypeId: Microsoft.Maps.MapTypeId.road,
+                            zoom: 2});
+      }
+      </script>
+-->
+<script type="text/javascript">
+var map=null;
+function init(){
+	map=new khtml.maplib.base.Map(document.getElementById("map"));
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+
+}
+
+function makeLinesKhtml(coords){
+	var feature=new khtml.maplib.geometry.Feature({"type":"LineString","coordinates":coords});
+	map.featureCollection.appendChild(feature);
+	feature.style.fill="none";
+	feature.style.stroke="red";
+	feature.style.strokeWidth="2";
+}
+
+
+</script>
+</head>
+<body onload="start()">
+Add <input type="text" id="number" value="100"/> lines <button onclick="go()">go</button>
+<div id="map">
+
+</div>
+<div id="map_canvas" ></div>
+<div id='mapDiv' ></div> 
+</body>
+</html>

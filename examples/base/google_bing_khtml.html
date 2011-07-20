@@ -1,0 +1,89 @@
+<html>
+<head>
+<style type="text/css">
+
+body{
+margin:0;
+}
+#navi{
+border:1px solid lightgrey;
+width:200px;
+}
+#navi div{
+	border-bottom:1px solid #efefef;
+	cursor:pointer;
+}
+#navi div:hover{
+	border-bottom:1px solid black;
+}
+#map{
+width:33%;
+height:100%;
+}
+#map_canvas{
+position:absolute;
+left:33%;
+width:33%;
+height:100%;
+top:0px;
+}
+#mapDiv{
+position:absolute;
+left:66%;
+width:34%;
+height:100%;
+top:0px;
+}
+
+</style>
+<title>khtml simple</title>
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="../../khtml_all.js"> </script> 
+
+<script type="text/javascript">
+  function initialize() {
+    var latlng = new google.maps.LatLng(48.2,56.5);
+    var myOptions = {
+      zoom: 2,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  }
+
+</script>
+      <script type="text/javascript">
+      function GetMap()
+      {   
+
+         var map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), 
+                           {credentials: "Your Bing Maps Key",
+                            center: new Microsoft.Maps.Location(48.2,56.5),
+                            mapTypeId: Microsoft.Maps.MapTypeId.road,
+                            zoom: 2});
+      }
+      </script>
+<script type="text/javascript">
+var map=null;
+function init(){
+	map=new khtml.maplib.base.Map(document.getElementById("map"));
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+
+}
+
+
+</script>
+</head>
+<body onload="GetMap();initialize();init()">
+<div id="navi">
+</div>
+<div id="map">
+
+</div>
+<div id="map_canvas" ></div>
+<div id='mapDiv' ></div> 
+</body>
+</html>

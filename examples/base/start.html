@@ -1,0 +1,31 @@
+<html>
+<head>
+<style type="text/css">
+
+#map{
+width:700px;
+height:400px;
+}
+
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../khtml_all.js"> </script> 
+
+<script type="text/javascript">
+var map=null;
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<div id="map"> </div>
+</body>
+</html>

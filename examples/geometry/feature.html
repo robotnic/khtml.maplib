@@ -1,0 +1,49 @@
+<html>
+<head>
+<style type="text/css">
+
+#map{
+width:700px;
+height:400px;
+}
+.polygon{
+fill:yellow;
+stroke:black;
+stroke-dasharray:4,4;
+stroke-width:5;
+opacity:1;
+stroke-opacity:1;
+fill-opacity:0.41;
+}
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../khtml_all.js"> </script> 
+
+<script type="text/javascript">
+var map=null;
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+
+	//lineString
+	var lineString=new khtml.maplib.geometry.Feature({type:"LineString",coordinates:[[0,0],[0,51],[16.5,48.2]]});
+	map.featureCollection.appendChild(lineString);
+	lineString.style.stroke="red";
+	lineString.style.strokeWidth=7;
+ 
+	//polygon
+	var polygon=new khtml.maplib.geometry.Feature({type:"Polygon",coordinates:[[10,10],[5,41],[-40.2,26.5]]});
+	map.featureCollection.appendChild(polygon);
+	polygon.className.baseVal="polygon";  //that's standard SVG
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<div id="map"> </div>
+</body>
+</html>
