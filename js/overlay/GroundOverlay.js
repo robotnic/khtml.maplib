@@ -105,7 +105,6 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 	 * @params {Object} options Use options.map and options.parent to assign map/parent. Example: <pre>init({map:myMap, parent: myParent});</pre>
 	*/
 	this.init = function(owner) {
-		console.log("groundoverlay init");
 		this.owner=owner;
 		if(owner instanceof khtml.maplib.base.Map){
 			this.map=owner;
@@ -120,7 +119,6 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 		// khtml.maplib.base.helpers.showOnMap(this.bounds, this._map);
 		
 		// rotate Element
-		console.log("dadada",this.rotation);
 		khtml.maplib.base.helpers.rotate(this.renderElement,this.rotation*-1);
 	}
 	
@@ -132,7 +130,6 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 	 * 3. execute render() on contained layers and features.
 	*/
 	this.render = function() {
-		console.log("render");
 		if (!this.renderElement)
 			return;
 		if (!this.point)
@@ -218,7 +215,7 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 		var y2 = y0-(x-x0)*Math.sin(theta)+(y-y0)*Math.cos(theta);
 		
 		var point= new khtml.maplib.LatLng(y2, x2);
-		console.log(y2,x2);
+		//console.log(y2,x2);
 		var marker=new khtml.maplib.overlays.Marker(point,"http://www.din-5008-richtlinien.de/bilder/punkt.gif",{dx:-1,dy:-1});	
 		map.addOverlay(marker);
 		return point;

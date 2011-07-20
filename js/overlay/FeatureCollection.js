@@ -137,7 +137,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 				el.init(this);
 				el.render();
 			}else{
-				console.log("noch nix map");
+				//console.log("noch nix map");
 			}
 		}
 		
