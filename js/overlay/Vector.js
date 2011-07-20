@@ -442,7 +442,7 @@ khtml.maplib.overlay.Vector = function() {
 		var boundsEast = -180;
 
 		for(var i=0; i < coordinates.length;i++){
-			if(coordinates[i] instanceof khtml.maplib.LatLng){
+			if(coordinates[i] instanceof khtml.maplib.geometry.LatLng){
 				var lng = coordinates[i].lng();
                                 var lat = coordinates[i].lat();
                                 if (lat > boundsNorth) {
