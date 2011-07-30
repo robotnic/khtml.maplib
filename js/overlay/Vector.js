@@ -107,10 +107,10 @@ khtml.maplib.overlay.Vector = function() {
 			alert("error: unknown vector backend");
 
 		}
-		vectorEl.style.width = themap.mapsize.width + "px";
-		vectorEl.style.height = themap.mapsize.height + "px";
-		vectorEl.setAttribute("height", themap.mapsize.height + "px");
-		vectorEl.setAttribute("width", themap.mapsize.width + "px");
+		vectorEl.style.width = themap.size.width + "px";
+		vectorEl.style.height = themap.size.height + "px";
+		vectorEl.setAttribute("height", themap.size.height + "px");
+		vectorEl.setAttribute("width", themap.size.width + "px");
 		vectorEl.style.position = "absolute";
 		vectorEl.style.top = "0";
 		vectorEl.style.left = "0";
@@ -436,6 +436,7 @@ khtml.maplib.overlay.Vector = function() {
 	 * calculate the extend of the polyline
 	 */
 	this.makeBounds=function(coordinates){
+		console.log(coordinates);
 		var boundsSouth = 90;
 		var boundsNorth = -90;
 		var boundsWest = 180;
@@ -497,8 +498,8 @@ khtml.maplib.overlay.Vector = function() {
 	*/
 	this.clear = function() {	
 		if (this.ctx) {
-			this.ctx.clearRect(0, 0, this.themap.mapsize.width,
-					this.themap.mapsize.height);
+			this.ctx.clearRect(0, 0, this.themap.size.width,
+					this.themap.size.height);
 		}
 		if(this.backend=="svg" || this.backend=="vml"){
 			while (this.vectorEl.firstChild) {

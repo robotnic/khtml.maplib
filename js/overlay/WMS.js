@@ -68,10 +68,10 @@ khtml.maplib.overlay.WMS = function(options) {
 		this.div.style.opacity=0.6;
 		var p=this.map.bounds().getCenter();
 		console.log(p);
-		var delta={dx:-this.map.mapsize.width/2,dy:-this.map.mapsize.height/2};
+		var delta={dx:-this.map.size.width/2,dy:-this.map.size.height/2};
 		console.log(delta);
-		var dx=-this.map.mapsize.width/2;
-		var dy=-this.map.mapsize.height/2;
+		var dx=-this.map.size.width/2;
+		var dy=-this.map.size.height/2;
 		console.log(dx,dy);
 		this.div.appendChild(this.img);
 		this.img.style.position="absolute";
@@ -100,8 +100,8 @@ khtml.maplib.overlay.WMS = function(options) {
 		var n=this.map.bounds().ne().lat();
 		var w=this.map.bounds().sw().lng();
 		var e=this.map.bounds().ne().lng();
-		var width=this.map.mapsize.width;
-		var height=this.map.mapsize.height;
+		var width=this.map.size.width;
+		var height=this.map.size.height;
 		//var url="http://geometa.hsr.ch/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.0&FORMAT=image/png&SRS=EPSG%3A4326&TILED=false&LAYERS=osm&BBOX=8.690761835853209,47.18459204613506,8.862423212806334,47.25454651402847&WIDTH=500&HEIGHT=300";
 		//var url="http://geometa.hsr.ch/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.0&FORMAT=image/png&SRS=EPSG%3A4326&TILED=false&LAYERS=osm&BBOX="+w+","+s+","+e+","+n+"&WIDTH="+width+"&HEIGHT="+height;
 		var layers="";

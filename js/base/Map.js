@@ -1078,8 +1078,8 @@ khtml.maplib.base.Map = function(map) {
 	*/
 	this.centerAndZoomXY = function(center, zoom, x, y) {
 		faktor = Math.pow(2, zoom);
-		var zoomCenterDeltaX = x - this.mapsize.width / 2;
-		var zoomCenterDeltaY = y - this.mapsize.height / 2;
+		var zoomCenterDeltaX = x - this.size.width / 2;
+		var zoomCenterDeltaY = y - this.size.height / 2;
 		var dzoom = zoom - this.zoom();
 		var f = Math.pow(2, dzoom);
 
@@ -2371,7 +2371,7 @@ khtml.maplib.base.Map = function(map) {
 			//el = el.parentNode;
 			el = el.offsetParent;
 		}
-		var mapsize = {
+		var size = {
 			top : _y,
 			left : _x,
 			width : _w,
@@ -2381,14 +2381,14 @@ khtml.maplib.base.Map = function(map) {
 			deltaBottom : _db,
 			deltaRight : _dr
 		};
-		return mapsize;
+		return size;
 	}
 
 	this.redraw = function() {
 		this.setMapPosition();
 	}
 	this.setMapPosition = function() {
-		this.mapsize = this._calculateMapSize();
+		this.size = this._calculateMapSize();
 
 		var el = this.mapParent;
 		if (el.currentStyle) {
@@ -2401,40 +2401,40 @@ khtml.maplib.base.Map = function(map) {
 		//              this.height=obj.offsetHeight;
 		//top=relativetop;
 		//left=relativeleft;
-		this.mapTop = this.mapsize.top;// + this.mapsize.deltaTop;
-		this.mapLeft = this.mapsize.left;// + this.mapsize.deltaLeft;
-		this.width = this.mapsize.width;
-		this.height = this.mapsize.height;
+		this.mapTop = this.size.top;// + this.size.deltaTop;
+		this.mapLeft = this.size.left;// + this.size.deltaLeft;
+		this.width = this.size.width;
+		this.height = this.size.height;
 		//if (style.position == "absolute" ) {
-		relativetop = this.mapsize.deltaTop;
-		relativeleft = this.mapsize.deltaLeft;
+		relativetop = this.size.deltaTop;
+		relativeleft = this.size.deltaLeft;
 		/*
 		    }else{
-		        relativetop = this.mapsize.top + this.mapsize.deltaTop;
-		        relativeleft = this.mapsize.left + this.mapsize.deltaLeft;
+		        relativetop = this.size.top + this.size.deltaTop;
+		        relativeleft = this.size.left + this.size.deltaLeft;
 		    }
 		 */
 
 		this.clone.style.top = relativetop + "px";
 		this.clone.style.left = relativeleft + "px";
-		this.clone.style.width = this.mapsize.width + "px";
-		this.clone.style.height = this.mapsize.height + "px";
+		this.clone.style.width = this.size.width + "px";
+		this.clone.style.height = this.size.height + "px";
 
 		this.clone.style.position = "absolute";
 		this.clone.style.overflow = "hidden";
 
-		this.map.style.left = this.mapsize.width / 2 + "px";
-		this.map.style.top = this.mapsize.height / 2 + "px";
+		this.map.style.left = this.size.width / 2 + "px";
+		this.map.style.top = this.size.height / 2 + "px";
 		//this.mapParent.appendChild(this.clone);
 		var center = this._getCenter();
-		if (!center) {
-			return;
+		if (center) {
+			var zoom = this.getZoom();
+			//this.clearMap();
+			if (zoom) {
+				this.centerAndZoom(this._getCenter(), this.getZoom());
+			}
 		}
-		var zoom = this.getZoom();
-		//this.clearMap();
-		if (zoom) {
-			this.centerAndZoom(this._getCenter(), this.getZoom());
-		}
+		this.copyright(); //must be positioned
 	}
 
 	//?????????
@@ -2485,20 +2485,39 @@ khtml.maplib.base.Map = function(map) {
 		}
 	}
         //logo
+	this.copyrightdiv=null;
 	this.copyright=function(){
+		if(this.copyrightdiv==null){
+			this.copyrightdiv=document.createElement("div");
+			this.mapParent.appendChild(this.copyrightdiv);
+		}
+		while(this.copyrightdiv.firstChild){this.copyrightdiv.removeChild(this.copyrightdiv.firstChild)}
 		var logo=document.createElement("img");
 		var a=document.createElement("a");
 		a.setAttribute("href","http://khtml.org");
+		a.setAttribute("target","_blank");
 		logo.setAttribute("src","http://khtml.org/favicon.png");
 		logo.style.zIndex=10;
 		logo.style.position="absolute";
-		logo.style.left="2px";
-		logo.style.bottom="2px";
+		var top=this.size.height+this.size.deltaTop -24;
+		var left=this.size.deltaLeft +0;
+		logo.style.top=top+"px";
+		logo.style.left=left+"px";
 		logo.style.width="24px";
 		logo.style.height="24px";
-		
 		a.appendChild(logo);
-		this.mapParent.appendChild(a);
+		this.copyrightdiv.appendChild(a);
+
+		var a2=document.createElement("a");
+		a2.appendChild(document.createTextNode("openstreetmap"));
+		a2.style.position="absolute";
+		a2.style.top=(top+2)+"px";
+		a2.style.left=left+25+"px";
+		a2.style.textDecoration="none";
+		a2.style.color="gray";
+		a2.setAttribute("href","http://www.openstreetmap.org/copyright");
+		
+		this.copyrightdiv.appendChild(a2);
 	}
 
 	
@@ -2582,7 +2601,6 @@ khtml.maplib.base.Map = function(map) {
 	this.wheelEventCounter = 0;
 	this.framesCounter = 0;
 	this.mapParent = map;
-	this.copyright();
 	//	mapInit=map;
 	this.clone = map.cloneNode(true); //clone is the same as the map div, but absolute positioned
 	this.clone = document.createElement("div");

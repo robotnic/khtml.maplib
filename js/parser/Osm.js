@@ -81,7 +81,9 @@ khtml.maplib.parser.Osm=function(){
 				for(var d=0;d<nds.length;d++){
 					var nd=nds[d];
 					var ref=nd.getAttribute("ref");
-					line.geometry.coordinates.push(this.nodes[ref]);
+					if(this.nodes[ref]!=undefined){
+						line.geometry.coordinates.push(this.nodes[ref]);
+					}
 				}
 				var tags=way.getElementsByTagName("tag");
 				for(var t=0;t<tags.length;t++){
