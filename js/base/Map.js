@@ -239,15 +239,15 @@ khtml.maplib.base.Map = function(map) {
 		this.moveAnimationBlocked = true;
 		//this.hideOverlays();
 		if (evt.touches.length == 1) {
-			this.startMoveX = this.moveX - evt.touches[0].pageX / this.faktor
+			this.startMoveX = this.moveX - this.pageX(evt.touches[0]) / this.faktor
 					/ this.sc;
-			this.startMoveY = this.moveY - evt.touches[0].pageY / this.faktor
+			this.startMoveY = this.moveY - this.pageY(evt.touches[0]) / this.faktor
 					/ this.sc;
 			if (this.mousedownTime != null) {
 				var now = (new Date()).getTime();
 				if (now - this.mousedownTime < this.doubleclickTime) {
 					var zoomD = Math.ceil(0.01 + this.getZoom() - this.intZoom);
-					this._autoZoomIn(evt.touches[0].pageX, evt.touches[0].pageY,
+					this._autoZoomIn(this.pageX(evt.touches[0]), this.pageY(evt.touches[0]),
 							zoomD);
 				}
 			}
@@ -263,10 +263,10 @@ khtml.maplib.base.Map = function(map) {
 		if (evt.touches.length == 2) {
 			window.clearInterval(this.zoomOutInterval);
 			this.moveok = false;
-			var X1 = evt.touches[0].pageX;
-			var Y1 = evt.touches[0].pageY;
-			var X2 = evt.touches[1].pageX;
-			var Y2 = evt.touches[1].pageY;
+			var X1 = this.pageX(evt.touches[0]);
+			var Y1 = this.pageY(evt.touches[0]);
+			var X2 = this.pageX(evt.touches[1]);
+			var Y2 = this.pageY(evt.touches[1]);
 			this.startDistance = Math.sqrt(Math.pow((X2 - X1), 2)
 					+ Math.pow((Y2 - Y1), 2));
 			this.startZZ = this.position.zoom;
@@ -295,9 +295,9 @@ khtml.maplib.base.Map = function(map) {
 				this.lastMoveX = this.moveX;
 				this.lastMoveY = this.moveY;
 				this.lastMoveTime = new Date(evt.timeStamp);
-				this.moveX = evt.touches[0].pageX / this.faktor / this.sc
+				this.moveX = this.pageX(evt.touches[0]) / this.faktor / this.sc
 						+ this.startMoveX;
-				this.moveY = evt.touches[0].pageY / this.faktor / this.sc
+				this.moveY = this.pageY(evt.touches[0]) / this.faktor / this.sc
 						+ this.startMoveY;
 				if (!this.zoomOutStarted) {
 					if ((Math.abs(this.moveX - this.oldMoveX) > 5)
@@ -324,10 +324,10 @@ khtml.maplib.base.Map = function(map) {
 
 		if (evt.touches.length == 2) {
 			this.mousedownTime = null;
-			var X1 = evt.touches[0].pageX;
-			var Y1 = evt.touches[0].pageY;
-			var X2 = evt.touches[1].pageX;
-			var Y2 = evt.touches[1].pageY;
+			var X1 = this.pageX(evt.touches[0]);
+			var Y1 = this.pageY(evt.touches[0]);
+			var X2 = this.pageX(evt.touches[1]);
+			var Y2 = this.pageY(evt.touches[1]);
 			var Distance = Math.sqrt(Math.pow((X2 - X1), 2)
 					+ Math.pow((Y2 - Y1), 2));
 			var zoomDelta = (Distance / this.startDistance);
