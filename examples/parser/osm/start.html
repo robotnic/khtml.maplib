@@ -1,0 +1,68 @@
+<html>
+<head>
+<style type="text/css">
+
+#map{
+width:700px;
+height:400px;
+}
+path{
+fill:none;
+opacity:0.2;
+stroke:gray;
+stroke-width:1;
+font-family:Arial;
+}
+path[mapcss_highway]{
+fill:none;
+opacity:0.9;
+stroke:red;
+stroke-width:12;
+font-family:Arial;
+}
+
+
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../../khtml_all.js"> </script> 
+<script type="text/javascript" src="../../../js/parser/Osm.js"> </script> 
+<script type="text/javascript" src="../../../js/overlay/Vector.js"> </script> 
+
+<script type="text/javascript">
+var map=null;
+var osm=new khtml.maplib.parser.Osm();
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.3),17);
+
+}
+
+function loadmap(){
+	var bounds=map.bounds();
+	var url="/api/0.6/map?bbox="+bounds.sw().lng()+","+bounds.sw().lat()+","+bounds.ne().lng()+","+bounds.ne().lat();
+	console.log(url);
+ 
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","osmload.php?url="+url,true);
+	xmlhttp.onreadystatechange=function(){
+		var ajaxload=document.getElementById("ajaxload");
+		if(xmlhttp.readyState==4){
+				ajaxload.style.display="none";
+				osm.add(xmlhttp.responseXML);
+				map.featureCollection.appendChild(osm.featureCollection);
+		}
+	}
+	xmlhttp.send(null);	
+	document.getElementById("ajaxload").style.display="";
+}
+
+</script>
+</head>
+<body onload="init()">
+<button onclick="loadmap()">load</button><img src="images/ajaxload.gif" id="ajaxload" style="display:none"/>
+<div id="map"> </div>
+</body>
+</html>

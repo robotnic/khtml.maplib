@@ -345,6 +345,7 @@ khtml.maplib.overlay.Vector = function() {
 
 					path.style.fillRule="evenodd";
 					this.vectorEl.appendChild(path);
+					line.svgtext=this.addText(line);
 					break;	
 				case "canvas":
 					var ret=khtml.maplib.overlay.renderer.Canvas._renderPath(line.geometry.coordinates,line,this.ctx,this.themap);
@@ -436,7 +437,6 @@ khtml.maplib.overlay.Vector = function() {
 	 * calculate the extend of the polyline
 	 */
 	this.makeBounds=function(coordinates){
-		console.log(coordinates);
 		var boundsSouth = 90;
 		var boundsNorth = -90;
 		var boundsWest = 180;
@@ -481,6 +481,36 @@ khtml.maplib.overlay.Vector = function() {
                 var b = new khtml.maplib.geometry.Bounds(sw, ne);
                 return (b);
 
+	}
+
+	this.addText=function(line){
+//		console.log("addText",line);
+		if(!line.text)return;
+		if(!line.text.value)return;
+		//if(line.path.hasAttribute("id"))return;
+		var text=line.text.value;
+		var textEl=document.createElementNS("http://www.w3.org/2000/svg","text");
+		var textPath=document.createElementNS("http://www.w3.org/2000/svg","textPath");
+		textPath.setAttribute("startOffset","50%");
+		textEl.appendChild(textPath);
+		textPath.appendChild(document.createTextNode(text));
+		for(var s in line.text.style){
+			textEl.style[s]=line.text.style[s];
+		}
+		line.text.style=textEl.style;
+		textEl.className.baseVal=line.text.className.baseVal;
+		line.text.className.baseVal=textEl.className.baseVal;
+		if(line.text.style.fontSize){
+			var dy=parseFloat(line.text.style.fontSize)/2 ;
+		}else{
+			dy=0;
+		}
+		textEl.setAttribute("dy",dy *0.7);
+		var id="maplib_khtml_textpath_"+Math.random();
+		line.path.setAttribute("id",id);
+		textPath.setAttributeNS("http://www.w3.org/1999/xlink","href","#"+id);
+		this.vectorEl.appendChild(textEl);
+		return textEl;
 	}
 
 	/**

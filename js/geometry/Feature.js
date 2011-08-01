@@ -1,26 +1,20 @@
 /**
 @class
 Feature
-
+<pre>
 Call like this:
 var geometry={
 	type:"LineString",
 	coordinates:[[10,01],[20,20]],
-	properties:["name":"Bahnhofstrasse"]
 }
 
 khtml.maplib.geometry.Feature(geometry);
 
 or
 
-khtml.maplib.geometry.Feature({type:"LineString",coordinates:[[10,01],[20,20]],properties:["name":"Bahnhofstrasse"]}); //UTF-8!!!!!
+khtml.maplib.geometry.Feature({type:"LineString",coordinates:[[10,01],[20,20]]});
 
-or
-
-var feature=khtml.maplib.geometry.Feature("LineString");
-feature.geometry.coordinates=khtml.maplib.helpers.parseLine([[10,01],[20,20]]);
-feature.properties.name="blabla";
-
+</pre>
 */
 
 
@@ -32,6 +26,10 @@ khtml.maplib.geometry.Feature = function(geometry) {
 	this.events = new Object;
 	this.style = new Object;
 	this.className = new Object;
+
+	this.text = new Object;
+	this.text.style = new Object;
+	this.text.className = new Object;
 	this.className.baseVal = "khtml_vector_line";
 	if(typeof(geometry)=="object"){
 		if(geometry.type){
@@ -67,8 +65,17 @@ khtml.maplib.geometry.Feature = function(geometry) {
 	this.setPoints=function(points){
 		this.geometry.coordinates=khtml.maplib.base.helpers.parseLine(points);
 	}
+	/**
+	Serialize overlays to json string
+	*/
 	this.geojson=function(){
 		return khtml.maplib.base.helpers.stringify(this);
+	}
+	/**
+	not implemented
+	*/
+	this.cloneNode=function(){
+		return khtml.maplib.base.helpers.cloneObject(this);
 	}
 
 }

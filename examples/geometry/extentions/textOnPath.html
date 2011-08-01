@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<style type="text/css">
+body{
+font-family:Arial;
+}
+#map{
+width:400px;
+height:300px;
+}
+.eins{
+fill:green;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../js/overlay/Vector.js"> </script>
+<script type="text/javascript">
+var map=null;
+
+function init(){
+	map=khtml.maplib.Map(document.getElementById("map"));
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.3),12);	
+	path([[16.305,48.21], [16.31,48.21], [16.33,48.21], [16.36,48.22] ],8);	
+	path([[16.30,48.19], [16.31,48.2], [16.33,48.2], [16.36,48.21] ],12);	
+	path([[16.20,48.19], [16.21,48.2], [16.23,48.2], [16.26,48.21] ],20);	
+}
+
+function path(coordinates,fontsize){
+	var line2=new khtml.maplib.geometry.Feature( {type:"LineString", coordinates:coordinates });
+	line2.style.stroke="lightgrey";
+	line2.style.strokeWidth=fontsize*1.1;
+
+
+	var line=new khtml.maplib.geometry.Feature( {type:"LineString", coordinates:coordinates });
+	line.style.stroke="white";
+	line.style.strokeWidth=fontsize*0.9;
+
+	//text only implemented for SVG
+	line.text.style.align="center";
+	line.text.style.fontSize=fontsize;
+	line.text.className.baseVal="eins";
+	line.text.value="Das gist der Text auf der Straße";
+	map.featureCollection.appendChild(line2);
+	map.featureCollection.appendChild(line);
+}
+</script>
+</head>
+<body onload="init()">
+<div id="map">
+</div>
+</body>
+</html>
