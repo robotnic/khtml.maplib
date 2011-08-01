@@ -44,12 +44,16 @@
  *
  * @param {Object} options Properties: 'url' => url to wms server, use as <img src="url">. The following parameters are appended to the url: '&BBOX=...&WIDTH=...&HEIGHT=...&xyz=...'. 'opacity' => transparency of image where 0 is fully transparent and 1 is not transparent. 'class' => class is used for the image tag.
  * @class
- * @borrows khtml.maplib.overlay.RenderableMixin#_parseOptions as #_parseOptions
- * @borrows khtml.maplib.overlay.RenderableMixin#parent as #parent
- * @borrows khtml.maplib.overlay.RenderableMixin#map as #map
+* Examples:
+<a href="../../../examples/overlay/wms/wms1.html">wms1</a>,
+<a href="../../../examples/overlay/wms/wms2.html">wms2</a>,
+<a href="../../../examples/overlay/wms/wms3.html">wms3</a>,
+<a href="../../../examples/overlay/wms/wms4.html">wms4</a>,
+<a href="../../../examples/overlay/wms/wms5.html">wms5</a>,
+<a href="../../../examples/overlay/wms/wms6.html">wms6</a>,
+<a href="../../../examples/overlay/wms/wms7.html">wms7</a>,
 */
 khtml.maplib.overlay.WMS = function(options) {	
-	console.log(options);
 	this.type="Feature";
 	this.geometry=new Object;
 	this.geometry.type="WMS";
@@ -62,17 +66,13 @@ khtml.maplib.overlay.WMS = function(options) {
 		}else{
 			this.map=owner;
 		}
-		console.log(this.map);
 		this.img=document.createElement("img");
 		this.div=document.createElement("div");
 		this.div.style.opacity=0.6;
 		var p=this.map.bounds().getCenter();
-		console.log(p);
 		var delta={dx:-this.map.size.width/2,dy:-this.map.size.height/2};
-		console.log(delta);
 		var dx=-this.map.size.width/2;
 		var dy=-this.map.size.height/2;
-		console.log(dx,dy);
 		this.div.appendChild(this.img);
 		this.img.style.position="absolute";
 		this.img.style.top=dy+"px";
@@ -83,7 +83,6 @@ khtml.maplib.overlay.WMS = function(options) {
 	this.oldZoom=0;
 	this.clear=function(){
 		that.marker.style.display="none";
-		console.log("was ist das",that.map.featureCollection);
 		that.map.featureCollection.removeChild(that.marker);
 	}
 	this.render=function(){
@@ -122,7 +121,6 @@ khtml.maplib.overlay.WMS = function(options) {
 	}
 	var that=this;
 	this._imgLoaded=function(){
-		console.log("loaded");
 		this.render();
 		this.marker.style.display="";
 		that.img.style.display="";

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<style type="text/css">
+	#map{
+		position:absolute;
+		left:210px;
+		top:10px;
+		bottom:20px;
+		right:20px;
+	}
+	#layers{
+		position:absolute;
+		left:20px;
+		top:100px;
+	}
+	#layers div{
+		border:1px solid lightgrey;
+		margin:4px;
+		padding:4px;
+		padding-left:18px;
+		padding-right:18px;
+		cursor:pointer;
+	}
+	#layers div:hover{
+		background-color:yellow;
+	}
+	</style>
+<!-- khtml -->
+
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/WMS.js"> </script>
+
+<script type="text/javascript">
+
+var mr=new Object(khtml.maplib);
+var map=null; //global map object
+
+var layers={
+       osm:{
+                        opacity: 0.5, 
+                        url: 'http://geometa.hsr.ch/geoserver/wms',
+                        parameters: {'FORMAT':'image/png', 'TILED':'false'},
+                        layers: ['osm']
+	},
+	hydro:{
+                        opacity: 0.6, 
+                        url: 'http://wms.geo.admin.ch/',
+                        parameters: {'FORMAT':'image/png', 'STYLES':'default'},
+                        layers: ['ch.swisstopo.geologie-hydrogeologische_karte-grundwasservorkommen']
+	},
+	geologie:{
+                        opacity: 0.6, 
+                        url: 'http://wms.geo.admin.ch/',
+                        parameters: {'STYLES':'default'},
+                        layers: ['ch.swisstopo.geologie-geophysik-geothermie']
+	},
+	fleisch:{
+                        opacity: 0.6, 
+                        url: 'http://wms.geo.admin.ch/',
+                        parameters: {'STYLES':'default'},
+                        layers: ['ch.blw.ursprungsbezeichnungen-fleisch-sg_wuerste']
+	},
+	transparent:{
+			opacity: 1, 
+			url: 'http://wms.geo.admin.ch',
+			parameters: {'STYLES':'default', 'TRANSPARENT':'true'},
+			layers: ['ch.blw.ursprungsbezeichnungen-fleisch',
+				'ch.blw.ursprungsbezeichnungen-spirituosen',
+				//'ch.blw.ursprungsbezeichnungen-kaese',
+				'ch.blw.ursprungsbezeichnungen-pflanzen']
+		}
+}
+
+function init(){
+	map=new mr.base.Map("map");
+	var center = new khtml.maplib.LatLng(47.22331159092443,8.817104609290709);
+	map.centerAndZoom(center,12); //12 = zoomlevel
+
+/*	
+	var wms = new khtml.maplib.overlay.WMS(
+		{
+			opacity: 0.5, 
+			url: 'http://geometa.hsr.ch/geoserver/wms',
+			parameters: {'FORMAT':'image/png', 'TILED':'false'},
+			layers: ['osm']
+		}
+	);
+*/
+	var target=document.getElementById("layers");
+	for(var l in layers){
+		var div=document.createElement("div");
+		div.appendChild(document.createTextNode(l));
+		div.layer=l;	
+		target.appendChild(div);
+	}
+	//var wms=new khtml.maplib.overlay.WMS(layers.fleisch);
+
+	//map.featureCollection.appendChild(wms);
+	//map.addOverlay(wms);
+}
+var ov=new Array();
+function showlayer(el){
+	if(!layers[el.layer].visible){
+		ov[el.layer]=new khtml.maplib.overlay.WMS(layers[el.layer]);
+		map.addOverlay(ov[el.layer]);
+		layers[el.layer].visible=true;
+		el.style.backgroundColor="lightgrey";	
+	}else{
+		map.removeOverlay(ov[el.layer]);
+		layers[el.layer].visible=false;
+		el.style.backgroundColor="white";	
+	}
+	map.center(map.center());
+}
+</script>
+</head>
+<body onload="init()">
+<h4>WMS Layer</h4>
+
+<div id="map"> </div>
+<div id="layers" onmousedown="showlayer(event.target)"> </div> 
+</body>
+</html>

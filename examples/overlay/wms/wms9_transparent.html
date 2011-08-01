@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<style type="text/css">
+	#map{
+		width:500px;
+		height:300px;
+	}
+	</style>
+<!-- khtml -->
+<link rel="stylesheet" type="text/css" href="../../../css/default.css" >
+
+<script type="text/javascript" src="../../../js/khtml.js"> </script>
+<script type="text/javascript" src="../../../js/base/Helpers.js"> </script>
+<script type="text/javascript" src="../../../js/base/Map.js"> </script>
+<script type="text/javascript" src="../../../js/base/Log.js"> </script>
+<script type="text/javascript" src="../../../js/geometry/Bounds.js"> </script>
+<script type="text/javascript" src="../../../js/geometry/Point.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/RenderableMixin.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/WMS.js"> </script>
+
+<script type="text/javascript">
+
+var mr=new Object(khtml.maplib);
+var map=null; //global map object
+
+function init(){
+	map=new mr.base.Map("map");
+	var center = new khtml.maplib.geometry.Point(46.8,8.5);
+	map.centerAndZoom(center,7); //12 = zoomlevel
+
+	var wms = new khtml.maplib.overlay.WMS(
+		{
+			opacity: 1, 
+			url: 'http://wms.geo.admin.ch',
+			parameters: {'STYLES':'default', 'TRANSPARENT':'true'},
+			layers: ['ch.blw.ursprungsbezeichnungen-fleisch',
+				'ch.blw.ursprungsbezeichnungen-spirituosen',
+				//'ch.blw.ursprungsbezeichnungen-kaese',
+				'ch.blw.ursprungsbezeichnungen-pflanzen']
+		}
+	);
+/*
+	var wms = new khtml.maplib.overlay.WMS({opacity: 1, url: 'http://wms.geo.admin.ch/?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.0&LAYERS=ch.blw.ursprungsbezeichnungen-fleisch,ch.blw.ursprungsbezeichnungen-spirituosen,ch.blw.ursprungsbezeichnungen-kaese,ch.blw.ursprungsbezeichnungen-pflanzen&STYLES=default&FORMAT=image/png&SRS=EPSG:4326&TRANSPARENT=TRUE'});*/
+	map.addOverlay(wms);
+
+}
+</script>
+</head>
+<body onload="init()">
+<h4>WMS Layer - WMS-BAFU - Example</h4>
+
+<p>Image opacity: 1 (NOT-TRANSPARENT) / WMS Layer TRANSPARENT=TRUE</p>
+
+<a href="http://www.geo.admin.ch/internet/geoportal/de/home/services/geoservices/display_services/services_wms.html#wms">http://www.geo.admin.ch/internet/geoportal/de/home/services/geoservices/display_services/services_wms.html#wms</a><br />
+
+<div id="map"> </div>
+ 
+</body>
+</html>

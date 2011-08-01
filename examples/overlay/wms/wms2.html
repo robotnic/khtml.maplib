@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<style type="text/css">
+	#map{
+		width:500px;
+		height:300px;
+	}
+	</style>
+
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+
+<script type="text/javascript">
+
+var mr=new Object(khtml.maplib);
+var map=null; //global map object
+
+function init(){
+	map=new mr.base.Map("map");
+	var center = new khtml.maplib.geometry.LatLng(47.22331159092443,8.817104609290709);
+	map.centerAndZoom(center,10); //12 = zoomlevel
+
+	var wms = new khtml.maplib.overlay.WMS(
+		{
+			opacity: 0.6, 
+			url: 'http://wms.geo.admin.ch/',
+			parameters: {'FORMAT':'image/png', 'STYLES':'default'},
+			layers: ['ch.swisstopo.geologie-hydrogeologische_karte-grundwasservorkommen']
+		}
+	);
+	
+	map.addOverlay(wms);
+
+}
+</script>
+</head>
+<body onload="init()">
+<h4>WMS Layer - WMS-BGDI - Grundwasservorkommen</h4>
+
+<a href="http://www.geo.admin.ch/internet/geoportal/de/home/services/geoservices/display_services/services_wms.html#wms">http://www.geo.admin.ch/internet/geoportal/de/home/services/geoservices/display_services/services_wms.html#wms</a><br />
+
+<div id="map"> </div>
+ 
+</body>
+</html>
