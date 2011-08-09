@@ -25,6 +25,7 @@
  *
  *
  * @class
+*Example: <a href="../../../examples/parser/osm/start.html">osm with php proxy</a>
 */
 
 
@@ -74,7 +75,7 @@ khtml.maplib.parser.Osm=function(){
 			if(this.ways[id]){
 				//way already in array
 			}else{
-				var line=new khtml.maplib.geometry.Feature("Polyline");
+				var line=new khtml.maplib.geometry.Feature("MultiLineString");
 				line.close=true;
 				line.id=id;
 				var nds=way.getElementsByTagName("nd");
@@ -91,6 +92,12 @@ khtml.maplib.parser.Osm=function(){
 					var k=tag.getAttribute("k");
 					var v=tag.getAttribute("v");
 					line.properties[k]=v;
+					if(k=="name"){
+						line.text.value=v;
+						line.text.style.fill="black";
+						line.text.style.fontSize="12";
+						line.text.style.textAnchor="middle";
+					}
 				}
 				this.featureCollection.appendChild(line);
 				this.ways[id]=line;

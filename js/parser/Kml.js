@@ -26,6 +26,7 @@
  * can be added to map as overlay
  *
  * @class
+ * Example: <a href="../../../examples/parser/kml/googlebuildings.html">kml from google tutorial</a>
 */
 khtml.maplib.parser.Kml = function(KML) {
 	// initialize variables

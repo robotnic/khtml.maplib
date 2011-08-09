@@ -23,7 +23,20 @@
 /**
  * THIS IS THE MAIN CLASS
  *
+ * This Class draws to map to a html div.
+ * It handles mouse, mousewheel and touchscreen user actions.
+ * A simple overlay API is provided by this class
+ * 
+ * 
+ *
  * @class
+<pre>
+ * The center of everything
+ * Examples:
+ * <a href="../../../examples/base/start.html">Base</a>,
+ * BitmapOverlays: <a href="../../../examples/base/tileOverlay/start.html">seamap</a>,
+ * Combined overlays: <a href="../../../examples/base/tileOverlay/combined.html">osma,hikemap,hillshade</a>
+</pre>
 */
 khtml.maplib.base.Map = function(map) {
 	// if argument is a string, interpret it as "id" of the map container.
@@ -38,7 +51,8 @@ khtml.maplib.base.Map = function(map) {
 	}
 	
 	/**
-	 * Overlays handling
+	 * Adds an Overlay and activates it. An Overlay was an init and a render method.
+	* For detailed description see: <a href="http://wiki.openstreetmap.org/wiki/Simple_map_API#Programming_Overlays">Simple map API</a>
 	*/
 	this.addOverlay = function(obj) {
 		if(null == obj || obj instanceof Array) {
@@ -75,7 +89,9 @@ khtml.maplib.base.Map = function(map) {
 		}
 	}
 	/**
+	* Used Internal.
 	 * Calls {render()} on supplied object.
+	* 
 	*/
 	this.renderOverlay = function(obj) {
 		try {
@@ -102,7 +118,7 @@ khtml.maplib.base.Map = function(map) {
 	/**
 	 * Calls {clear()} on all objects in "this.overlays".
 	*/
-	this.hideOverlays = function() {
+	this._hideOverlays = function() {
 		for (obj in this.overlays) {
 			try {
 				this.overlays[obj].clear(that);
@@ -119,6 +135,11 @@ khtml.maplib.base.Map = function(map) {
 			overlay.clear();
 		}
 	}
+
+	/**
+	Internaly used to stop rendering of slow overlays to prevent browser stall.
+	If an overlay needs more than 10ms it will not be rendered during animations.
+	*/
 
 	this.stopRenderOverlays = function() {
 		for (obj in this.overlays) {
@@ -144,6 +165,16 @@ khtml.maplib.base.Map = function(map) {
 	//
 
 	this.callbackFunctions = new Array();
+	/**
+	<pre>
+	A callback function fires if zoom, latitute or longitude is changed.
+	The callback funktion in defined in user space. You have to provide one.
+	The callback can also be a method.
+	The callback function will have set the "this" object whitch is
+	the map object.
+	Example: <a href="../../../examples/base/callback/start.html">display coordinates</a>
+	</pre>
+	*/
 	this.addCallbackFunction = function(func) {
 		if (typeof (func) == "function") {
 			this.callbackFunctions.push(func);
@@ -158,7 +189,7 @@ khtml.maplib.base.Map = function(map) {
 	
 	/**
 	 * Timer: stop the time.
-	 *
+	 * @class
 	*/
 	this.myTimer = function(interval) {
 		/**
@@ -216,7 +247,7 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	// ==================================================
-	/**
+	/*
 	 *    Touchscreen and Mouse EVENTS
 	*/
 	//===================================================
@@ -228,7 +259,7 @@ khtml.maplib.base.Map = function(map) {
 	this.oldMoveX = 0;
 	this.oldMoveY = 0;
 
-	this.start = function(evt) {
+	this._start = function(evt) {
 		//khtml.maplib.base.Log.debug('this.start');
 		
 		if (evt.preventDefault) {
@@ -237,7 +268,6 @@ khtml.maplib.base.Map = function(map) {
 			evt.returnValue = false; // The IE way
 		}
 		this.moveAnimationBlocked = true;
-		//this.hideOverlays();
 		if (evt.touches.length == 1) {
 			this.startMoveX = this.moveX - this.pageX(evt.touches[0]) / this.faktor
 					/ this.sc;
@@ -245,8 +275,8 @@ khtml.maplib.base.Map = function(map) {
 					/ this.sc;
 			if (this.mousedownTime != null) {
 				var now = (new Date()).getTime();
-				if (now - this.mousedownTime < this.doubleclickTime) {
-					var zoomD = Math.ceil(0.01 + this.getZoom() - this.intZoom);
+				if (now - this.mousedownTime < this._doubleclickTime) {
+					var zoomD = Math.ceil(0.01 + this._getZoom() - this.intZoom);
 					this._autoZoomIn(this.pageX(evt.touches[0]), this.pageY(evt.touches[0]),
 							zoomD);
 				}
@@ -280,7 +310,7 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	this.moveok = true;
-	this.move = function(evt) {
+	this._move = function(evt) {
 		//khtml.maplib.base.Log.debug('this.move');
 		
 		if (evt.preventDefault) {
@@ -357,7 +387,7 @@ khtml.maplib.base.Map = function(map) {
 		}
 	}
 
-	this.end = function(evt) {
+	this._end = function(evt) {
 		//khtml.maplib.base.Log.debug('this.end');
 		if (evt.preventDefault) {
 			//khtml.maplib.base.Log.debug('this.end - evt.preventDefault: true');
@@ -448,8 +478,8 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	this.doubleclickBlocked = false;
-	this.doubleclick = function(evt) {
-		this.discretZoom(1, this.pageX(evt), this.pageY(evt));
+	this._doubleclick = function(evt) {
+		this._discretZoom(1, this.pageX(evt), this.pageY(evt));
 		return;
 		/*
 		var that = this;
@@ -462,13 +492,13 @@ khtml.maplib.base.Map = function(map) {
 		};
 		setTimeout(func, 500);
 
-		var zoom = this.getZoom();
-		var zoomD = Math.ceil(0.0001 + this.getZoom()) - zoom;
+		var zoom = this._getZoom();
+		var zoomD = Math.ceil(0.0001 + this._getZoom()) - zoom;
 		this.autoZoomIn(this.pageX(evt), this.pageY(evt), zoomD);
 		*/
 	}
 
-	this.mousedown = function(evt) {
+	this._mousedown = function(evt) {
 		this.mapParent.focus();
 		if (evt.preventDefault) {
 			evt.preventDefault(); // The W3C DOM way
@@ -482,7 +512,7 @@ khtml.maplib.base.Map = function(map) {
 		if (this.mousedownTime2 != null) {
 			var now = (new Date()).getTime();
 			if (now - this.mousedownTime2 < this.doubleclickTime2) {
-				this.doubleclick(evt);
+				this._doubleclick(evt);
 				return;
 			}
 		}
@@ -505,7 +535,6 @@ khtml.maplib.base.Map = function(map) {
 			this.selectRect.style.position = "absolute";
 			this.map.parentNode.appendChild(this.selectRect);
 		} else {
-			//this.hideOverlays();
 			this.startMoveX = this.moveX - (this.pageX(evt)) / this.faktor
 					/ this.sc;
 			this.startMoveY = this.moveY - (this.pageY(evt)) / this.faktor
@@ -515,7 +544,7 @@ khtml.maplib.base.Map = function(map) {
 		return false;
 	}
 
-	this.mousemove = function(evt) {
+	this._mousemove = function(evt) {
 		if (evt.preventDefault) {
 			evt.preventDefault(); // The W3C DOM way
 		} else {
@@ -558,7 +587,7 @@ khtml.maplib.base.Map = function(map) {
 		}
 		return false;
 	}
-	this.mouseup = function(evt) {
+	this._mouseup = function(evt) {
 		if (evt.preventDefault) {
 			evt.preventDefault(); // The W3C DOM way
 		} else {
@@ -626,7 +655,7 @@ khtml.maplib.base.Map = function(map) {
 	/**
 	 * mouseup function for mobile IE to pan the map by clicking
 	 */
-	this.mouseupIE = function(evt) {
+	this._mouseupIE = function(evt) {
 		if (evt.preventDefault) {
 			evt.preventDefault(); // The W3C DOM way
 		} else {
@@ -643,7 +672,7 @@ khtml.maplib.base.Map = function(map) {
 	/**
 	 * Mouse wheel
 	*/
-	this.mousewheel = function(evt) {
+	this._mousewheel = function(evt) {
 		if (evt.preventDefault) {
 			evt.preventDefault(); // The W3C DOM way
 		} else {
@@ -677,7 +706,7 @@ khtml.maplib.base.Map = function(map) {
 
 		}
 		if (this.wheelSpeedConfig["digizoom"]) {
-			this.discretZoom(direction, this.pageX(evt), this.pageY(evt));
+			this._discretZoom(direction, this.pageX(evt), this.pageY(evt));
 			return;
 		}
 		if (!this.startZoomTime) {
@@ -721,7 +750,7 @@ khtml.maplib.base.Map = function(map) {
 
 	this.zoomTimeouts = new Array();
 	this.discretZoomBlocked = false;
-	this.discretZoom = function(direction, x, y) {
+	this._discretZoom = function(direction, x, y) {
 		if (this.discretZoomBlocked) {
 			return;
 		}
@@ -773,7 +802,7 @@ khtml.maplib.base.Map = function(map) {
 	/*
 	 this.zoomAccelerate = 0;
 	 this.lastWheelDelta=0; //workaround for spontan wheel dircetion change (mac firefox, safari windows)
-	 this.mousewheel = function (evt) {
+	 this._mousewheel = function (evt) {
 	 if (evt.preventDefault) {
 	 evt.preventDefault(); // The W3C DOM way
 	 } else {
@@ -845,6 +874,7 @@ khtml.maplib.base.Map = function(map) {
 
 	this.digizoomblocked = false;
 	this.digizoomblockedTimeout = null;
+	/*
 	this.digizoom = function(mousex, mousey, delta) {
 		if (this.digizoomblockedTimeout) {
 			clearTimeout(this.digizoomblockedTimeout);
@@ -861,13 +891,14 @@ khtml.maplib.base.Map = function(map) {
 		this.digizoomblocked = true;
 
 		if (delta > 0) {
-			var zoomD = Math.ceil(0.01 + this.getZoom() - this.getIntZoom());
+			var zoomD = Math.ceil(0.01 + this._getZoom() - this._getIntZoom());
 		} else {
-			var zoomD = Math.ceil(this.getZoom() - this.getIntZoom()) - 0.98;
+			var zoomD = Math.ceil(this._getZoom() - this._getIntZoom()) - 0.98;
 		}
 		this._autoZoomIn(mousex, mousey, zoomD);
 
 	}
+	*/
 
 	this.wheelZoomTimeout = null;
 	/*
@@ -896,7 +927,7 @@ khtml.maplib.base.Map = function(map) {
 			this.zoomAccelerate = -this.wheelSpeedConfig["maxSpeed"] / 10;
 		var oldzoom = this.position.zoom;
 		this.position.zoom = this.position.zoom + this.zoomAccelerate * 8
-				/ (4 + this.getZoom()); // * this.wheelSpeedConfig["speed"]; 
+				/ (4 + this._getZoom()); // * this.wheelSpeedConfig["speed"]; 
 		if (this.position.zoom <= this.tileSource.minzoom) {
 			this.position.zoom = this.tileSource.minzoom;
 		}
@@ -983,11 +1014,13 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 
+
+	/*Start*/
+	this.autoZoomInTimeout = null;
+	this.autoZoomStartTime = null;
 	/**
 	 * zoom  animation
 	*/
-	this.autoZoomInTimeout = null;
-	this.autoZoomStartTime = null;
 
 	this._autoZoomIn = function(x, y, z) {
 		//console.log(x,y,z);
@@ -1003,7 +1036,6 @@ khtml.maplib.base.Map = function(map) {
 		if (Math.abs(z) <= Math.abs(stepwidth)) {
 			zoomGap = true;
 		}
-		//this.hideOverlays();
 		var dzoom = stepwidth;
 		var zoom = this.position.zoom + dzoom;
 		zoom = Math.round(zoom * 1000) / 1000;
@@ -1117,7 +1149,8 @@ khtml.maplib.base.Map = function(map) {
 		this.record();
 		this.setCenterNoLog(center, zoom);
 	}
-	this.setCenter3 = function(center, zoom) {
+	/** for internal use (speed related)*/
+	this._setCenter3 = function(center, zoom) {
 		this.moveX = 0;
 		this.moveY = 0;
 		this.setCenterNoLog(center, zoom);
@@ -1132,7 +1165,7 @@ khtml.maplib.base.Map = function(map) {
 	/**
 	 * same as setCenter but no history item is generated (for undo, redo)
 	*/
-	this.setCenterNoLogCount = 0;
+	//this.setCenterNoLogCount = 0;
 	this.setCenterNoLog = function(center, zoom) {
 		this.position.center = center;
 		this.lat = center.lat();
@@ -1155,12 +1188,12 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	/**
-	 * read the map center (no zoom value)
+	 * Set center of map a coordinate. It is also possible to get the current map center if method is called without parameter.
 	*/
 	this.center = function(center) {
 		if (typeof(center)!='undefined') {
 			//this.position.center=center;
-			this.centerAndZoom(center, this.getZoom());
+			this.centerAndZoom(center, this._getZoom());
 		}
 		if (this.moveX != 0 || this.moveY != 0) {
 			var center = new khtml.maplib.LatLng(this.movedLat, this.movedLng);
@@ -1169,12 +1202,22 @@ khtml.maplib.base.Map = function(map) {
 		return this.position.center;
 	}
 
+	/**
+	Set or get the zoomlevel. Zoomlevel is a floating Point number. If Integer numbers are
+	used the bitmap layer will displayed more clear than on non integer zoomlevels.
+	*/
+
 	this.zoom = function(zoom) {
 		if (typeof(zoom)!='undefined') {
 			this.centerAndZoom(this.position.center, zoom);
 		}
 		return this.position.zoom;
 	}
+
+	/**
+	Use this method to move the map in pixel. 
+	Example: <a href="../../../examples/base/movexy/index.html">move</a>
+	*/
 
 	this.moveXY = function(x, y) {
 		this.moveX = parseFloat(x) / this.faktor / this.sc + this.moveDelayedX;
@@ -1183,17 +1226,44 @@ khtml.maplib.base.Map = function(map) {
 		this.setCenter2(this.center(), this.zoom());
 	}
 
+	/**
+	Defining the base layer 
+
+	The tile source must be in this format:
+	<pre>
+	map.tiles({
+	  maxzoom:18,
+	  minzoom:1,
+	  src:function(x,y,z){
+	     return "http://andy.sandbox.cloudmade.com/tiles/cycle/"+z+"/"+x+"/"+y+".png";
+	  },
+	  copyright:"osm"
+	}
+	</pre>
+
+	see also: <a href="http://wiki.openstreetmap.org/wiki/Simple_map_API#Changing_tile_source">Simple map API</a>
+	*/
+
 	this.tiles = function(tileSource) {
 		this.clearMap();
 		this.tileSource = tileSource;
 	}
 	this.tileOverlays = new Array();
+	/**
+	add an overlay like opensemap, hillshade, hikemap
+
+	@see <a href="../../../examples/base/tileOverlay/start.html">seamap</a>,
+	@see <a href="../../../examples/base/tileOverlay/combined.html">hikemap + hillshade</a>
+	*/
 	this.addTilesOverlay = function(t) {
 		this.tileOverlays.push(t);
 		var ov = this.tileOverlays[this.tileOverlays.length - 1];
 		this.clearMap();
 		return ov;
 	}
+	/**
+	Remove tile overlays. Parameter is the returnvalue of addTileOverlay
+	*/
 
 	this.removeTilesOverlay = function(ov) {
 		//alert(this.tileOverlays.length);
@@ -1221,7 +1291,11 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	/**
-	 * read bounds. The Coordinates at corners of the map div  sw, ne would be better (change it!)
+	 * Set or Read the bounds.
+	* this method will put the map view to the coordinates and zoomlevel
+	* where the given bounds are visible.
+	* If you call the method without parameter, the return value contains the corners of the visible map.
+	* See also "khtml.maplib.geometry.Bounds" Class
 	*/
 	this.bounds = function(arg1) {
 		if (typeof(arg1)!='undefined') {
@@ -1306,15 +1380,20 @@ khtml.maplib.base.Map = function(map) {
 
 	this.animatedGotoStep = null;
 	this.animatedGotoTimeout = new Array();
+	/**
+	Time based animation.
+	Example: <a href="../../../examples/base/animate/index.html">Time based Animation</a>
+
+
+	*/
 	this.animatedGoto = function(newCenter, newZoom, time) {
-		//this.hideOverlays();
 		var zoomSteps = time / 10;
 		var oldCenter = this._getCenter();
 		var newLat = newCenter.lat();
 		var newLng = newCenter.lng();
 		var oldLat = oldCenter.lat();
 		var oldLng = oldCenter.lng();
-		var oldZoom = this.getZoom();
+		var oldZoom = this._getZoom();
 		var dLat = (newLat - oldLat) / zoomSteps;
 		var dLng = (newLng - oldLng) / zoomSteps;
 		var dZoom = (newZoom - oldZoom) / zoomSteps;
@@ -1328,7 +1407,7 @@ khtml.maplib.base.Map = function(map) {
 			clearTimeout(timeout);
 		}
 
-		for ( var i = 0; i < zoomSteps; i++) {
+		for ( var i = 0; i <= zoomSteps; i++) {
 			var lat = oldLat + dLat * i;
 			var lng = oldLng + dLng * i;
 			var zoom = oldZoom + dZoom * i;
@@ -1359,10 +1438,10 @@ khtml.maplib.base.Map = function(map) {
 
 	}
 
-	this.getZoom = function() {
+	this._getZoom = function() {
 		return this.position.zoom;
 	}
-	this.getIntZoom = function() {
+	this._getIntZoom = function() {
 		return this.intZoom;
 	}
 
@@ -1374,7 +1453,7 @@ khtml.maplib.base.Map = function(map) {
 		var lng = point.lng();
 		if(lat >90) lat =lat -180;
 		if(lat <-90) lat =lat +180;
-		var intZoom = this.getIntZoom();
+		var intZoom = this._getIntZoom();
 		tileTest = getTileNumber(lat, lng, intZoom);
 		var worldCenter = this._getCenter();
 
@@ -1421,7 +1500,9 @@ khtml.maplib.base.Map = function(map) {
 		return p;
 	}
 
-	/** mouse coordinates to lat, lng */
+	/** mouse coordinates to lat, lng 
+	* Example: <a href="../../../examples/base/callback/start.html">display coordinates</a>
+	*/
 	this.mouseToLatLng = function(evt) {
 		var x = this.pageX(evt);
 		var y = this.pageY(evt);
@@ -1470,14 +1551,16 @@ khtml.maplib.base.Map = function(map) {
 
 	}
 
-	/** for undo,redo */
+
+	/*start with paramter*/
 	this.recordArray = new Array();
+	/** for undo,redo */
 	this.record = function() {
 		var center = this._getCenter();
 		if (center) {
 			var lat = center.lat();
 			var lng = center.lng();
-			var zoom = this.getZoom();
+			var zoom = this._getZoom();
 			var item = new Array(lat, lng, zoom);
 			this.recordArray.push(item);
 		}
@@ -1492,12 +1575,26 @@ khtml.maplib.base.Map = function(map) {
 		//undo,redo must not generate history items
 		this.moveX = 0;
 		this.moveY = 0;
-		this.setCenter3(center, item[2]);
+		this._setCenter3(center, item[2]);
 	}
+
+
+
+	/*Start with properties*/
+	this.layerDrawLastFrame = null;
+	this.doTheOverlayes = true;
+	this.finalDraw = false;
+	this.layerOldZoom = 0;
+	this.moveDelayedX = 0;
+	this.moveDelayedY = 0;
+	this.layerTimer = new this.myTimer(300);
 
 	// =========================================================================
 	/**
 	 LAYERMANAGER (which layer is visible).
+
+	 This is an internaly used method to switch the visiblity of tile sets. 
+	 If you are looking for Vector or Marker layers see "khtml.maplib.geometrey.Feature".
 	
 	 Description: This method desides witch zoom layer is visible at the moment. 
 	 It has the same parameters as the "draw" method, but no "intZoom".
@@ -1506,19 +1603,12 @@ khtml.maplib.base.Map = function(map) {
 	*/
 	// =========================================================================
 
-	this.layerDrawLastFrame = null;
-	this.doTheOverlayes = true;
-	this.finalDraw = false;
-	this.layerOldZoom = 0;
-	this.moveDelayedX = 0;
-	this.moveDelayedY = 0;
-	this.layerTimer = new this.myTimer(300);
 	this.layer = function(map, lat, lng, moveX, moveY, zoom) {
 		//khtml.maplib.base.Log.debug('this.layer: ' +lat+","+lng+","+moveX+","+moveY+","+zoom);
 
 		this.stopRenderOverlays();
 		if (!zoom) {
-			var zoom = this.getZoom();
+			var zoom = this._getZoom();
 		}
 		//if (!this.css3d) {
 		if (this.layerDrawLastFrame) {
@@ -1563,12 +1653,12 @@ khtml.maplib.base.Map = function(map) {
 		}
 
 		/*
-		if(this.lastZoom!=this.getZoom()){
+		if(this.lastZoom!=this._getZoom()){
 			if(this.finalDraw){
 				var intZoom = Math.round(zoom );
-				this.lastZoom=this.getZoom();
+				this.lastZoom=this._getZoom();
 			}else{
-				if(this.lastZoom > this.getZoom()){
+				if(this.lastZoom > this._getZoom()){
 					var intZoom = Math.round(zoom );
 				}else{
 					var intZoom = Math.round(zoom );
@@ -1579,7 +1669,7 @@ khtml.maplib.base.Map = function(map) {
 			}
 			this.intZoom = intZoom;
 		}else{
-			intZoom=this.getIntZoom();
+			intZoom=this._getIntZoom();
 		}
 		 */
 		if (this.wheelSpeedConfig["digizoom"]) {
@@ -1653,8 +1743,8 @@ khtml.maplib.base.Map = function(map) {
 		if (this.layers[this.loadingZoomLevel]["loadComplete"]) {
 			if (this.visibleLayer != intZoom) {
 				this.layers[this.loadingZoomLevel]["loadComplete"] = false;
-				//khtml.maplib.base.Log.debug('this.layer: this.hideLayer()');
-				this.hideLayer(this.visibleZoom);
+				//khtml.maplib.base.Log.debug('this.layer: this._hideLayer()');
+				this._hideLayer(this.visibleZoom);
 				//this.layers[this.visibleZoom]["layerDiv"].style.visibility = "hidden";
 				this.visibleZoom = this.loadingZoomLevel;
 				//this.layers[this.visibleZoom]["layerDiv"].style.visibility = "";
@@ -1671,7 +1761,7 @@ khtml.maplib.base.Map = function(map) {
 			var that = this;
 			var tempFunction = function() {
 				that.layer(map, lat, lng, moveX, moveY);
-				//console.log("again:"+that.visibleZoom+":"+that.loadingZoomLevel+":"+intZoom+":"+that.getZoom()+":"+zoom);
+				//console.log("again:"+that.visibleZoom+":"+that.loadingZoomLevel+":"+intZoom+":"+that._getZoom()+":"+zoom);
 			};
 			/*
 			if(this.quadtreeTimeout){
@@ -1685,7 +1775,7 @@ khtml.maplib.base.Map = function(map) {
 		if (this.oldIntZoom != this.intZoom) {
 			if (this.oldIntZoom != this.visibleZoom) {
 				//khtml.maplib.base.Log.debug('this.layer: hiderLayer - oldIntZoom');
-				this.hideLayer(this.oldIntZoom);
+				this._hideLayer(this.oldIntZoom);
 			}
 		}
 		this.oldIntZoom = intZoom;
@@ -1710,7 +1800,7 @@ khtml.maplib.base.Map = function(map) {
 				this.doTheOverlayes = true;
 			}
 		} else {
-			this.hideOverlays();
+			this._hideOverlays();
 		}
 
 		var that = this;
@@ -1729,6 +1819,8 @@ khtml.maplib.base.Map = function(map) {
 
 	//===================================================================================
 	/**
+	<pre>
+	 This Method is used internally. You can use this method for benchmark tests.
 	 DRAW (speed optimized!!!)
 	
 	 This function draws one layer. It is highly opimized for iPhone. 
@@ -1739,8 +1831,13 @@ khtml.maplib.base.Map = function(map) {
 	 The position of the images is fixed.
 	 The layer (not the images) is moved because of better performance
 	 Even zooming does not change position of the images, if 3D CSS is active (webkit).
+	 3D CSS provides a hardware accelerated zoom of divs.
 
 	 this method uses "this.layers" , "this.oldIntZoom", "this.width", "this.height";
+
+	 If you want to give better performance to a special rendering engine, be welcome to 
+	search milli seconds. 
+	</pre>
 	*/
 	 //===================================================================================
 
@@ -1873,29 +1970,6 @@ khtml.maplib.base.Map = function(map) {
 				var baseLayerSrc = tileFunc(xx, yy, intZoom);
 				var id = baseLayerSrc + "-" + xxx + "-" + yyy;
 
-				/*
-				 //Calculate the tile server. Use of a,b,c should increase speed but should not influence cache.
-				 var hashval=(xx + yy) %3;
-				 switch(hashval){
-				 case 0:var server="a";break;
-				 case 1:var server="b";break;
-				 case 2:var server="c";break;
-				 default: var server="f";
-				 }
-				
-				 var src="http://"+server+".tile.openstreetmap.org/"+intZoom+"/"+xx+"/"+yy+".png";
-				 //                        var src="/iphonemapproxy/imgproxy.php?url=http://"+server+".tile.openstreetmap.org/"+intZoom+"/"+xx+"/"+yy+".png";
-				 //see imageproxy.php for offline map usage
-
-				 //bing tiles
-				 //var n=mkbin(intZoom,xxx,yyy);
-				 //var src="http://ecn.t0.tiles.virtualearth.net/tiles/a"+n+".jpeg?g=367&mkt=de-de";
-				 //var src="http://maps3.yimg.com/ae/ximg?v=1.9&t=a&s=256&.intl=de&x="+xx+"&y="+(yy)+"&z="+intZoom+"&r=1";
-				 //end bing tiles
-
-				 //
-				 var id="http://"+server+".tile.openstreetmap.org/"+intZoom+"/"+xxx+"/"+yyy+".png";
-				 */
 
 				//if zoom out, without this too much images are loaded
 				if (this.wheelSpeedConfig["digizoom"]) {
@@ -1945,7 +2019,7 @@ khtml.maplib.base.Map = function(map) {
 						//console.log(ovId);
 						//console.log(src);	
 						ovImg.setAttribute("overlay", ov);
-						khtml.maplib.base.helpers.eventAttach(ovImg, "load", this.imgLoaded, this,false);
+						khtml.maplib.base.helpers.eventAttach(ovImg, "load", this._imgLoaded, this,false);
 						layerDiv.appendChild(ovImg);
 						ovImg.setAttribute("src", src);
 						this.layers[intZoom]["images"][id]["array"].push(ovImg);
@@ -1955,8 +2029,8 @@ khtml.maplib.base.Map = function(map) {
 					}
 					//}	
 					//if the images are loaded, they will get visible in the imgLoad function
-					khtml.maplib.base.helpers.eventAttach(img, "load", this.imgLoaded, this, false);
-					khtml.maplib.base.helpers.eventAttach(img, "error", this.imgError, this, false);
+					khtml.maplib.base.helpers.eventAttach(img, "load", this._imgLoaded, this, false);
+					khtml.maplib.base.helpers.eventAttach(img, "error", this._imgError, this, false);
 					img.setAttribute("src", baseLayerSrc);
 				} else {
 				}
@@ -2080,38 +2154,18 @@ khtml.maplib.base.Map = function(map) {
 			this.layers[this.loadingZoomLevel]["loadComplete"] = true;
 		}
 		if (this.loadingZoomLevel == intZoom) {
-			this.imgLoadInfo(total, notLoaded);
+			this._imgLoadInfo(total, notLoaded);
 		}
 
 	}
 	// ====== END OF DRAW ======	
 
-	/**
-	 *  this function was for BING tiles. It's not in use but I don't want to dump it.
-	*/
-	function mkbin(z, x, y) {
-		var nn = parseInt(x.toString(2)) + parseInt(y.toString(2)) * 2;
-		n = "";
-		for ( var i = 0; i < 30; i++) {
-			var restX = parseInt(x / 2);
-			var restY = parseInt(y / 2);
-			var xx = (x / 2 - restX) * 2;
-			var yy = (y / 2 - restY) * 2;
-			x = restX;
-			y = restY;
-			s = Math.round(xx + yy * 2);
-			n = s + n;
-			if (x == 0 && y == 0)
-				break;
-		}
-		return n;
-	}
 
 	//fade effect for int zoom change
 
 	this.fadeOutTimeout = null;
-	this.fadeOut = function(div, alpha) {
-		//khtml.maplib.base.Log.debug('this.fadeOut');
+	this._fadeOut = function(div, alpha) {
+		//khtml.maplib.base.Log.debug('this._fadeOut');
 		if (this.fadeOutTimeout) {
 			clearTimeout(this.fadeOutTimeout);
 		}
@@ -2120,7 +2174,7 @@ khtml.maplib.base.Map = function(map) {
 			div.style.filter = "alpha( opacity=" + (alpha * 100) + " )";
 			var that = this;
 			var tempFunction = function() {
-				that.fadeOut(div, alpha - 0.2);
+				that._fadeOut(div, alpha - 0.2);
 			}
 			this.fadeOutTimeout = setTimeout(tempFunction, 40);
 
@@ -2137,14 +2191,14 @@ khtml.maplib.base.Map = function(map) {
 	//For Firefox it really brings speed
 	// 
 
-	this.hideLayer = function(zoomlevel) {
+	this._hideLayer = function(zoomlevel) {
 		if (this.intZoom != zoomlevel) {
 			if (this.layers[zoomlevel]) {
 				//this.layers[zoomlevel]["layerDiv"].style.visibility = "hidden";
 				this.layers[zoomlevel]["layerDiv"].style.opacity = 1;
 
 				this.layers[zoomlevel]["layerDiv"].style.filter = "alpha(opacity=100)";
-				this.fadeOut(this.layers[zoomlevel]["layerDiv"], 1);
+				this._fadeOut(this.layers[zoomlevel]["layerDiv"], 1);
 			}
 		}
 
@@ -2196,6 +2250,7 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	//handling images of tile overlays
+	/*
 	this.ovImgLoaded = function(evt) {
 		if (evt.target) {
 			var img = evt.target;
@@ -2204,11 +2259,12 @@ khtml.maplib.base.Map = function(map) {
 		}
 		img.style.visibility = "";
 	}
+	*/
 
 	/**
 	 * method is called if an image has finished loading  (onload event)
 	*/
-	this.imgLoaded = function(evt) {
+	this._imgLoaded = function(evt) {
 		if (evt.target) {
 			var img = evt.target;
 		} else {
@@ -2235,7 +2291,7 @@ khtml.maplib.base.Map = function(map) {
 		}
 		this.notLoadedImages=notLoaded;
 		if (this.loadingZoomLevel == zoomlevel) {
-			this.imgLoadInfo(total, notLoaded);
+			this._imgLoadInfo(total, notLoaded);
 		}
 
 		this.layers[zoomlevel]["loadComplete"] = loadComplete;
@@ -2243,14 +2299,14 @@ khtml.maplib.base.Map = function(map) {
 			if (this.loadingZoomLevel == zoomlevel) {
 				//if(Math.abs(this.intZoom - zoomlevel) < Math.abs(this.intZoom - this.visibleZoom)){
 				//this.layers[this.visibleZoom]["layerDiv"].style.visibility="hidden";
-				this.hideLayer(this.visibleZoom);
-				this.hideLayer(this.visibleZoom + 1); //no idea why
+				this._hideLayer(this.visibleZoom);
+				this._hideLayer(this.visibleZoom + 1); //no idea why
 				this.visibleZoom = zoomlevel;
 				//this.layers[this.visibleZoom]["layerDiv"].style.visibility = "";
 				/*
 				if(this.loadingZoomLevel!=this.intZoom){
 					//alert("genau da");
-					this.setCenter(this.getCenter(),this.getZoom());
+					this.setCenter(this.getCenter(),this._getZoom());
 				}
 				 */
 			}
@@ -2259,7 +2315,7 @@ khtml.maplib.base.Map = function(map) {
 	/**
 	 * Image load error  (there maybe is an IE bug)
 	*/
-	this.imgError = function(evt) {
+	this._imgError = function(evt) {
 		if (evt.target) {
 			var img = evt.target;
 		} else {
@@ -2273,7 +2329,7 @@ khtml.maplib.base.Map = function(map) {
 			img.setAttribute("src", errorImage);
 		}
 		
-		this.imgLoaded(evt);
+		this._imgLoaded(evt);
 	}
 
 	//next function is from wiki.openstreetmap.org
@@ -2383,11 +2439,17 @@ khtml.maplib.base.Map = function(map) {
 		};
 		return size;
 	}
+	/**
+	If the size of the html div is changed, the redraw method has to be called. 
+	For browser window size changes the map automaticaly calls the redraw.
+	Otherwise the redraw has to be called be the application.
+	Example:<a href="../../../examples/base/animate/zoom_resize.html">zoom + resize</a>
+	*/
 
 	this.redraw = function() {
-		this.setMapPosition();
+		this._setMapPosition();
 	}
-	this.setMapPosition = function() {
+	this._setMapPosition = function() {
 		this.size = this._calculateMapSize();
 
 		var el = this.mapParent;
@@ -2428,16 +2490,19 @@ khtml.maplib.base.Map = function(map) {
 		//this.mapParent.appendChild(this.clone);
 		var center = this._getCenter();
 		if (center) {
-			var zoom = this.getZoom();
+			var zoom = this._getZoom();
 			//this.clearMap();
 			if (zoom) {
-				this.centerAndZoom(this._getCenter(), this.getZoom());
+				this.centerAndZoom(this._getCenter(), this._getZoom());
 			}
 		}
-		this.copyright(); //must be positioned
+		this._copyright(); //must be positioned
 	}
 
-	//?????????
+	/**
+	Panik method if rendering makes problems.
+	Used internal.
+	*/
 	this.clearMap = function() {
 		if (!this.map)
 			return;
@@ -2462,7 +2527,7 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	//the image load information in the upper right corner
-	this.imgLoadInfo = function(total, missing) {
+	this._imgLoadInfo = function(total, missing) {
 		if (!this.loadInfoDiv) {
 			this.loadInfoDiv = document.createElement("div");
 			this.loadInfoDiv.style.position = "absolute";
@@ -2486,7 +2551,7 @@ khtml.maplib.base.Map = function(map) {
 	}
         //logo
 	this.copyrightdiv=null;
-	this.copyright=function(){
+	this._copyright=function(){
 		if(this.copyrightdiv==null){
 			this.copyrightdiv=document.createElement("div");
 			this.mapParent.appendChild(this.copyrightdiv);
@@ -2612,13 +2677,13 @@ khtml.maplib.base.Map = function(map) {
 		map.appendChild(this.clone);
 	}
 
-	//this.setMapPosition();
+	//this._setMapPosition();
 	this.map = document.createElement("div"); //this is the div that holds the layers, but no marker and svg overlayes
 	this.map.style.position = "absolute";
 	this.clone.appendChild(this.map);
 	//this.getSize();
 
-	this.setMapPosition();
+	this._setMapPosition();
 
 	//div for markers
 	this.overlayDiv = document.createElement("div");
@@ -2634,6 +2699,9 @@ khtml.maplib.base.Map = function(map) {
 
 	//base vector layer
 	if(khtml.maplib.overlay.FeatureCollection){
+		/**
+		Spezial overlay for geoJson
+		*/
 		this.featureCollection=new khtml.maplib.overlay.FeatureCollection();
 		this.featureCollection.map=this;
 		this.addOverlay(this.featureCollection);
@@ -2714,31 +2782,31 @@ khtml.maplib.base.Map = function(map) {
 		var w = map;
 		if (navigator.userAgent.indexOf("Windows Phone OS") != -1) {
 			// it's a win mobile phone
-			khtml.maplib.base.helpers.eventAttach(w, "mouseup", this.mouseupIE, this, false);
+			khtml.maplib.base.helpers.eventAttach(w, "mouseup", this._mouseupIE, this, false);
 		}
 	} else {
 		var w = window;
 		// how to do that in ie?
 	}
-	khtml.maplib.base.helpers.eventAttach(window, "resize", this.setMapPosition, this, false);
+	khtml.maplib.base.helpers.eventAttach(window, "resize", this._setMapPosition, this, false);
 	if (navigator.userAgent.indexOf("Konqueror") != -1) {
 		var w = map;
 	}
-	khtml.maplib.base.helpers.eventAttach(map, "touchstart", this.start, this, false);
-	khtml.maplib.base.helpers.eventAttach(map, "touchmove", this.move, this, false);
-	khtml.maplib.base.helpers.eventAttach(map, "touchend", this.end, this, false);
-	khtml.maplib.base.helpers.eventAttach(w, "mousemove", this.mousemove, this, false);
-	khtml.maplib.base.helpers.eventAttach(map, "mousedown", this.mousedown, this, false);
-	khtml.maplib.base.helpers.eventAttach(w, "mouseup", this.mouseup, this, false);
+	khtml.maplib.base.helpers.eventAttach(map, "touchstart", this._start, this, false);
+	khtml.maplib.base.helpers.eventAttach(map, "touchmove", this._move, this, false);
+	khtml.maplib.base.helpers.eventAttach(map, "touchend", this._end, this, false);
+	khtml.maplib.base.helpers.eventAttach(w, "mousemove", this._mousemove, this, false);
+	khtml.maplib.base.helpers.eventAttach(map, "mousedown", this._mousedown, this, false);
+	khtml.maplib.base.helpers.eventAttach(w, "mouseup", this._mouseup, this, false);
 	khtml.maplib.base.helpers.eventAttach(w, "orientationchange", this.reSize, this, false);
-	khtml.maplib.base.helpers.eventAttach(map, "DOMMouseScroll", this.mousewheel, this, false);
-	khtml.maplib.base.helpers.eventAttach(map, "dblclick", this.doubleclick, this, false);
+	khtml.maplib.base.helpers.eventAttach(map, "DOMMouseScroll", this._mousewheel, this, false);
+	khtml.maplib.base.helpers.eventAttach(map, "dblclick", this._doubleclick, this, false);
 
-	if (typeof (this.keyup) == "function") {
-		khtml.maplib.base.helpers.eventAttach(w, "keyup", this.keyup, this, false);
+	if (typeof (this._keyup) == "function") {
+		khtml.maplib.base.helpers.eventAttach(w, "keyup", this._keyup, this, false);
 	}
-	if (typeof (this.keypress) == "function") {
-		khtml.maplib.base.helpers.eventAttach(w, "keypress", this.keypress, this, false);
+	if (typeof (this._keypress) == "function") {
+		khtml.maplib.base.helpers.eventAttach(w, "keypress", this._keypress, this, false);
 	}
 	
 	//    khtml.maplib.base.helpers.eventAttach(map, "DOMAttrModified", alert(8), this, false);

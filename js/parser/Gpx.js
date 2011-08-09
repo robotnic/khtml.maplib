@@ -28,8 +28,11 @@
  * @param {String} classname apply this css-class to the gpx track
  *
  * @class
+ *
+ * Example <a href="../../../examples/parser/gpx/index.html">gpx</a>, <a href="../../../examples/parser/gpx/osm.php">osm with php</a>,
+* <a href="../../../examples/parser/gpx/ajax.html">gpx per ajax</a>
 */
-khtml.maplib.parser.Gpx=function(gpx,classname) {
+khtml.maplib.parser.Gpx=function(gpx) {
 	// Methods
 	/**
 	 * Parse GPX!
@@ -37,32 +40,22 @@ khtml.maplib.parser.Gpx=function(gpx,classname) {
 	 * @returns {khtml.maplib.overlay.Vector}
 	*/
 	this.parse = function() {
-		var myLayer = new khtml.maplib.overlay.Vector();
-		
+		var multiPointArray=new Array();
 		var trksegs=this.dom.getElementsByTagName("trkseg");
 		for(var i=0; i < trksegs.length;i++){
 			var pointArray=new Array();
-
 			var trkseg=trksegs.item(i);
 			var trkpts=trkseg.getElementsByTagName("trkpt");
 			for(var j=0; j < trkpts.length;j++){
 				var trkpt=trkpts.item(j);
 				var lat=parseFloat(trkpt.getAttribute("lat"));
 				var lng=parseFloat(trkpt.getAttribute("lon"));
-				pointArray.push(new khtml.maplib.LatLng(lat,lng));
+				pointArray.push([lng,lat]);
 			}
-			// Create polyline (the line is automatically attachted to the vector overlay)
-			var line=myLayer.createPolyline(pointArray);
-			if(this.classname){
-				line.className=classname;
-			}else{
-				line.style.fill="none";
-				line.style.stroke="blue";
-				line.style.strokeWidth="2";
-			}
+			multiPointArray.push(pointArray);
 		}
-		
-		return myLayer;
+			var line=new khtml.maplib.geometry.Feature({type:"MultiLineString",coordinates: multiPointArray});
+		return line;
 	}
 	this.setDom = function(xml) {
 		if(typeof(xml)=="string"){
@@ -71,15 +64,6 @@ khtml.maplib.parser.Gpx=function(gpx,classname) {
 			this.dom=xml;
 		}
 	}
-	this.setClassname = function(value) {
-		this.classname = value;
-	}
-	// Constructor
-	if(classname){
-		this.classname=classname;
-	} else {
-		this.classname="";
-	}
-	
 	this.setDom(gpx);
+	return this.parse();
 }

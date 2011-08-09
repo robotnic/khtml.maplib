@@ -30,11 +30,17 @@
 */
 khtml.maplib.geometry.LatLng = function(lat, lng) {
         this.callbackFunctions = new Array();
+	/**
+	Register a callback function or method. "this" will be set to this object in user defined callback function.
+	*/
         this.addCallbackFunction = function(func) {
                 if (typeof (func) == "function") {
                         this.callbackFunctions.push(func);
                 }
         }
+	/**
+	Internal used to do the callback
+	*/
         this.executeCallbackFunctions = function() {
 		var that=this;
                 for ( var i = 0; i < this.callbackFunctions.length; i++) {
@@ -44,6 +50,9 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 
 
 	// Methods
+	/**
+	set or get latitude
+	*/
 	this.lat = function(lat) {
 		if (typeof(lat) == "number") {
 			this.latitude = lat;
@@ -55,6 +64,9 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 		}
 		return this.latitude;
 	}
+	/**
+	set or get longitude
+	*/
 	this.lng = function(lng) {
 		if (typeof(lng) == "number") {
 			this.longitude = lng;
@@ -81,9 +93,9 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 		return (other.lat() === this.lat() && other.lng() === this.lng());
 	}
 
-	// ---------------------
+	/**
 	// Constructor
-	// ---------------------
+	*/
 	if(lat instanceof khtml.maplib.LatLng) {
 		// Copy constructor
 		this.lat(lat.lat());

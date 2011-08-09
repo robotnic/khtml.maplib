@@ -19,6 +19,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this library.  If not, see <http://www.gnu.org/licenses/>.
 // --------------------------------------------------------------------------------------------
+/**
+Internaly used helper functions.
+*/
 
 /** @namespace */
 khtml.maplib.base.helpers = {};
@@ -171,10 +174,11 @@ khtml.maplib.base.helpers.between = function(testrange, number) {
 khtml.maplib.base.helpers.cloneObject = function(obj) {
     var clone = {};
     for(var i in obj) {
-        if(typeof(obj[i])=="object")
-            clone[i] = cloneObject(obj[i]);
-        else
+        if(typeof(obj[i])=="object"){
+            clone[i] = khtml.maplib.base.helpers.cloneObject(obj[i]);
+        }else{
             clone[i] = obj[i];
+	}
     }
     return clone;
 }
@@ -350,20 +354,29 @@ khtml.maplib.base.helpers.parseLine = function(pointArray) {
 				pointArray=khtml.maplib.base.helpers.parseLineString;	
                         }
                         if (typeof (pointArray) == "object") {
-				for(var p in pointArray){
-					var point=pointArray[p];
-					if(!(point instanceof khtml.maplib.geometry.LatLng)){
-						var lat=point[1];
-						var lng=point[0];
-						if((typeof(lat)=="number") && typeof(lng)=="number" && point.length==2){
-							pointArray[p]=new khtml.maplib.LatLng(lat,lng);
-						}else{
-							pointArray[p]=khtml.maplib.base.helpers.parseLine(pointArray[p]);
-						}
+				if((typeof(pointArray[0])=="string") && (typeof(pointArray[1])=="string")){
+					if(!isNaN(parseFloat(pointArray[0])) && !isNaN(parseFloat(pointArray[1]))&& pointArray.length==2){
+						var lat=parseFloat(pointArray[1]);
+						var lng=parseFloat(pointArray[0]);
+						var p= khtml.maplib.LatLng(lat,lng);
+						return p;
 					}
 				}
 				if(typeof(pointArray[0])=="number"&&typeof(pointArray[0])=="number" && pointArray.length==2){
 					pointArray=new khtml.maplib.LatLng(pointArray[0],pointArray[1]);
+				}else{
+					for(var p in pointArray){
+						var point=pointArray[p];
+						if(!(point instanceof khtml.maplib.geometry.LatLng)){
+							var lat=point[1];
+							var lng=point[0];
+							if((typeof(lat)=="number") && typeof(lng)=="number" && point.length==2){
+								pointArray[p]=new khtml.maplib.LatLng(lat,lng);
+							}else{
+								pointArray[p]=khtml.maplib.base.helpers.parseLine(pointArray[p]);
+							}
+						}
+					}
 				}
 				var points = pointArray;
                         }

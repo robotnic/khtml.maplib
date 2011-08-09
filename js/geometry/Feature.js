@@ -13,7 +13,7 @@ khtml.maplib.geometry.Feature(geometry);
 or
 
 khtml.maplib.geometry.Feature({type:"LineString",coordinates:[[10,01],[20,20]]});
-
+Examle: <a href="../../../examples/geometry/feature.html">Vectors</a>
 </pre>
 */
 
