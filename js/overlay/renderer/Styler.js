@@ -22,7 +22,9 @@
 
 // Inspiration: http://michaux.ca/articles/transitioning-from-java-classes-to-javascript-prototypes
 /**
- * Canvas rendering backend for vector.
+ * CSS to Canvas and VML style converting.
+ * Colors are not easy to do for Canvas.
+ * The "Canscading" of SVG is not easy.
  *
  * Features:
  * - find style information in css and apply it to the canvas
@@ -32,6 +34,147 @@
 */
 
 khtml.maplib.overlay.renderer.Styler=function(){
+
+	this.classes=new Array();
+
+	/**
+	This method is directly called from Vector.js
+	*/
+
+	this.makeCanvasStyle=function(feature){
+		//var style=feature.style;
+		if(feature.canvasStyle && !feature.owner.map.finalDraw){
+			return feature.canvasStyle;
+		}
+		var feature2=feature;
+		var cssStyle=null;
+		var ancestors_or_self=new Array();
+		var style=feature.style;
+
+		while(feature2.owner){
+			ancestors_or_self.push(feature2);
+			feature2=feature2.owner;
+		}
+		for(var i=ancestors_or_self.length -1;i>=0;i--){
+			var f=ancestors_or_self[i];
+		
+			if(f.className){
+				if(!this.classes[f.className.baseVal]){
+					this.classes[f.className.baseVal]=this.getCssStyles(f.className.baseVal);
+				}
+				var tmpStyle=this.classes[f.className.baseVal];
+				
+				if(cssStyle){
+					cssStyle=this.mergeStyles(tmpStyle,cssStyle);
+				}else{
+					cssStyle=tmpStyle;
+				}
+				if(f.style){
+					//cssStyle=this.mergeStyles(cssStyle,f.style);
+					cssStyle=this.mergeStyles(f.style,cssStyle);
+				}
+			}
+		}
+		
+
+		
+		if(cssStyle){
+			cssStyle=this.mergeStyles(style,cssStyle);
+		}
+	
+
+		if(feature.geometry.type!="Polygon" && feature.geometry.type!="MultiPolygon"){
+			cssStyle.fillOpacity=0;
+		}
+		var canvasStyle=this.cssToCanvas(cssStyle);
+		feature.canvasStyle=canvasStyle;
+		return canvasStyle;
+}
+
+
+/**
+Merge styles. First parameter overrules second parameter
+*/
+this.mergeStyles=function(origstyle,cssStyle){  
+			
+                var style=new Object();
+                for(var p in origstyle){
+                        style[p]=origstyle[p];
+                }
+
+                if (!style.opacity) {
+                        style.opacity = cssStyle.opacity;
+                }else{
+			if(cssStyle.opacity!=undefined){
+				style.opacity=style.opacity*cssStyle.opacity;
+			}
+		}
+                if (!style.fillOpacity) {
+                        style.fillOpacity = cssStyle.fillOpacity;
+                }else{
+                        if(cssStyle.fillOpacity!=undefined){
+                                style.fillOpacity=style.fillOpacity*cssStyle.fillOpacity;
+                        }
+                }
+                if (!style.strokeOpacity) {
+                        style.strokeOpacity = cssStyle.strokeOpacity;
+                }else{
+                        if(cssStyle.strokeOpacity!=undefined){
+                                style.strokeOpacity=style.strokeOpacity*cssStyle.strokeOpacity;
+                        }
+                }
+                if (!style.stroke) {
+                        style.stroke = cssStyle.stroke;
+                }
+                if (!style.fill) {
+                        style.fill = cssStyle.fill;
+                }
+                if (!style.strokeWidth) {
+                        style.strokeWidth = parseFloat(cssStyle.strokeWidth);
+                }
+		style.strokeWidth = parseFloat(style.strokeWidth);
+		return style;
+}
+
+this.rgba=new Array();
+this.cssToCanvas=function(style){
+		if(!style.stroke)style.stroke="none";
+		if(!style.fill)style.fill="black";
+		if(style.opacity == undefined)style.opacity=1;
+		if(style.strokeOpacity == undefined)style.strokeOpacity=1;
+		if(style.fillOpacity == undefined)style.fillOpacity=1;
+		if(!style.strokeWidth)style.strokeWidth=1;
+                if (style.stroke) {
+			var alpha=style.opacity * style.strokeOpacity;
+			var name=style.stroke+"X"+alpha;
+			if(!this.rgba[name]){
+				this.rgba[name] = hex2rgba(style.stroke, alpha);
+			}else{
+			}
+			var strokeRGB=style.stroke;
+			var strokeOpacity=alpha;
+			var index=style.stroke+"_"+alpha;
+			var stroke=this.rgba[style.stroke+"_"+alpha];
+		}
+                if (style.fill) {
+			var alpha=style.opacity * style.fillOpacity;
+			if(!this.rgba[style.fill+"_"+alpha]){
+				this.rgba[style.fill+"_"+alpha] = hex2rgba(style.fill, alpha);
+			}
+			var fillRGB=style.fill;
+			var fillOpacity=alpha;
+			var fill=this.rgba[style.fill+"_"+alpha]
+                }else{
+			var fillRGB=0;
+			var fillOpacity=1;
+			var fill=0;
+		}
+		return {strokeStyle:stroke,fillStyle:fill,lineWidth:style.strokeWidth,fillRGB:fillRGB,strokeRGB:strokeRGB,fillOpacity:fillOpacity,strokeOpacity:strokeOpacity};
+
+}
+
+
+
 	this.getCssStyles=function(klass){
                 var styleObj = new Object;
 
@@ -292,78 +435,5 @@ khtml.maplib.overlay.renderer.Styler=function(){
                 return return_rgbval;
         }
 
-	this.classes=new Array();
-		console.log("new",this.classes);
-	this.makeCanvasStyle=function(line){
-		var rgba=new Array();
-		var style=line.style;
-		var opacity=1;
-		var strokeOpacity=1;
-		var fillOpacity=1;
-		var fill="none";
-		var stroke="black";
-		var strokeWidth=1;
-
-		if(line.className){
-			if(!this.classes[line.className.baseVal]){
-				console.log("dring");
-				this.classes[line.className.baseVal]=this.getCssStyles(line.className.baseVal);
-			}
-			var cssStyle=this.classes[line.className.baseVal];
-			if(cssStyle.fill)fill=cssStyle.fill;	
-			if(cssStyle.stroke)stroke=cssStyle.stroke;	
-			if(cssStyle.strokeWidth)strokeWidth=cssStyle.strokeWidth;	
-			if(cssStyle.opacity)opacity=cssStyle.opacity;	
-			if(cssStyle.strokeOpacity)strokeOpacity=cssStyle.strokeOpacity;	
-			if(cssStyle.fillOpacity)fillOpacity=cssStyle.fillOpacity;	
-		}
-//		console.log(fill,stroke,strokeWidth,opacity,fillOpacity,strokeOpacity);	
-		if(line.geometry.type!="Polygon" && line.geometry.type!="MultiPolygon"){
-			//console.log("opa0",line.type);
-			var fillOpacity=0;
-		}
-			
-                if (style.opacity) {
-                        opacity = style.opacity;
-                }
-                if (style.fillOpacity) {
-                        fillOpacity = style.fillOpacity;
-                }
-                if (style.strokeOpacity) {
-                        strokeOpacity = style.strokeOpacity;
-                }
-                if (style.stroke) {
-                        stroke = style.stroke;
-                }
-                if (style.fill) {
-                        fill = style.fill;
-                }
-                if (style.strokeWidth) {
-                        strokeWidth = style.strokeWidth;
-                }
-//		console.log(fill,stroke,strokeWidth,opacity,fillOpacity,strokeOpacity);	
-                if (stroke) {
-			var alpha=opacity * strokeOpacity;
-			if(!rgba[stroke+"_"+alpha]){
-				rgba[stroke+"_"+alpha] = hex2rgba(stroke, alpha);
-			}
-			strokeRGB=stroke;
-			strokeOpacity=alpha;
-			stroke=rgba[stroke+"_"+alpha]
-                }
-                if (fill) {
-			var alpha=opacity * fillOpacity;
-			if(!rgba[fill+"_"+alpha]){
-				rgba[fill+"_"+alpha] = hex2rgba(fill, alpha);
-			}
-			fillRGB=fill;
-			fillOpacity=alpha;
-			fill=rgba[fill+"_"+alpha]
-                }
-		//console.log(alpha,fill,stroke,strokeWidth,opacity,fillOpacity,strokeOpacity);	
-
-		return {strokeStyle:stroke,fillStyle:fill,lineWidth:strokeWidth,fillRGB:fillRGB,strokeRGB:strokeRGB,fillOpacity:fillOpacity,strokeOpacity:strokeOpacity};
-
-}
 }
 

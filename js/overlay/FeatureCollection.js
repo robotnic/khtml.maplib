@@ -2,7 +2,7 @@
 
 khtml.maplib.overlay.FeatureCollection = function() {
 	this.type="Feature";
-	this.className="";
+	this.className=new Object;
 	this.realLayer=false;  //true -> only one vector element
 	this.properties=new Object;
 	this.geometry=new Object;
@@ -10,27 +10,38 @@ khtml.maplib.overlay.FeatureCollection = function() {
 	this.features=new Array();
 	this.overlayDiv=document.createElement("div");
 	this.overlayDiv.setAttribute("kazalabas","eluag");
-	this.style=this.overlayDiv.style;
-	this.className=this.overlayDiv.className;
+	this.style=new Object;
+	//this.backend="svg";
+	//this.className=this.overlayDiv.className;
 //	this.overlaySVG=new khtml.maplib.overlay.Vector();
 	this.init=function(owner){
 		this.owner=owner;
 		if(owner instanceof khtml.maplib.base.Map){
 			this.map=owner;
+			if(!this.overlayDiv.parentNode){
 			this.map.overlayDiv.appendChild(this.overlayDiv);	
+			}
 		}else{
 			if(owner.map){
 				this.map=owner.map;
+				if(!this.overlayDiv.parentNode){
 				this.owner.overlayDiv.appendChild(this.overlayDiv);
+				}
 			}else{
 				return;
 			}
 		}
-		this.makeVectorLayer();
+		//if(!this.owner.backend)this.backend=this.owner.backend;
+		//if(!this.backend)this.backend="canvas";
+		if(this.owner && this.owner.backend){
+			this.backend=this.owner.backend;
+		}
+		this.vectorEl=this.makeVectorLayer(this.backend);
 		//for(var i=0;i<this.features.length;i++){
 		for(var i in this.features){
 			if(!this.features[i].map){
 				var el=this.features[i];		
+
 				if(el.type=="Marker"){
 					el.init(this);
 				}else{
@@ -41,9 +52,8 @@ khtml.maplib.overlay.FeatureCollection = function() {
 						this.vectorLayer.render(el);
 					}
 				}
-			}else{
+				this.extendBBox(el);
 			}
-			this.extendBBox(el);
 		}			
 		if(this.owner && this.owner.extendBBox){
 			this.owner.extendBBox(this);
@@ -52,20 +62,51 @@ khtml.maplib.overlay.FeatureCollection = function() {
 	this.makeVectorLayer=function(){
 		if(this.vectorLayer)return;
 		if(this.owner){
-			if(this.owner.vectorLayer && !this.realLayer){
-				this.vectorLayer=this.owner.vectorLayer;
-			}else{
-				this.vectorLayer=new khtml.maplib.overlay.Vector();
+				//this.vectorLayer=this.owner.vectorLayer;
+				this.vectorLayer=new khtml.maplib.overlay.Vector(this.backend);
 				if(this.map){
-					this.vectorLayer.init(this);
+					if(this.owner.vectorLayer && !this.realLayer){
+						vectorEl=this.vectorLayer.init(this,this.owner);  //g layer for css and fast rendering
+					}else{
+						vectorEl=this.vectorLayer.init(this); //svg, canvas, vml element
+					}
+					for(var p in this.style){
+						var prop=this.style[p];
+						if(this.vectorLayer.backend!="canvas"){
+							vectorEl.style[p]=prop;
+						}
+					}
+					if(this.vectorLayer.backend!="canvas"){
+						this.style=vectorEl.style;  //inherit css
+					}
 				}
+		}
+		return vectorEl;
+	}
+	this.renderbackend=function(backend){
+		if(this.vectorLayer){
+			this.vectorLayer.remove();
+		}
+		this.owner.backend=backend;
+		/*
+		for(var i=0; i<this.features.length;i++){	
+			if(this.features[i].renderbackend){
+				this.features[i].renderbackend(backend);	
 			}
 		}
+		*/
+		this.init(this.owner);
 	}
 	this.oldStyleDisplay=null;
 	this.render=function(){
 		if(!this.overlayDiv.parentNode){
-			this.owner.overlayDiv.appendChild(this.overlayDiv);
+			//this.owner.overlayDiv.appendChild(this.overlayDiv);
+		}
+		if(this.vectorLayer.backend=="canvas" && this.realLayer){
+			this.vectorLayer.clear();
+		}
+		if(this.vectorLayer.backend=="vml" && this.realLayer){
+			this.vectorLayer.clear();
 		}
 		for(var i=0; i<this.features.length;i++){	
 			if(!this.features[i]) continue;
@@ -73,7 +114,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 				this.features[i].render();
 			}
 			if(this.features[i].geometry.type=="FeatureCollection"){
-				this.features[i].render();	
+				//this.features[i].render();	
 			}	
 			if(this.features[i].geometry.type=="GroundOverlay"){
 				this.features[i].render();	
@@ -89,16 +130,12 @@ khtml.maplib.overlay.FeatureCollection = function() {
 
 	}	
 	this.clear=function(){
-		this.owner.overlayDiv.removeChild(this.overlayDiv);
-		//return;
-		//console.log(this.oldStyleDisplay);
+//		this.owner.overlayDiv.removeChild(this.overlayDiv);
 		if(this.oldStyleDisplay==null){
 			this.oldStyleDisplay=this.style.display;
 			this.style.display="none";
 		}
-		//console.log("layer clear");
 		for(var i=0; i< this.features.length;i++){
-			//console.log("clear");
 			if(this.features[i].type=="Marker"){
 				this.features[i].clear();
 			}
@@ -106,38 +143,42 @@ khtml.maplib.overlay.FeatureCollection = function() {
 				this.features[i].clear();	
 			}	
 		}
-		/*
-		if(this.realLayer){
-			if(this.backend=="canvas"){
-			this.vectorLayer.clear();
-			}
-		}
-		*/
 	}
 	this.removeChild=function(el){
+		var found=false;
 		for(var f in this.features){
 			if(this.features[f]==el){
 				this.features.splice(f,1);	
+				found=true;
 			}
 		}
-		this.render();
+		if(found){
+			delete el.owner;
+			if(this.owner){
+				this.render();
+			}
+			return true;
+		}else{
+			return false;
+		}
 	}
 	this.appendChild=function(el){
+		if(el.owner){
+			var r=el.owner.removeChild(el);
+		}
 		this.features.push(el);
 		if(!el.geometry)return;
+		el.owner=this;
 		if(el.geometry.type!=="Point" && el.geometry.type!=="FeatureCollection"&& el.geometry.type!=="GroundOverlay"){
 			if(this.vectorLayer){  //if owner is initialized
 				this.vectorLayer.createPolyline(el);
 				this.vectorLayer.render(el);
 			}
-			//return;
 		}else{
-			el.owner=this;
 			if(el.owner.map){
 				el.init(this);
 				el.render();
 			}else{
-				//console.log("noch nix map");
 			}
 		}
 		

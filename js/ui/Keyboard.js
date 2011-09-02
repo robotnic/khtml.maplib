@@ -21,75 +21,163 @@
 // --------------------------------------------------------------------------------------------
 
 /**
- * Event: Key is pressed.
- * Prefer 'keypress' over 'keydown' because 'keypress' allows to check which character was typed.
- * Because 'a' != 'A'.
- * We need this for the '-' and '+' signs (evt.which or evt.charCode).
- * For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
- * 
- * @see http://www.brain4.de/programmierecke/js/tastatur.php
- * @see http://www.quirksmode.org/js/keys.html
+ * Keyboard Handling
+ * Usage: 
+ *  var keyboardHandler=new khtml.maplib.ui.KeyBoard();	
+ *  map.addOverlay(keyboardHandler);
+ *
+ * Cursur Keys for move the map
+ * Page Up, Page Down, Pos1, End for fast moveing the map
+ * "+" zoom in
+ * "-" zoom out
+ *
+ * For Firefox don't forget to set "tabIndex" (html);
+ * @see Example: <a href="../../../examples/ui/keyboard/start.html">keyboard in action</a>
+ * @class
  */
-khtml.maplib.base.Map.prototype.keypress = function(evt) {
-	var handled = true;
+
+khtml.maplib.ui.KeyBoard = function() {
+	this.zoomtime=400;
 	
-	switch (evt.keyCode) {
-	// arrow left
-	case 37:
-		this.moveit(30, 0);
-		break;
-	// arrow up
-	case 38:
-		this.moveit(0, 30);
-		break;
-	// arrow right
-	case 39:
-		this.moveit(-30, 0);
-		break;
-	// arrow down
-	case 40:
-		this.moveit(0, -30);
-		break;
-	default:
-		handled = false;
-		break;
+	this.init=function(map){
+		this.map=map;
+		khtml.maplib.base.helpers.eventAttach(map.mapParent,"keydown",this.keydown,this,false);
 	}
-	if(handled) return true;
-	
-	var characterCode;	
-	if(typeof(evt.which)!='undefined') {
-		characterCode = evt.which;
-	} else {
-		characterCode = evt.charCode;
+
+	this.keydown=function(evt){
+		//console.log(evt.keyCode);
+		switch (evt.keyCode) {
+			// arrow left
+			case 37:
+				this.moveit(30, 0);
+				break;
+			// arrow up
+			case 38:
+				this.moveit(0, 30);
+				break;
+			// arrow right
+			case 39:
+				this.moveit(-30, 0);
+				break;
+			// arrow down
+			case 40:
+				this.moveit(0, -30);
+				break;
+
+			//page down
+			case 35:
+				this.moveit(this.map.size.width *0.4,0);
+				break;
+			//page up
+			case 36:
+				this.moveit(-this.map.size.width *0.4,0);
+				break;
+			//pos1
+			case 33:
+				this.moveit(0,this.map.size.height *0.4);
+				break;
+			//end
+			case 34:
+				this.moveit(0,-this.map.size.height *0.4);
+				break;
+			case 187:
+			case 61:
+			case 43: // plus '+'
+				this.zoomin();
+				break;
+			case 189:
+			case 190:
+			case 109:
+			case 45: // minus '-'
+				this.zoomout();
+				break;
+
+			default:
+				//normal event handling
+				return;
+		}
+                if (evt.preventDefault) {
+                        evt.preventDefault(); // The W3C DOM way
+                } else {
+                        evt.returnValue = false; // The IE way
+                }
+		return;
+
+		/*
+		//if(handled) return true;
+		
+		var characterCode;	
+		if(typeof(evt.which)!='undefined') {
+			characterCode = evt.which;
+		} else {
+			characterCode = evt.charCode;
+		}
+		// Tested on IE8
+		if(this.internetExplorer) {
+			characterCode = evt.keyCode;
+		}
+		
+		switch (characterCode) {
+		case 187:
+		case 43: // plus '+'
+			this.map.animatedGoto(map.center(),Math.ceil(map.zoom()+0.01));
+			break;
+		case 189:
+		case 45: // minus '-'
+			this.map.animatedGoto(map.center(),Math.floor(map.zoom()-0.01));
+			break;
+		}
+		
+		return true;
+		*/
 	}
-	// Tested on IE8
-	if(this.internetExplorer) {
-		characterCode = evt.keyCode;
-	}
-	
-	switch (characterCode) {
-	case 43: // plus '+'
-		var dz = Math.ceil(this.getZoom() + 0.01) - this.getZoom();
-		this.autoZoomIn(this.mapsize.width / 2, this.mapsize.height / 2, dz);
-		break;
-	case 45: // minus '-'
-		var dz = Math.floor(this.getZoom() - 0.01) - this.getZoom();
-		this.autoZoomIn(this.mapsize.width / 2, this.mapsize.height / 2, dz);
-		break;
-	}
-	
-	return true;
+
+this.render=function(){
+//nothing to render
 }
+
+this.zoomingIn=false;
+this.zoomin=function(){
+	var newzoom=Math.ceil(this.map.zoom()+0.1)
+	if(this.zoomingIn){
+		newzoom++;
+	}
+	this.map.animatedGoto(this.map.center(),newzoom,this.zoomtime);
+	var that=this;
+	var tempFunction=function(){
+		that.zoomingIn=false;
+	}
+	setTimeout(tempFunction,this.zoomtime);
+	this.zoomingIn=true;
+}
+
+this.zoomout=function(){
+	var newzoom=Math.floor(this.map.zoom()-0.1);
+        if(this.zoomingOut){
+                newzoom--;
+        }
+	this.map.animatedGoto(this.map.center(),newzoom,this.zoomtime);
+	        var that=this;
+        var tempFunction=function(){
+                that.zoomingOut=false;
+        }
+        setTimeout(tempFunction,this.zoomtime);
+        this.zoomingOut=true;
+
+}
+
+
+
 /**
  * Does nothing
 */
-khtml.maplib.base.Map.prototype.keyup = function(evt) {
+this.keyup = function(evt) {
 	//	alert(77);
 }
 /**
  * Call moveitexec 20 times to prepare the timeout's.
  */
-khtml.maplib.base.Map.prototype.moveit = function(x, y) {
+this.moveit = function(x, y) {
 	var steps = 20;
 	var dx = x / steps;
 	var dy = y / steps;
@@ -101,10 +189,14 @@ khtml.maplib.base.Map.prototype.moveit = function(x, y) {
 /**
  * Execute "moveXY" delayed by a timeout.
  */
-khtml.maplib.base.Map.prototype.moveitexec = function(dx, dy, i) {
+this.moveitexec = function(dx, dy, i) {
 	var that = this;
 	var tempFunc = function() {
-		that.moveXY(dx, dy);
+		this.map.moveXY(dx, dy);
 	}
 	setTimeout(tempFunc, 20 * i);
 }
+
+
+
+} //end class

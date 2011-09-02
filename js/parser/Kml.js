@@ -26,7 +26,7 @@
  * can be added to map as overlay
  *
  * @class
- * Example: <a href="../../../examples/parser/kml/googlebuildings.html">kml from google tutorial</a>
+ * @see Example: <a href="../../../examples/parser/kml/googlebuildings.html">kml from google tutorial</a>
 */
 khtml.maplib.parser.Kml = function(KML) {
 	// initialize variables
@@ -300,7 +300,7 @@ khtml.maplib.parser.Kml = function(KML) {
 	/**
 	 * Parse a "GroundOverlay" tag.
 	 *
-	 * Example:
+	 * @example
 	 <pre>
 	<GroundOverlay>
 	   <name>GroundOverlay.kml</name>
@@ -650,7 +650,9 @@ khtml.maplib.parser.Kml = function(KML) {
 	/**
 	 * Creates a Vector Feature.
 	 *
-	 * @param {Object} data Example {tite:"MyTitle", desription: "MyDescription", point: new khtml.maplib.LatLng()} instead of attribute line (type: {khtml.maplib.geometry.LineString})
+	 * @param {Object} data 
+	  @example <pre>{tite:"MyTitle", desription: "MyDescription", point: new khtml.maplib.LatLng()} 
+	  instead of attribute line (type: {khtml.maplib.geometry.LineString})</pre>
 	 * @returns {khtml.maplib.overlay.Feature}
 	*/
 	this.generateFeature = function(data) {
@@ -727,7 +729,7 @@ khtml.maplib.parser.Kml = function(KML) {
 	 * To switch the image, use <pre>this.imageMarkerUrl('http://new url')</pre>
 	 *
 	 * Hint: if you wan't to generate different markers, overwrite this method in your code.
-	 * Example:
+	 * @example
 	 * <pre>
 	 * var parser = khtml.maplib.parser.Kml();
 	 * parser.getMarkerForFeature = function(data) { return new ... }

@@ -38,24 +38,29 @@ khtml.maplib.overlay.renderer.VML = {
 		this._path.setAttribute("strokeweight", this._strokeWidth + "px");
 	},
 
-
+	
         _calculatePath:function(coordinates,type,map){
                 var d="";
                 var lines=0;
                 var points=0;
                 var isline=false;
+		var startpoint=null;
                 for(var i=0;i<coordinates.length;i++){
                         var p=coordinates[i];
-                        if(p instanceof khtml.maplib.LatLng){
+                        if(p instanceof khtml.maplib.geometry.LatLng){
                                 isline=true;
                                 points++;
                                 var xy = map.latlngToXY(coordinates[i]);
-
+				var x=parseInt(xy.x);
+				var y=parseInt(xy.y);
                                 if(i==0){
-					var startpoint=xy;
-                                        d+="m"+xy.x+","+xy.y;
+					startpoint=xy;
+                                        d+="M"+x+" "+y;
                                 }else{
-                                        d+=" l"+xy.x+","+xy.y;
+					if(i==1){
+						d+=" L";
+					}
+                                        d+=" "+x+","+y;
                                 }
                         }else{
                                 var ret=this._calculatePath(coordinates[i],type,map);
@@ -67,53 +72,17 @@ khtml.maplib.overlay.renderer.VML = {
                 //if(isline){
                         lines++;
                 //}
-                if(type=="Polygon" || type=="MultiPolygon"){
-			console.log("dasa",coordinates[0].x);
-                        d+=" l"+startpoint.x+","+startpoint.y;
-                }
-                return {d:d,points:points,lines:lines};
+		if(!startpoint && ret &&ret.startpoint){
+			var startpoint=ret.startpoint;
+		}
+		if(startpoint){
+			if(type=="Polygon" || type=="MultiPolygon" || type=="LinearRing"){
+				d+=" "+parseInt(startpoint.x)+","+parseInt(startpoint.y);
+			}
+			return {d:d,points:points,lines:lines,startpoint:startpoint};
+		}else{
+			return false;
+		}
         }
 
-/*	
-	_renderCalculatePolylinePath: function(l,p,i) {
-		var x = Math.round(p["x"]);
-		var y = Math.round(p["y"]);
-		if (i == 0) {
-			//var d=" "+x+"px,"+y+"px ";
-			this._d = " " + x + "," + y + " ";
-		} else {
-			var dropped = this.dropped;
-			if (this._isPointVisible(p) || i == l.length - 1) {
-				if (dropped && i != l.length - 1) {
-					//this._d+=" "+parseInt(dropped["x"])+"px,"+parseInt(dropped["y"])+"px ";
-					this._d += " " + Math.round(dropped["x"]) + ","
-							+ Math.round(dropped["y"]) + " ";
-				}
-				this._d += " " + x + "," + y + " ";
-				//d+=" "+x+"px,"+y+"px ";
-			}
-		}
-	},
-	
-	_renderClosePolyline: function() {
-	},
-	
-	_renderShowPath: function(a) {
-		//this._path.setAttribute("filled", style.close);
-		//if(style.cutout){
-		//}else{
-		this.renderElement.appendChild(this._path);
-		//					alert(this.renderElement.childNodes.length);
-		//path.style.position="absolute";
-		//alert(d);	
-		if (!this._path.points) {
-			this._path.setAttribute("points", this._d);
-		} else {
-			this._path.points.value = this._d;
-		}
-		this.lastpath = this._path;
-		//alert(this._d+" ---- "+this._path.points.value);
-		//}
-	}
-*/
 }

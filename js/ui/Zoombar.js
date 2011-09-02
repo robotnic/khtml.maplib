@@ -22,12 +22,29 @@
 
 //this class expect 2 elements with specific classes in the map div
 //zoombar and scrollhandle
-/*
+/**
+
+	@example code to generate zoombar and handle
+ <pre><code>
  <div id="map">
- <div class="zoombar" style="position:absolute;width:30px;height:221px;overflow:hidden">
- <div class="scrollhandle" style="position:absolute;left:0px;top:0px;width:30px;height:300px;background-color:yellow"> </div>
- <img class="scrollbar " src="scrollbar.png" style="position:absolute;left:0px;top:00px;" />
+ <div class="zoombar" style="position:absolute;left:-10px;width:30px;height:221px;overflow:hidde;">
+ <div class="scrollbar" style="position:absolute;left:20px;top:20px;height:200px;width:12px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:2px solid lightgrey;cursor:pointer">
+ <div style="position:absolute;top:0px;left:-10px;width:10;height:100%;background-color:green; -moz-box-shadow: 1px 1px 14px #efefef; -webkit-box-shadow: 1px 1px 7px #efefef; box-shadow: 1px 1px 7px #cfcfcf; "> T </div>
  </div>
+ <div id="handle" class="scrollhandle" style="position:absolute;left:17px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer"> 0 </div>
+ </div>
+ </div>
+ 
+ 
+ var zoominger=new khtml.maplib.ui.Zoombar();
+ map.addOverlay(zoominger);
+ map.addCallbackFunction(zoombar);
+ zoombar();
+ 
+ function zoombar() {
+	document.getElementById("handle").firstChild.nodeValue=Math.round(map.zoom());
+ }
+ </code></pre>
  */
 
 /**
@@ -70,8 +87,46 @@ khtml.maplib.ui.Zoombar = function() {
 	 * Zoom
 	*/
 	this._zoom = function(evt) {
-		var y = this.themap.pageY(evt);
+		if ((evt.type == "touchstart") || (evt.type == "touchmove"))
+			var y = this.themap.pageY(evt.touches[0]);
+		else
+			var y = this.themap.pageY(evt);
 		this.themap.zoom(this._calcZFromY(y));
+	}
+	
+	/**
+	 * Mousedown or Touchstart
+	*/
+	this._down = function(evt) {
+		this._cancelEvent(evt);
+		
+		this.moving = true;
+		
+		this._zoom(evt);
+		
+		this._stopEventPropagation(evt);
+	}
+	/**
+	 * Called while scrolling and Touchmove
+	*/
+	this._move = function(evt) {
+		this._cancelEvent(evt);
+		
+		if (this.moving) {
+			this._zoom(evt);
+			this.render();
+			this._stopEventPropagation(evt);
+		}
+	}
+	/**
+	 * Mouseup or Touchend
+	*/
+	this._up = function(evt) {
+		this._cancelEvent(evt);
+		
+		this.moving = false;
+		
+		this._stopEventPropagation(evt);
 	}
 	
 	// -------------------------------
@@ -94,9 +149,18 @@ khtml.maplib.ui.Zoombar = function() {
 				this.zoombar = el;
 			}
 		}
+		if (navigator.userAgent.indexOf("MSIE") != -1) {		// IE does not support window-Eventhandler
+			var w = this.mapObj.mapParent;
+		} else {
+			var w = window;
+		}
 		khtml.maplib.base.helpers.eventAttach(this.zoombar, "mousedown", this.down, this, false);
 		khtml.maplib.base.helpers.eventAttach(this.zoombar, "mousemove", this.move, this, false);
-		khtml.maplib.base.helpers.eventAttach(this.zoombar, "mouseup", this.up, this, false);
+		khtml.maplib.base.helpers.eventAttach(w, "mouseup", this.up, this, false);
+		
+		khtml.maplib.base.helpers.eventAttach(this.zoombar, "touchstart", this._down, this, false);
+		khtml.maplib.base.helpers.eventAttach(this.zoombar, "touchmove", this._move, this, false);
+		khtml.maplib.base.helpers.eventAttach(this.zoombar, "touchend", this._up, this, false);
 	}
 	/**
 	 * called by maplib on every map change
@@ -104,40 +168,5 @@ khtml.maplib.ui.Zoombar = function() {
 	this.render = function() {
 		var top = (22 - this.themap.zoom()) * 10;
 		this.scrollhandle.style.marginTop = top + "px";
-	}
-
-	/**
-	 * Mouse DOWN
-	*/
-	this.down = function(evt) {
-		this._cancelEvent(evt);
-		
-		this.moving = true;
-		
-		this._zoom(evt);
-		
-		this._stopEventPropagation(evt);
-	}
-	/**
-	 * Called while scrolling.
-	*/
-	this.move = function(evt) {
-		this._cancelEvent(evt);
-		
-		if (this.moving) {
-			this._zoom(evt);
-			
-			this._stopEventPropagation(evt);
-		}
-	}
-	/**
-	 * Mouse UP
-	*/
-	this.up = function(evt) {
-		this._cancelEvent(evt);
-		
-		this.moving = false;
-		
-		this._stopEventPropagation(evt);
 	}
 }

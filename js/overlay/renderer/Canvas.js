@@ -36,10 +36,10 @@ var lastFillStyle=null;
 var lastGlobalCompositeOperation="source-over";
 khtml.maplib.overlay.renderer.Canvas = {
 	_renderPath:function(coordinates,line,ctx,map,item,depth){
-		if(!this.styler){
-			this.styler=new khtml.maplib.overlay.renderer.Styler();
+		if(!map.styler){
+			map.styler=new khtml.maplib.overlay.renderer.Styler();
 		}
-		var canvasStyle=this.styler.makeCanvasStyle(line);
+		var canvasStyle=map.styler.makeCanvasStyle(line);	
 		var type=line.geometry.type;
 
 
@@ -76,7 +76,7 @@ khtml.maplib.overlay.renderer.Canvas = {
 		//ctx.beginPath();
                 for(var i=0;i<coordinates.length;i++){
                         var p=coordinates[i];
-                        if(p instanceof khtml.maplib.LatLng){
+                        if(p instanceof khtml.maplib.geometry.LatLng){
                                 isline=true;
                                 points++;
                                 var xy = map.latlngToXY(coordinates[i]);
@@ -97,11 +97,10 @@ khtml.maplib.overlay.renderer.Canvas = {
                                 points+=ret.points;
                         }
                 }
-		if(type=="Polygon" || type=="MultiPolygon"){
+		if(type=="Polygon" || type=="MultiPolygon" || type=="LinearRing"){
 			ctx.closePath();
 		
                 }
-
 		if(isline)lines++
 		return {points:points,lines:lines};
 			

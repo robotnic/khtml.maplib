@@ -80,13 +80,33 @@ khtml.maplib.base.helpers.contains = function(bounds1, bounds2) {
 
 /** @function */
 khtml.maplib.base.helpers.overlaps = function(bounds1, bounds2) {
-if (bounds1.sw().lng() < bounds2.ne().lng() && bounds1.ne().lng() > bounds2.sw().lng() &&
-    bounds1.se().lat() < bounds2.ne().lat() && bounds1.ne().lat() > bounds2.sw().lat()){
-	return true;
-}else{
-	return false;
+	/*
+	console.log(bounds1.sw().lng() > bounds2.ne().lng());
+	console.log(bounds1.ne().lng() < bounds2.sw().lng());
+	console.log(bounds1.sw().lat() > bounds2.ne().lat());
+	console.log(bounds1.ne().lat() < bounds2.sw().lat());
+	*/
+	if (bounds1.sw().lng() > bounds2.ne().lng() || bounds1.ne().lng() < bounds2.sw().lng() ||
+	    bounds1.sw().lat() > bounds2.ne().lat() || bounds1.ne().lat() < bounds2.sw().lat()) {
+		return false;
+	}else{
+		return true;
+	}
+
 }
+
+
+/*
+khtml.maplib.base.helpers.overlaps = function(bounds1, bounds2) {
+	console.log (bounds1.sw().lng() , bounds2.ne().lng() , bounds1.ne().lng() , bounds2.sw().lng() );
+	if (bounds1.sw().lng() < bounds2.ne().lng() && bounds1.ne().lng() > bounds2.sw().lng() &&
+	    bounds1.sw().lat() < bounds2.ne().lat() && bounds1.ne().lat() > bounds2.sw().lat()) {
+		return true;
+	}else{
+		return false;
+	}
 }
+*/
 khtml.maplib.base.helpers.overlapsBuggy = function(bounds1, bounds2) {
 	// calculates if two areas are overlapping
 	var range1Y = new Array(bounds1.sw().lat(), bounds1.ne().lat());
@@ -556,3 +576,59 @@ khtml.maplib.base.helpers.Boundingbox=function(map){
 		this.div.style.display="none";
 	}
 }
+
+
+/**
+ * @function
+ * @param {Object} el DOM-element to apply the browser-specific css-styles on
+ * prevent image from being selected or dragged on modern browsers
+ * for older browsers mousedown-event has to be cancelled
+*/ 
+khtml.maplib.base.helpers.imageNotSelectable = function(el){
+		el.style.MozUserSelect = 'none';
+		el.style.webkitUserSelect = 'none';
+		el.style.webkitUserDrag = 'none';
+		el.style.KhtmlUserSelect = 'none';
+		el.style.OUserSelect = 'none';
+		el.style.userSelect = 'none';
+}
+
+
+/**
+ * @function
+ * @param {Object} object DOM-Element to apply the style="cursor: ....." argument on
+ * @param {String} string
+ * set cursor for an object via css-style
+ * vendor specific cursors
+ * or via url
+*/
+khtml.maplib.base.helpers.setCursor = function( object, string) {
+	// Internet Explorer
+	if (navigator.userAgent.indexOf("MSIE") != -1) {	// tested on IE6 and IE8
+        if (string == "grab")
+			object.style.cursor = "url('" + khtml.maplib.standardimagepath + "hand.cur'), default";
+		else if (string == "grabbing")
+			object.style.cursor = "url('" + khtml.maplib.standardimagepath + "fist.cur'), move";
+		else
+			object.style.cursor = "pointer";
+    }
+	// others
+	else {
+		object.style.cursor = "-moz-" + string;			// tested on firefox 3.6
+		if (object.style.cursor != "-moz-" + string) {
+			object.style.cursor = "-webkit-" + string;		// tested on safari 5 and chrome 12
+			if (object.style.cursor != "-webkit-" + string) {
+				object.style.cursor = "-ms-" + string;
+				if (object.style.cursor != "-ms-" + string) {		// missing, not sure if it works
+					object.style.cursor = "-khtml-" + string;
+					if (object.style.cursor != "-khtml-" + string) {		// missing, not sure if it works
+						object.style.cursor = string;
+						if (object.style.cursor != string){
+							object.style.cursor = "pointer";
+						}
+					}
+				}
+			}
+		}
+	}
+};

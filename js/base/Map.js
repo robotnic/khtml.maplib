@@ -30,13 +30,12 @@
  * 
  *
  * @class
-<pre>
  * The center of everything
- * Examples:
- * <a href="../../../examples/base/start.html">Base</a>,
- * BitmapOverlays: <a href="../../../examples/base/tileOverlay/start.html">seamap</a>,
- * Combined overlays: <a href="../../../examples/base/tileOverlay/combined.html">osma,hikemap,hillshade</a>
-</pre>
+
+ * @see Example: <a href="../../../examples/base/start.html">Base</a>,
+ * @see BitmapOverlays: <a href="../../../examples/base/tileOverlay/start.html">seamap</a>,
+ * @see Combined overlays: <a href="../../../examples/base/tileOverlay/combined.html">osma,hikemap,hillshade</a>
+
 */
 khtml.maplib.base.Map = function(map) {
 	// if argument is a string, interpret it as "id" of the map container.
@@ -166,14 +165,12 @@ khtml.maplib.base.Map = function(map) {
 
 	this.callbackFunctions = new Array();
 	/**
-	<pre>
 	A callback function fires if zoom, latitute or longitude is changed.
 	The callback funktion in defined in user space. You have to provide one.
 	The callback can also be a method.
 	The callback function will have set the "this" object whitch is
 	the map object.
-	Example: <a href="../../../examples/base/callback/start.html">display coordinates</a>
-	</pre>
+	@see Example: <a href="../../../examples/base/callback/start.html">display coordinates</a>
 	*/
 	this.addCallbackFunction = function(func) {
 		if (typeof (func) == "function") {
@@ -362,13 +359,15 @@ khtml.maplib.base.Map = function(map) {
 					+ Math.pow((Y2 - Y1), 2));
 			var zoomDelta = (Distance / this.startDistance);
 			var zz = this.startZZ + zoomDelta - 1;
-			if (zz < 1) {
-				zz = 1;
-			}
+			// ewi BugFix 1: zoomDeltaOld eingefügt
+			// sonst springt die Karte beim Erreichen der maximalen Zoomstufe
 			if (zz > this.tileSource.maxzoom) {
 				zz = this.tileSource.maxzoom;
-				zoomDelta = 1;
+				zoomDelta = this.zoomDeltaOld;
 			}
+			else
+				this.zoomDeltaOld = zoomDelta;
+				
 			var x = (X1 + X2) / 2;
 			var y = (Y1 + Y2) / 2;
 
@@ -442,7 +441,13 @@ khtml.maplib.base.Map = function(map) {
                                 }
 			}
 		}
-
+		
+		// ewi BugFix 2: wenn vorher zwei Finger waren und dann nur mehr einer
+		// sonst springt die Karte beim Auslassen eines Fingers
+		if (evt.touches.length == 1) {
+			this.startMoveX = this.moveX - evt.touches[0].pageX / this.faktor / this.sc;
+            this.startMoveY = this.moveY - evt.touches[0].pageY / this.faktor / this.sc;
+		}
 	}
 
 	/**
@@ -479,8 +484,23 @@ khtml.maplib.base.Map = function(map) {
 
 	this.doubleclickBlocked = false;
 	this._doubleclick = function(evt) {
-		this._discretZoom(1, this.pageX(evt), this.pageY(evt));
-		return;
+		//ewi: which mousebutton?
+		var rightclick;
+		if (!evt) var evt = window.event;
+		if (evt.which) rightclick = (evt.which == 3);
+		else if (evt.button) rightclick = (evt.button == 2);
+		
+		// zoom out with doubleclick on right mousebutton
+		if (rightclick){
+			this._discretZoom(-1,this.pageX(evt), this.pageY(evt));
+			return;
+		}
+		// else zoom in
+		else {
+			this._discretZoom(1,this.pageX(evt), this.pageY(evt));
+			return;
+		}
+		
 		/*
 		var that = this;
 		if (this.doubleclickBlocked) {
@@ -534,12 +554,16 @@ khtml.maplib.base.Map = function(map) {
 			}
 			this.selectRect.style.position = "absolute";
 			this.map.parentNode.appendChild(this.selectRect);
+			// ewi: cross-cursor
+			khtml.maplib.base.helpers.setCursor(this.mapParent, "crosshair");
 		} else {
 			this.startMoveX = this.moveX - (this.pageX(evt)) / this.faktor
 					/ this.sc;
 			this.startMoveY = this.moveY - (this.pageY(evt)) / this.faktor
 					/ this.sc;
 			this.movestarted = true;
+			// ewi: fist-cursor
+			khtml.maplib.base.helpers.setCursor(this.mapParent, "grabbing");
 		}
 		return false;
 	}
@@ -562,11 +586,12 @@ khtml.maplib.base.Map = function(map) {
 				this.selectRect.style.height = Math.abs(this.pageY(evt)
 						- this.selectRectTop)
 						+ "px";
+				// ewi BugFix 4: "px" added
 				if (this.pageX(evt) < this.selectRectLeft) {
-					this.selectRect.style.left = this.pageX(evt);
+					this.selectRect.style.left = this.pageX(evt) + "px";
 				}
 				if (this.pageY(evt) < this.selectRectTop) {
-					this.selectRect.style.top = this.pageY(evt);
+					this.selectRect.style.top = this.pageY(evt) + "px";
 				}
 			}
 		} else {
@@ -593,6 +618,8 @@ khtml.maplib.base.Map = function(map) {
 		} else {
 			evt.returnValue = false; // The IE way
 		}
+		// ewi: hand-cursor
+		khtml.maplib.base.helpers.setCursor(this.mapParent, "grab");
 		this.lastMouseX = this.pageX(evt);
 		this.lastMouseY = this.pageY(evt);
 		if (this.moveMarker) {
@@ -746,6 +773,17 @@ khtml.maplib.base.Map = function(map) {
 
 		this.centerAndZoomXY(this.center(), zoom, this.pageX(evt), this.pageY(evt));
 
+	}
+	
+	// ewi: functions to detect shift key press for cursorschange on selectRect
+	this._shiftkeydown = function(evt){
+		if (evt.shiftKey)
+		// ewi: cross-cursor
+		khtml.maplib.base.helpers.setCursor(this.mapParent, "crosshair");
+	}
+	this._shiftkeyup = function(evt){
+		// ewi: hand-cursor
+		khtml.maplib.base.helpers.setCursor(this.mapParent, "grab");
 	}
 
 	this.zoomTimeouts = new Array();
@@ -1054,8 +1092,12 @@ khtml.maplib.base.Map = function(map) {
 		}
 
 		faktor = Math.pow(2, zoom);
-		var zoomCenterDeltaX = x - this.width / 2;
-		var zoomCenterDeltaY = y - this.height / 2;
+		// ewi BugFix 3: Klickpunkt abzüglich Kartenposition (mapTop, mapLeft)
+		// damit Doppeltouch-Zoom auch gut funktioniert, wenn Karte nicht Vollbild ist
+		//var zoomCenterDeltaX = x - this.width / 2;
+        //var zoomCenterDeltaY = y - this.height / 2;
+        var zoomCenterDeltaX = (x - this.mapLeft) - this.width / 2;
+        var zoomCenterDeltaY = (y - this.mapTop) - this.height / 2;
 		var f = Math.pow(2, dzoom);
 
 		var dx = zoomCenterDeltaX - zoomCenterDeltaX * f;
@@ -1149,6 +1191,9 @@ khtml.maplib.base.Map = function(map) {
 		this.record();
 		this.setCenterNoLog(center, zoom);
 	}
+	this.render=function(){
+		this.center(this.center());
+	}
 	/** for internal use (speed related)*/
 	this._setCenter3 = function(center, zoom) {
 		this.moveX = 0;
@@ -1216,7 +1261,7 @@ khtml.maplib.base.Map = function(map) {
 
 	/**
 	Use this method to move the map in pixel. 
-	Example: <a href="../../../examples/base/movexy/index.html">move</a>
+	@see Example: <a href="../../../examples/base/movexy/index.html">move</a>
 	*/
 
 	this.moveXY = function(x, y) {
@@ -1382,7 +1427,7 @@ khtml.maplib.base.Map = function(map) {
 	this.animatedGotoTimeout = new Array();
 	/**
 	Time based animation.
-	Example: <a href="../../../examples/base/animate/index.html">Time based Animation</a>
+	@see Example: <a href="../../../examples/base/animate/index.html">Time based Animation</a>
 
 
 	*/
@@ -1501,7 +1546,7 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	/** mouse coordinates to lat, lng 
-	* Example: <a href="../../../examples/base/callback/start.html">display coordinates</a>
+	* @see Example: <a href="../../../examples/base/callback/start.html">display coordinates</a>
 	*/
 	this.mouseToLatLng = function(evt) {
 		var x = this.pageX(evt);
@@ -1794,7 +1839,7 @@ khtml.maplib.base.Map = function(map) {
 			this.renderOverlays();
 			this.layerOldZoom = this.zoom();
 			var duration = (new Date() - startTime);
-			if (duration > 10) {
+			if (duration > 10 && !this.finalDraw) {  //canvas does css on finaldraw
 				this.doTheOverlayes = false;
 			} else {
 				this.doTheOverlayes = true;
@@ -1819,7 +1864,6 @@ khtml.maplib.base.Map = function(map) {
 
 	//===================================================================================
 	/**
-	<pre>
 	 This Method is used internally. You can use this method for benchmark tests.
 	 DRAW (speed optimized!!!)
 	
@@ -1837,7 +1881,6 @@ khtml.maplib.base.Map = function(map) {
 
 	 If you want to give better performance to a special rendering engine, be welcome to 
 	search milli seconds. 
-	</pre>
 	*/
 	 //===================================================================================
 
@@ -2443,7 +2486,7 @@ khtml.maplib.base.Map = function(map) {
 	If the size of the html div is changed, the redraw method has to be called. 
 	For browser window size changes the map automaticaly calls the redraw.
 	Otherwise the redraw has to be called be the application.
-	Example:<a href="../../../examples/base/animate/zoom_resize.html">zoom + resize</a>
+	@see Example:<a href="../../../examples/base/animate/zoom_resize.html">zoom + resize</a>
 	*/
 
 	this.redraw = function() {
@@ -2563,6 +2606,7 @@ khtml.maplib.base.Map = function(map) {
 		a.setAttribute("target","_blank");
 		logo.setAttribute("src","http://khtml.org/favicon.png");
 		logo.style.zIndex=10;
+		logo.style.border="0px solid black";
 		logo.style.position="absolute";
 		var top=this.size.height+this.size.deltaTop -24;
 		var left=this.size.deltaLeft +0;
@@ -2666,6 +2710,8 @@ khtml.maplib.base.Map = function(map) {
 	this.wheelEventCounter = 0;
 	this.framesCounter = 0;
 	this.mapParent = map;
+	// ewi: hand-Cursor
+	khtml.maplib.base.helpers.setCursor(this.mapParent, "grab");
 	//	mapInit=map;
 	this.clone = map.cloneNode(true); //clone is the same as the map div, but absolute positioned
 	this.clone = document.createElement("div");
@@ -2702,7 +2748,9 @@ khtml.maplib.base.Map = function(map) {
 		/**
 		Spezial overlay for geoJson
 		*/
+		this.backend="svg";
 		this.featureCollection=new khtml.maplib.overlay.FeatureCollection();
+		this.featureCollection.realLayer=true;
 		this.featureCollection.map=this;
 		this.addOverlay(this.featureCollection);
 	}
@@ -2731,7 +2779,10 @@ khtml.maplib.base.Map = function(map) {
 	this.lastMoveX = 0;
 	this.lastMoveY = 0;
 	this.lastMoveTime = 0;
-
+	
+	// ewi: neue Variablen
+	this.zoomDeltaOld = 1;
+	
 	this.startMoveX = 0;
 	this.startMoveY = 0;
 	this.sc = 1;
@@ -2801,15 +2852,23 @@ khtml.maplib.base.Map = function(map) {
 	khtml.maplib.base.helpers.eventAttach(w, "orientationchange", this.reSize, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "DOMMouseScroll", this._mousewheel, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "dblclick", this._doubleclick, this, false);
-
+	
+	//ewi: functions to detect shiftkey press for cursorchange on selectRect
+	khtml.maplib.base.helpers.eventAttach(w, "keydown", this._shiftkeydown, this, false);
+	khtml.maplib.base.helpers.eventAttach(w, "keyup", this._shiftkeyup, this, false);
+/*
 	if (typeof (this._keyup) == "function") {
 		khtml.maplib.base.helpers.eventAttach(w, "keyup", this._keyup, this, false);
 	}
 	if (typeof (this._keypress) == "function") {
 		khtml.maplib.base.helpers.eventAttach(w, "keypress", this._keypress, this, false);
 	}
+*/
 	
 	//    khtml.maplib.base.helpers.eventAttach(map, "DOMAttrModified", alert(8), this, false);
 
-	
+	//ewi: suppress context menu
+	khtml.maplib.base.helpers.eventAttach(map,"contextmenu",function(event){
+       event.preventDefault();
+	}, this, false);
 }

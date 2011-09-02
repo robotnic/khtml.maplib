@@ -21,27 +21,39 @@
 // --------------------------------------------------------------------------------------------
 
 /**
- * Vector
- *
- * DEPRECATED: please use one of {khtml.maplib.geometry.LineString},{khtml.maplib.geometry.LinearRing},{khtml.maplib.geometry.Polygon} instead.
- *
- * This is intended to ease transition from the previous khtml api to the new, as you can first only
- * rename all uses of khtml.maplib.Vector to khtml.maplib.overlay.Vector and then refactor the code to use the
- * new vector classes from the geometry package.
+ * Vector, internaly used
+ * This Object represents one FeatureCollection with man Vectors. Markers are not handles with this Class
+ * 
+ * What can it do for you?
+ * o It does the rendering on SVG, Canvas, VML Vector Backend
+ * o Does the CSS based Styling. For SVG this is done by browser. For other Backends the properties like
+ *   fill, stroke, stroke-width, opacity, fill-opacity, stroke-opacity, display, or translated to native
+ *   styling syntax. Also CSS hierarchy is done here.
+ *   CSS converting needs lots of CPU Power. More in Memory-caching could leed to better performance
+ * o Speedy and lag-free userinterface is important. This Object should not freece the browser.
  *
  * @class
 */
-khtml.maplib.overlay.Vector = function() {
-	this.vectorPointsPerIteration=2000;
+khtml.maplib.overlay.Vector = function(backend) {
+	this.minVectorPointsPerIteration=2000;
+	this.vectorPointsPerIteration=this.minVectorPointsPerIteration;
 	this.lineArray = new Array();
 	this.stopit = false;
-	this.backend = "svg";
+	if(backend){
+		this.backend = backend;
+	}else{
+		this.backend = "svg";
+	}
 	if (navigator.userAgent.indexOf("Android") != -1) {
 		this.backend = "canvas";
 	}
 	this.svgStyleInterface = false;
 	if (navigator.userAgent.indexOf("MSIE") != -1) {
 		if (getInternetExplorerVersion() < 9) {
+			this.backend = "vml";
+		}
+		//ie9 with compatibility or quirx mode
+		if(document.documentMode <9){
 			this.backend = "vml";
 		}
 	}
@@ -58,18 +70,64 @@ khtml.maplib.overlay.Vector = function() {
 	 *
 	 * @param {String}	render	svg, canvas or vml
 	*/
-	this.renderbackend = function(render) {
-		if(render){
-			this.backend = render;
-			if(this.vectorEl && this.vectorEl.parentNode){
-				var parent=this.vectorEl.parentNode;
-				parent.removeChild(this.vectorEl);
+	this.renderbackend = function(backend) {
+		if(backend){
+			//style to normal object
+			this.remove();
+			
+			this.backend = backend;
+			this.owner.init(this.themap);
+			/*
+			if(this.owner.realLayer){
+				this.owner.vectorEl = this.createVectorElement(this.themap);
+				this.owner.overlayDiv.appendChild(this.owner.vectorEl);
+			}else{
+			
+				this.owner.vectorEl =this.createVirtualVectorElement(this.owner.owner.vectorLayer.vectorEl);
+				if(this.backend=="canvas"){
+					this.ctx=this.owner.owner.vectorLayer.ctx;
+					this.owner.style=style;
+				}else if(this.backend=="vml"){
+					//nix
+					this.owner.owner.vectorLayer.vectorEl.appendChild(this.owner.vectorEl);
+				}else{
+					console.log(this.owner.owner.vectorLayer.vectorEl,this.owner.vectorEl);
+					this.owner.owner.vectorLayer.vectorEl.appendChild(this.owner.vectorEl);
+					for(var p in this.owner.style){
+						this.owner.vectorEl.style[p]=this.owner.style[p];
+					}
+					this.owner.style=this.owner.vectorEl.style;
+				}
 			}
-			var vectorEl = this.createVectorElement(this.themap);
-			parent.appendChild(this.vectorEl);
-			this.render();
+			this.themap.render();
+			*/
 		}
 		return this.backend;
+	}
+
+	/**
+	It's faster to draw everything to one canvas, svg-document.
+	The "g" in SVG is basicly for css styling.
+	*/
+
+	this.createVirtualVectorElement=function(ownerVectorElement){
+		switch(this.backend){
+			case "canvas":
+			case "vml":
+				//not acceleration yes
+				return ownerVectorElement;
+				break;
+			case "svg":
+				var g=document.createElementNS("http://www.w3.org/2000/svg","g");
+				if(this.owner.className && this.owner.className.baseVal){
+					g.className.baseVal=this.owner.className.baseVal;
+				}
+				this.owner.className=g.className;
+				return g;
+				break;
+			default:
+				alert("unknown backend: "+this.backend);
+		}
 	}
 
 	/**
@@ -80,26 +138,31 @@ khtml.maplib.overlay.Vector = function() {
 	this.createVectorElement = function(themap) {
 		switch (this.backend) {
 		case "canvas":
-			vectorEl = document.createElement("canvas");
+			var vectorEl = document.createElement("canvas");
 			this.ctx = vectorEl.getContext("2d");
 			break;
 		case "svg":
-			vectorEl = document.createElementNS("http://www.w3.org/2000/svg",
-					"svg");
+			var vectorEl = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 			break;
 		case "vml":
 			if(document.namespaces){
 			if (document.namespaces['v'] == null) {
 				document.namespaces.add("v", "urn:schemas-microsoft-com:vml");
+
 				var stl = document.createStyleSheet();
 				stl.addRule("v\\:group", "behavior: url(#default#VML);");
 				stl.addRule("v\\:polyline", "behavior: url(#default#VML);");
 				stl.addRule("v\\:stroke", "behavior: url(#default#VML);");
 				stl.addRule("v\\:fill", "behavior: url(#default#VML);");
+				stl.addRule("v\\:shape", "behavior: url(#default#VML);display:inline-block");
+				stl.addRule("v\\:path", "behavior: url(#default#VML);");
 			}
 			}
-			//vectorEl=document.createElement("v:group");
-			vectorEl = document.createElement("div");
+			var vectorEl=document.createElement("v:group");
+			//vectorEl.style.height=600;
+			//vectorEl.style.width=1000;
+			//vectorEl = document.createElement("div");
+			vectorEl.setAttribute("debug","soso");
 			//document.body.appendChild(vectorEl);
 			//vectorEl.style.display="none";
 			break;
@@ -116,44 +179,41 @@ khtml.maplib.overlay.Vector = function() {
 		vectorEl.style.left = "0";
 		return vectorEl;
 	}
-	this.init = function(owner) {
+	/**
+	Initialize the vector, create svg-element, canvas,...
+	For speed, vectors are draw to the same vector element even if they are in differend FeatureCollection.
+	For SVG every FeatureCollection has a "g" Element. This is used mainly for styling.
+	
+	*/
+	this.init = function(owner,fcWithVectorElement) {
 		this.owner=owner;
 		if(owner instanceof khtml.maplib.base.Map){
                         this.themap=owner;
-			this.vectorEl = this.createVectorElement(this.themap);
-                        this.themap.overlayDiv.appendChild(this.vectorEl);
                 }else{
                         this.themap=owner.map;
-			this.vectorEl = this.createVectorElement(this.themap);
-                        this.owner.overlayDiv.appendChild(this.vectorEl);
                 }
-	}
+		if(fcWithVectorElement){
+			var vectorEl =this.createVirtualVectorElement(fcWithVectorElement.vectorEl);
+			if(this.backend=="svg"){
+				fcWithVectorElement.vectorEl.appendChild(vectorEl);
+			}
+			if(this.backend=="vml"){
+				vectorEl=fcWithVectorElement.vectorEl;
+			}
+			if(this.backend=="canvas"){
+				this.ctx=fcWithVectorElement.vectorLayer.ctx;
+			}
 
-/*
-	this.parseLine = function(pointArray) {
-		if (pointArray) {
-			if (typeof (pointArray) == "string") {
-				points = new Array();
-				var pa = pointArray.split(" ");
-				for ( var i = 0; i < pa.length; i++) {
-					var point = pa[i].split(",");
-					if (point.length != 2)
-						continue;
-					point[0] = parseFloat(point[0]);
-					point[1] = parseFloat(point[1]);
-					points.push(new khtml.maplib.LatLng(point[0], point[1]));
-				}
-			}
-			if (typeof (pointArray) == "object") {
-				points = pointArray;
-			}
-		} else {
-			points = new Array();
+		}else{
+			var vectorEl = this.createVectorElement(this.themap);
+			this.owner.overlayDiv.appendChild(vectorEl);
 		}
-		return points;
+		return vectorEl;
 	}
-*/
 
+	/**
+	This method is called to create a lineString, Polygon,...
+	*/
 	this.createPolyline = function(polyline) {
 		polyline.tags = new Array;
 		if(!polyline.close){
@@ -164,13 +224,6 @@ khtml.maplib.overlay.Vector = function() {
 				polyline.geometry.coordinates=new Array();
 		}	
 		
-		/*
-		polyline.cutout = function(points) {
-			var holePoints = this.parseLine(points);
-			polyline.holes.push(holePoints);
-			return polyline.holes[polyline.holes.length - 1];
-		}
-		*/
 		polyline.calculateCenter = function() {
 			var sumLat=0.0; // float!
 			var sumLng=0.0; // float!
@@ -181,22 +234,58 @@ khtml.maplib.overlay.Vector = function() {
 			return new khtml.maplib.LatLng(sumLat/polyline.points.length/*lat*/, sumLng/polyline.points.length/*lng*/);
 		}
 		var that=this;
+		polyline.bbox=this.makeBounds(polyline.geometry.coordinates);
 		//render a single vector element
 		polyline.render=function(){
 			that.render(polyline);
 		}
-		this.lineArray.unshift(polyline);
-		polyline.bbox=this.makeBounds(polyline.geometry.coordinates);
+		polyline.clear=function(){
+			//VML missing
+			if(that.backend=="svg"){
+				if(polyline.path && polyline.path.parentNode){
+					polyline.path.parentNode.removeChild(polyline.path);
+				}
+			}
+			//that.clear();
+		}
+		//find the "real" layer and push to array
+		var fc=polyline.owner;
+		while(fc && !fc.realLayer){
+			fc=fc.owner;
+		}
+		if(fc){
+			fc.vectorLayer.lineArray.unshift(polyline);
+		}
 		return polyline;
 	}
+	/**
+	If the user interacts with the map (move,zoom), the rendering process for overlays will be stopped.
+	*/
 	this.cancel = function() {
 		this.stopit = true;
 	}
+	/**
+	For benchmark
+	*/
 	this.renderCount=0;
+
+	/**
+	Render the Path.
+	This Method is call recursive to allow stop of rendering.
+	This stop is needed for repsonsive ui - otherwise the browser may freece.
+	The render method is called for all overlays by the main map object
+
+	@parameters: a (optional, polyline, number)
+	Parameters are a mess ;-)
+	*/
+
 	this.render = function(a) {
 		var intZoom = Math.floor(this.themap.zoom());
-		if(!this.vectorEl)return;
-		this.vectorEl.setAttribute("class", "z" + intZoom);
+		if(!this.owner.vectorEl && this.backend!="canvas")return;
+		if(this.owner.vectorEl && this.owner.vectorEl.localName=="svg"){
+			this.owner.vectorEl.setAttribute("class", "z" + intZoom);
+		}
+		//Useraction cancels rendering process.
 		if (this.stopit) {
 			//stop rendering vectors
 			this.stopit = false;
@@ -205,8 +294,8 @@ khtml.maplib.overlay.Vector = function() {
 					//draw not finished - go back to old version (move)
 					try { //ie workaround
 						this.oldVectorEl.parentNode.removeChild(this.oldVectorEl);
-						this.vectorEl = this.createVectorElement(this.themap);
-						this.themap.overlayDiv.appendChild(this.vectorEl);
+						this.owner.vectorEl = this.createVectorElement(this.themap);
+						this.themap.overlayDiv.appendChild(this.owner.vectorEl);
 					} catch (e) {
 						alert(this.oldVectorEl.tagName);
 						alert(this.oldVectorEl.parentNode.tagName);
@@ -222,7 +311,10 @@ khtml.maplib.overlay.Vector = function() {
 			if(this.backend=="canvas"){
 				this.ctx.beginPath();
 			}
-			if (this.oldZoom == this.themap.zoom() && (this.themap.moveX != this.lastMoveX || this.themap.moveY != this.lastMoveY)) {
+			/**
+			This part should speedup moving the map. There is bug and so it's deactivated.
+			*/
+			if (1==2 && this.oldZoom == this.themap.zoom() && (this.themap.moveX != this.lastMoveX || this.themap.moveY != this.lastMoveY)) {
 				//move all the vectors is much faster than build the vectors completely new
 				//moving it together with all markers would be faster
 				var dx = Math.round((this.themap.moveX - this.lastMoveX)
@@ -230,10 +322,10 @@ khtml.maplib.overlay.Vector = function() {
 				var dy = Math.round((this.themap.moveY - this.lastMoveY)
 						* this.themap.faktor * this.themap.sc);
 
-				if(this.vectorEl.style) {
+				if(this.owner.vectorEl.style) {
 					try {
-						this.vectorEl.style.top = dy + "px";
-						this.vectorEl.style.left = dx + "px";
+						this.owner.vectorEl.style.top = dy + "px";
+						this.owner.vectorEl.style.left = dx + "px";
 					} catch (e) {
 						console.log("move not passible");		
 					}
@@ -242,11 +334,22 @@ khtml.maplib.overlay.Vector = function() {
 				if (!this.themap.finalDraw) {
 					return;
 				}
+				/*
 				//the oldVectorEl will be visible until the new vectorEl is completely redered. 
-				this.oldVectorEl = this.vectorEl;
-				this.vectorEl = this.createVectorElement(this.themap);
+				this.oldVectorEl = this.owner.vectorEl;
+				//this.owner.vectorEl = this.createVectorElement(this.themap);
+				this.owner.vectorEl=this.oldVectorEl.cloneNode();
+				console.log(this.owner.owner.vectorLayer,this.owner.owner.overlayDiv);
+				if(this.owner.owner.vectorLayer,this.owner.owner.vectorLayer){
+					this.owner.owner.vectorLayer.vectorEl.appendChild(this.owner.vectorEl);
+				}else{
+					this.owner.owner.overlayDiv.appendChild(this.owner.vectorEl);
+				}
+				console.log(this.owner.vectorEl);
+				*/
 			}else{
-				this.clear();
+				//console.log(a);
+				//this.clear();
 				//these values are nessessary for vector rendering optimization
 				this.oldtimestamp=new Date().getTime();
 				this.starttimestamp=new Date().getTime();
@@ -257,15 +360,16 @@ khtml.maplib.overlay.Vector = function() {
 			this.oldZoom = this.themap.zoom();
 			//this.clear();
 			var a = this.lineArray.length -1;
-
 			this.lastMoveX = this.themap.moveX;
 			this.lastMoveY = this.themap.moveY;
 		}
 
+		/** rendering finished. cleanup */
+
 		if (a < 0) {
 			if(this.backend=="canvas"){
-				this.ctx.stroke();
 				this.ctx.fill();
+				this.ctx.stroke();
 			}
 			this.timestamp=new Date().getTime();
 			this.renderIterationTime=this.timestamp - this.starttimestamp;
@@ -274,8 +378,8 @@ khtml.maplib.overlay.Vector = function() {
 			//rendering is finished
 			if (this.oldVectorEl && this.oldVectorEl.parentNode) {
 				//use action was move without zoom	
-				this.oldVectorEl.parentNode.replaceChild(this.vectorEl, this.oldVectorEl);
-				this.vectorEl.style.display = "";
+				this.oldVectorEl.parentNode.replaceChild(this.owner.vectorEl, this.oldVectorEl);
+				this.owner.vectorEl.style.display = "";
 				return;
 			}
 			return;
@@ -283,16 +387,14 @@ khtml.maplib.overlay.Vector = function() {
 		if(typeof(a)=="number"){
 			var line=this.lineArray[a];
 		}else{
-			var line=a;
+			var line=a;  //a single vector. mainly used for editing a vector. Rendering only one line is faster than rendering everything (on SVG).
 		}
+
 		//console.log(line,line.bounds.sw().lat(),line.bounds.sw().lng(),line.bounds.ne().lat(),line.bounds.ne().lng());
 		//check if line bounds are inside map bounds
+//		console.log(this.themap.bounds().sw().lat(),this.themap.bounds().sw().lng(),this.themap.bounds().ne().lat(),this.themap.bounds().ne().lng());
 		if(khtml.maplib.base.helpers.overlaps(this.themap.bounds(),line.bbox)){
-			stroke="black";
-			strokeWidth=4;
-			fill="red";
-
-
+//		console.log(line.bbox.sw().lat(),line.bbox.sw().lng(),line.bbox.ne().lat(),line.bbox.ne().lng());
 			//initialize the polyline 
 			switch (this.backend) {
 			case "canvas":
@@ -306,7 +408,7 @@ khtml.maplib.overlay.Vector = function() {
 			case "svg":
 				if(!line.path){
 					var path=khtml.maplib.overlay.renderer.SVG._renderInitPolyline(line);
-					if(line.geometry.type=="Polygon" || line.geometry.type=="MultiPolygon" || (line.geometry.type=="Polyline" && line.close)){
+					if(line.geometry.type=="Polygon" || line.geometry.type=="MultiPolygon" ||   (line.geometry.type=="Polyline" && line.close)){
 						line.close="true";
 
 					}else{
@@ -320,15 +422,12 @@ khtml.maplib.overlay.Vector = function() {
 				}
 				break;
 			case "vml":
-				var path = document.createElement("v:polyline");
-				var fillEl = document.createElement("v:fill");
-				path.appendChild(fillEl);
-				var strokeEl = document.createElement("v:stroke");
-				path.appendChild(strokeEl);
-			
-				path.setAttribute("fillcolor", fill);
-				path.setAttribute("strokecolor", stroke);
-				path.setAttribute("strokeweight", strokeWidth + "px");
+				var shape = document.createElement("v:shape");
+				shape.style.top = "0px";
+				shape.style.left = "0px";
+				//shape.style.width = 2000; //this.themap.size.width+"px";
+				//shape.style.height = 1000; //this.themap.size.height+"px";
+				shape.style.position="relative";
 				break;
 
 			}
@@ -337,14 +436,15 @@ khtml.maplib.overlay.Vector = function() {
 			switch(this.backend){
 				case "svg":
 					var ret=khtml.maplib.overlay.renderer.SVG._calculatePath(line.geometry.coordinates,line.geometry.type,this.themap);
-					path.setAttribute("d",ret.d);
+					if(ret.d!=""){
+						path.setAttribute("d",ret.d);
+					}
 					for(var p in line.properties){
 						var property=line.properties[p];
 						path.setAttribute("mapcss_"+p,property);
 					}
-
 					path.style.fillRule="evenodd";
-					this.vectorEl.appendChild(path);
+					line.owner.vectorEl.appendChild(path);
 					line.svgtext=this.addText(line);
 					break;	
 				case "canvas":
@@ -352,49 +452,68 @@ khtml.maplib.overlay.Vector = function() {
 					break;
 				case "vml":
 					var ret=khtml.maplib.overlay.renderer.VML._calculatePath(line.geometry.coordinates,line.geometry.type,this.themap);
-					if(!this.styler){
-						this.styler=new khtml.maplib.overlay.renderer.Styler();
-					}else{
-						///console.log("schon da",this.styler);
+					if(!this.themap.styler){
+						this.themap.styler=new khtml.maplib.overlay.renderer.Styler();
 					}
-					var style=new Object();
+					var style=this.themap.styler.makeCanvasStyle(line);
 
-					style.fillRGB="rgb(0,0,0)";
-					style.opacity=0;
-					if(line.className){
-						style=this.styler.makeCanvasStyle(line);
-					        //  return {strokeStyle:stroke,fillStyle:fill,lineWidth:strokeWidth};
-
+					if(ret.d!=undefined){
+						shape.setAttribute("path",ret.d +" x e");
+						shape.setAttribute("fillcolor",style.fillRGB);
+						shape.setAttribute("strokecolor",style.strokeRGB);
+						//shape.fill.opacity=style.fillOpacity;
+						//shape.stroke.opacity=style.strokeOpacity;
+						shape.setAttribute("strokeweight", style.lineWidth);
+						
+						if(line.geometry.type=="Polygon" || line.geometry.type=="MultiPolygon" || line.geometry.type=="LinearRing"){
+							shape.setAttribute("filled",true);
+						}else{
+							shape.setAttribute("filled",false);
+						}
+						var div=document.createElement("div");
+						div.style.position="absolute";
+						var top=line.bbox.ne().lat(); //line.bbox[3];		
+						var left=line.bbox.sw().lng(); //line.bbox[1];		
+						var right=line.bbox.ne().lng(); //line.bbox[1];		
+						var bottom=line.bbox.sw().lat(); //line.bbox[1];		
+						var xy=this.themap.latlngToXY(new khtml.maplib.LatLng(top,left));
+						var xy2=this.themap.latlngToXY(new khtml.maplib.LatLng(bottom,right));
+						
+						//div.style.top=xy.y -4 -(style.lineWidth*2)+"px";
+						//div.style.left=xy.x -5+  -(style.lineWidth*2)+"px";
+						//var width=xy2.x - xy.x;
+						//var height=xy2.y - xy.y;
+						shape.style.height=1680+"px";
+						shape.style.width=1250+"px";
+						shape.coordsize="1000 1000";
+						this.owner.vectorEl.appendChild(shape);
+						div.style.border="1px solid red";
+			
+						//workaround	
+						if (this.themap.finalDraw) {
+							this.themap.overlayDiv.appendChild(this.owner.vectorEl);
+						}
 					}
-					//style.fill="blue";
-					path.setAttribute("fillcolor", style.fillRGB);
-					path.setAttribute("strokecolor", style.strokeRGB);
-					fillEl.setAttribute("opacity", style.fillOpacity);
-					strokeEl.setAttribute("opacity", style.strokeOpacity);
-					path.setAttribute("strokeweight", style.lineWidth + "px");
-					path.setAttribute("points",ret.d);
-					if(line.geometry.type=="Polygon" || line.geometry.type=="MultiPolygon"){
-						path.setAttribute("filled",true);
-					}else{
-						path.setAttribute("filled",false);
-					}
-
-					this.vectorEl.appendChild(path);
-					
 					break;
 				default:
 					console.log("error: unknow backend");
 			}
 
+
 			this.renderCount+=ret.points;
 			this.totalPointsCounter+=ret.points;
 			this.totalLinesCounter+=ret.lines;
 
-		} //end inside map bounds
+		}else{ //end inside map bounds
+				line.clear();
+		}
+
 
 		//cancel able after some lines
 //		this.canvasRenderTimeout=null;
 		if(typeof(a)!="number"){
+			/* only a single path is called for rendering.
+			It is delayed a bit to allow speedier rendering of canvas */
 			if(this.backend=="canvas"){
 				if(this.canvasRenderTimeout){
 					clearTimeout(this.canvasRenderTimeout);
@@ -408,12 +527,16 @@ khtml.maplib.overlay.Vector = function() {
 			}
 			return;
 		}
-		//if (a / 1000 == Math.floor(a / 1000)) {
-		if (this.renderCount > this.vectorPointsPerIteration) {
+
+		/**
+		Here is the point where the function is recalled recursive.
+		
+		*/
 			this.timestamp=new Date().getTime();
 			this.iterationTime=this.timestamp - this.oldtimestamp;
+		if (this.renderCount > this.vectorPointsPerIteration) {
 			this.vectorPointsPerIteration=Math.ceil(this.vectorPointsPerIteration*100/this.iterationTime);
-			if(this.vectorPointsPerIteration < 2000)  this.vectorPointsPerIteration=2000;
+			if(this.vectorPointsPerIteration < this.minVectorPointsPerIteration)  this.vectorPointsPerIteration=this.minVectorPointsPerIteration;
 
 			this.oldtimestamp=this.timestamp;
 			this.renderCount=0;
@@ -422,12 +545,15 @@ khtml.maplib.overlay.Vector = function() {
 				that.render(a - 1);
 			}
 			setTimeout(tempFunction, 0);
+			/*
 			if(this.backend=="canvas"){
-				this.ctx.stroke();
 				this.ctx.fill();
+				this.ctx.stroke();
 				this.ctx.beginPath();
 			}
+			*/
 		} else {
+			//not cancleable recursion
 			this.render(a - 1);
 		}
 	}
@@ -483,8 +609,15 @@ khtml.maplib.overlay.Vector = function() {
 
 	}
 
+	/**
+	Add Text to the path. At the moment only supported for SVG Backend
+	*/
+
 	this.addText=function(line){
-//		console.log("addText",line);
+                if(line.textEl){
+                        line.textEl.parentNode.removeChild(line.textEl);
+                }
+
 		if(!line.text)return;
 		if(!line.text.value)return;
 		//if(line.path.hasAttribute("id"))return;
@@ -509,7 +642,7 @@ khtml.maplib.overlay.Vector = function() {
 		var id="maplib_khtml_textpath_"+Math.random();
 		line.path.setAttribute("id",id);
 		textPath.setAttributeNS("http://www.w3.org/1999/xlink","href","#"+id);
-		this.vectorEl.appendChild(textEl);
+		this.owner.vectorEl.appendChild(textEl);
 		return textEl;
 	}
 
@@ -531,12 +664,73 @@ khtml.maplib.overlay.Vector = function() {
 			this.ctx.clearRect(0, 0, this.themap.size.width,
 					this.themap.size.height);
 		}
-		if(this.backend=="svg" || this.backend=="vml"){
-			while (this.vectorEl.firstChild) {
-				this.vectorEl.removeChild(this.vectorEl.firstChild);
+		if(this.backend=="svg" ){
+			//g will not be deleted
+			for(var n=0; n < this.owner.vectorEl.childNodes.length;n++){
+				var node=this.owner.vectorEl.childNodes[n];
+				if(node){
+					if(node.tagName!="g"){
+						this.owner.vectorEl.removeChild(node);
+					}
+				}
+			}
+
+		}
+		if(this.backend=="vml"){
+			while (this.owner.vectorEl.firstChild) {
+				this.owner.vectorEl.removeChild(this.owner.vectorEl.firstChild);
 			}
 		}
 
+	}
+
+	this.remove=function(){
+		this.clear();
+/*
+		if(this.backend=="svg" && this.owner.style){  //the old backend
+			var style=new Object;
+			var copystyles=["fill","stroke","strokeWidth","opacity","fillOpacity","strokeOpacity"];
+			for(var p=0;p< copystyles.length;p++){
+				var property=copystyles[p]
+				if(this.owner.style[property]!='undefined'){
+					style[property]=this.owner.style[property];
+
+				}
+			}
+		}
+*/
+
+		removeLoop(this.owner);
+		this.lineArray = new Array();
+	}
+
+	function removeLoop(fc){
+		if(fc.features){
+		for(var i=0;i < fc.features.length;i++){
+			//if(fc.features[i].geometry.type=="FeatureCollection"){
+				removeLoop(fc.features[i]);
+			//}
+		}
+		}
+
+		var style=new Object;
+		var copystyles=["fill","stroke","strokeWidth","opacity","fillOpacity","strokeOpacity"];
+		for(var p=0;p< copystyles.length;p++){
+			var property=copystyles[p]
+			if(fc.style[property]!='undefined'){
+				style[property]=fc.style[property];
+
+			}
+		}
+		fc.style=style;
+
+
+		if(fc.vectorEl && fc.vectorEl.parentNode){
+			fc.vectorEl.parentNode.removeChild(fc.vectorEl);
+		}
+		delete fc.vectorEl;
+		delete fc.vectorLayer;
+		delete fc.map;
 	}
 	
 	function getInternetExplorerVersion() {

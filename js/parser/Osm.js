@@ -25,7 +25,8 @@
  *
  *
  * @class
-*Example: <a href="../../../examples/parser/osm/start.html">osm with php proxy</a>
+ * @see Example: <a href="../../../examples/parser/osm/start.html">osm with php proxy</a>
+ * 
 */
 
 

@@ -41,7 +41,7 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 	/**
 	Internal used to do the callback
 	*/
-        this.executeCallbackFunctions = function() {
+        this._executeCallbackFunctions = function() {
 		var that=this;
                 for ( var i = 0; i < this.callbackFunctions.length; i++) {
                         this.callbackFunctions[i].call(that);
@@ -56,11 +56,11 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 	this.lat = function(lat) {
 		if (typeof(lat) == "number") {
 			this.latitude = lat;
-			this.executeCallbackFunctions();
+			this._executeCallbackFunctions();
 		}
 		if (typeof(lat) == "string") {
 			this.latitude = parseFloat(lat);
-			this.executeCallbackFunctions();
+			this._executeCallbackFunctions();
 		}
 		return this.latitude;
 	}
@@ -70,11 +70,11 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 	this.lng = function(lng) {
 		if (typeof(lng) == "number") {
 			this.longitude = lng;
-			this.executeCallbackFunctions();
+			this._executeCallbackFunctions();
 		}
 		if (typeof(lng) == "string") {
 			this.longitude = parseFloat(lng);
-			this.executeCallbackFunctions();
+			this._executeCallbackFunctions();
 		}
 		return this.longitude;
 	}
@@ -96,7 +96,7 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 	/**
 	// Constructor
 	*/
-	if(lat instanceof khtml.maplib.LatLng) {
+	if(lat instanceof khtml.maplib.geometry.LatLng) {	// ewi: changed khtml.maplib.LatLng to khtml.maplib.geometry.LatLng
 		// Copy constructor
 		this.lat(lat.lat());
 		this.lng(lat.lng());

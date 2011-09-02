@@ -91,35 +91,10 @@ khtml.maplib.overlay.renderer.SVG = {
 		//if(isline){
 			lines++;
 		//}
-		if(type=="Polygon" || type=="MultiPolygon"){
+		if(type=="Polygon" || type=="MultiPolygon" || type=="LinearRing"){
 			d+=" z";
 		}
 		return {d:d,points:points,lines:lines};
 	}
 
-/*	
-	
-	_renderShowPath: function(a) {
-		if (this.lineArray[a].close) {
-			this._d = this._d + " z";
-		}
-
-		if (this.lineArray[a].holes.length > 1000) {
-			if (this.lastpath) {
-				this._d = this.lastpath.getAttribute("d") + " " + this._d;
-				this.lastpath.setAttribute("d", this._d);
-				this.lastpath.setAttribute("fill-rule", "evenodd");
-			} else {
-				alert("cutout not possible");
-			}
-		} else {
-			this._path.setAttribute("d", this._d);
-			if (this.lineArray[a].holes.length > 0) {
-				this._path.setAttribute("fill-rule", "evenodd");
-			}
-			this.renderElement.appendChild(this._path);
-			this.lastpath = this._path;
-		}
-	}
-*/
 }

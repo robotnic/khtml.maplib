@@ -1,20 +1,21 @@
 /**
-@class
-Feature
-<pre>
-Call like this:
-var geometry={
-	type:"LineString",
-	coordinates:[[10,01],[20,20]],
-}
-
-khtml.maplib.geometry.Feature(geometry);
-
-or
-
-khtml.maplib.geometry.Feature({type:"LineString",coordinates:[[10,01],[20,20]]});
-Examle: <a href="../../../examples/geometry/feature.html">Vectors</a>
-</pre>
+	Feature
+	
+	@example Call like this:
+	<pre>
+	var geometry={
+		type:"LineString",
+		coordinates:[[10,01],[20,20]],
+	}
+	
+	khtml.maplib.geometry.Feature(geometry);
+	
+	or
+	
+	khtml.maplib.geometry.Feature({type:"LineString",coordinates:[[10,01],[20,20]]});
+	</pre>
+ * @class
+* @see Example: <a href="../../../examples/geometry/feature.html">Vectors</a>
 */
 
 
@@ -52,6 +53,17 @@ khtml.maplib.geometry.Feature = function(geometry) {
 				this.geometry.type=geometry.type;
 				if(geometry.coordinates){
 					this.geometry.coordinates=khtml.maplib.base.helpers.parseLine(geometry.coordinates);
+					return;
+				}
+				if(geometry.type=="FeatureCollection"){
+                                        var fc=new khtml.maplib.overlay.FeatureCollection();
+					if(geometry.feature){
+						for(var i=0;i<geometry.features.length;i++){
+							var feature=geometry.features[i];
+							fc.appendChild(new khtml.maplib.geometry.Feature(feature));
+						}
+					}
+                                        return fc
 				}
 			}
 		}

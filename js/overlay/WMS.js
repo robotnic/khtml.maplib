@@ -29,7 +29,7 @@
  *
  * WMS Specification: http://www.opengeospatial.org/standards/wms
  *
- * Example:
+ * @example 
 	<pre>
 	var wms = new khtml.maplib.overlay.WMS(
 		{
@@ -44,7 +44,7 @@
  *
  * @param {Object} options Properties: 'url' => url to wms server, use as <img src="url">. The following parameters are appended to the url: '&BBOX=...&WIDTH=...&HEIGHT=...&xyz=...'. 'opacity' => transparency of image where 0 is fully transparent and 1 is not transparent. 'class' => class is used for the image tag.
  * @class
-* Examples:
+* @see Examples:
 <a href="../../../examples/overlay/wms/wms1.html">wms1</a>,
 <a href="../../../examples/overlay/wms/wms2.html">wms2</a>,
 <a href="../../../examples/overlay/wms/wms3.html">wms3</a>,

@@ -29,8 +29,10 @@
  *
  * @class
  *
- * Example <a href="../../../examples/parser/gpx/index.html">gpx</a>, <a href="../../../examples/parser/gpx/osm.php">osm with php</a>,
-* <a href="../../../examples/parser/gpx/ajax.html">gpx per ajax</a>
+ * @see Example <a href="../../../examples/parser/gpx/index.html">gpx</a>, 
+ @see <a href="../../../examples/parser/gpx/osm.php">osm with php</a>,
+ * @see <a href="../../../examples/parser/gpx/ajax.html">gpx per ajax</a>
+ * 
 */
 khtml.maplib.parser.Gpx=function(gpx) {
 	// Methods
