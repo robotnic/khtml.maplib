@@ -1,0 +1,359 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<meta http-equiv="content-type" content="application/xhtml+xml;charset=utf-8" /> 
+
+<style type="text/css">
+body{
+overflow:hidden;
+}
+#map{
+position:absolute;
+top:40px;
+left:300px;
+width:800px;
+height:600px;
+}
+#navi{
+position:absolute;
+top:40px;
+left:20px;
+height:45%;
+overflow:auto;
+border:1px solid black;
+width:250px;
+}
+#styles{
+position:absolute;
+top:55%;
+left:20px;
+bottom:20px;
+overflow:auto;
+border:1px solid black;
+width:250px;
+}
+#styles input{
+width:130px;
+}
+#benchmark_table{
+position:absolute;
+top:30px;
+right:0px;
+background-color:white;
+opacity:0.7;
+}
+input{
+border:1px solid lightgrey;
+}
+
+.line:hover{
+stroke:red;
+}
+.line2{
+stroke:black;
+stroke-width:4;
+fill:red;
+}
+.line3{
+stroke:purple;
+stroke-width:6;
+stroke-dasharray:8,12;
+}
+.line4{
+stroke:black;
+stroke-width:6;
+stroke-dasharray:8,2;
+fill:yellow;
+}
+.line5{
+stroke:gold;
+stroke-width:2;
+fill:yellow;
+}
+
+</style>
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/base/Helpers.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/Vector.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/FeatureCollection.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/renderer/Styler.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/renderer/VML.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/renderer/Canvas.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/renderer/SVG.js"> </script>
+<script type="text/javascript" src="../../../js/geometry/Feature.js"> </script>
+<script type="text/javascript" src="../../../js/ui/Benchmark.js"> </script>
+<script type="text/javascript" src="json2.js"> </script>
+<script type="text/javascript">
+
+var map=null;
+
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	map.backend="canvas";
+	map.centerAndZoom(khtml.maplib.LatLng(48.2,16.4),3);	
+	properties=["stroke","fill","fill-opacity","stroke-opacity","strokeWidth","opacity","display","stroke-dasharray","className"];
+	createForm(properties);
+	load();
+	setTimeout("startBenchmark()",2000);
+}
+
+function startBenchmark(){
+
+	var table=document.getElementById("benchmark_tbody");
+	var benchmark=new khtml.maplib.ui.Benchmark(table);
+	map.addOverlay(benchmark);
+}
+
+function load(){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","bunt.json",true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			var json=JSON.parse(xmlhttp.responseText);
+			loadjson(json);
+		}
+	}
+	xmlhttp.send(null);
+}
+ 
+function loadjson(json){
+	var fc=new khtml.maplib.geometry.Feature(json);
+	map.featureCollection.appendChild(fc);
+//	map.featureCollection.style.fill="yellow";
+//	map.featureCollection.style.opacity=0.5;
+//	map.featureCollection.style.stroke="black";
+//	map.featureCollection.style.strokeWidth="5";
+
+	var navi=recurse(map.featureCollection);
+	document.getElementById("navi").appendChild(navi);
+}
+
+function recurse(f,depth){
+	if(!depth)depth=0;
+
+        var div=document.createElement("div");
+        var textdiv=document.createElement("div");
+        var clientdiv=document.createElement("div");
+	//clientdiv.style.border="1px solid green";
+        textdiv.style.paddingLeft=(depth*15)+"px";
+        textdiv.style.cursor="pointer";
+	var text=f.geometry.type;
+	if(f.geometry.type=="FeatureCollection"){
+		text+="▼";
+	}
+        textdiv.appendChild(document.createTextNode(text));
+	if(depth!=0){
+		div.appendChild(textdiv);
+	}
+	div.appendChild(clientdiv);
+	//console.log("hat das einene style?",f);
+	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseover",bboxShow,f,true);
+	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseout",bboxHide,f,true);
+	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",select,f,true);
+	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",toggle,clientdiv,true);
+	if(f.path){
+	khtml.maplib.base.helpers.eventAttach(f.path,"mousedown",selectByPath,div,true);
+	}
+        if(f.features){
+                for(var i=0;i <f.features.length;i++){
+                        clientdiv.appendChild(recurse(f.features[i],depth+1));
+                }
+        }
+        return div;
+}
+var oldtarget=null;
+function selectByPath(evt){
+	if(oldtarget)oldtarget.style.backgroundColor="white";
+	this.style.backgroundColor="#efefef";
+	oldtarget=this;
+	fillStyleForm(evt.target.owner);
+}
+var collapsed=false;
+function toggle(el){
+	if(el.type=='mousedown'){
+		var textdiv=el.target;
+		var text=textdiv.textContent;
+		var last=text.substring(text.length -1,text.length);
+		if(last=="▼" || last=="►"){
+			var text=text.substring(0,text.length -1);
+			
+			el=this;
+			
+			if(el.collapsed){
+				textdiv.textContent=text+"▼";
+			}else{
+				textdiv.textContent=text+"►";
+			}
+		}else{
+			return;
+		}
+	}
+	var height=el.offsetHeight;
+	if(!el.origOffsetHeight){
+		el.origOffsetHeight=height;
+	}
+	if(el.collapsed){
+		height=height +10;
+	}else{
+		height=height -10;
+	}
+	el.style.overflow="hidden";
+	if(height >0 && height < el.origOffsetHeight){
+		var tempFunc=function(){
+			toggle(el);
+		}
+		setTimeout(tempFunc,10);
+	}else{
+		if(el.collapsed){	
+			el.collapsed=false;
+		}else{
+			el.collapsed=true;
+		}
+	}
+	if(height >=el.origOffsetHeight) height=el.origOffsetHeight-0;
+	if(height <0) height=0;
+	el.style.height=height+"px";
+	return;
+	if(this.style.display=="none"){
+		this.style.display="";
+	}else{
+		this.style.display="none";
+	}
+}
+var bboxUI=null;
+function bboxShow(evt){
+        if(!bboxUI){
+		bboxUI=new khtml.maplib.base.helpers.Boundingbox(map);
+        }
+        bboxUI.show(this.bbox);
+	return;
+}	
+
+function bboxHide(evt){
+	bboxUI.hide();
+}
+
+function select(evt){
+
+	if(oldtarget)oldtarget.style.backgroundColor="white";
+	if(evt.target){
+		var target=evt.target;
+	}else{
+		var target=evt.srcElement;
+	}
+	target.style.backgroundColor="#efefef";
+	oldtarget=target;
+	if(!this.style){
+		return;
+	}
+	fillStyleForm(this);
+}
+
+function fillStyleForm(feature){
+	for(var p =0;p<properties.length;p++){
+		var prop=properties[p];
+		//this.style.fill="blue";
+		var style=feature.style[prop];
+		if(inputs[prop]){
+			if(prop=="className"){
+				inputs[prop].value=feature.className.baseVal;
+			}else{
+				//if(style!=undefined){
+					inputs[prop].value=style;
+				//}else{
+					//delete inputs[prop];
+					//inputs[prop].value="";
+				//}
+			}
+			if(eventlist[prop]){
+				khtml.maplib.base.helpers.eventRemove(eventlist[prop]);
+			}
+			eventlist[prop]=khtml.maplib.base.helpers.eventAttach(inputs[prop],"keyup",changeStyle,feature,false);
+		}
+
+	}
+}
+
+function changeStyle(evt){
+	if(evt.target){
+		var input=evt.target;
+	}else{
+		var input=evt.srcElement;
+	}
+	var prop=input.getAttribute("name");
+	if(prop=="className"){
+		this.className.baseVal=input.value;
+	}else{
+		if(input.value==""){
+			delete this.style[prop];
+		}else{
+			this.style[prop]=input.value;
+		}
+	}
+	//map.featureCollection.render();
+	map.render();
+}
+
+var eventlist=new Array();
+var inputs=new Array();
+function createForm(properties){
+	var tbody=document.getElementById("tbody");
+	while(tbody.firstChild){
+		tbody.removeChild(tbody.firstChild);
+	}
+	for(var i=0;i<properties.length;i++){
+		var property=properties[i];
+		var tr=document.createElement("tr");
+		var td=document.createElement("td");
+		td.appendChild(document.createTextNode(property));
+		tr.appendChild(td);
+
+		var td=document.createElement("td");
+		var input=document.createElement("input");
+		input.setAttribute("name",property);
+		inputs[property]=input;
+		td.appendChild(input);
+		tr.appendChild(td);
+		tbody.appendChild(tr);
+	}
+
+}
+
+function setBackend(){
+	var inputs=document.getElementById("backend").getElementsByTagName("input");
+	for(var i=0; i <inputs.length;i++){
+		if(inputs.item(i).checked){
+			if(inputs.item(i).value=="vml"){
+				//alert("Sorry VML implementation is very buggy");
+			}
+			map.featureCollection.renderbackend(inputs.item(i).value);
+		}
+	}
+}
+
+</script>
+</head>
+<body onload="init()">
+<div id="backend" onclick="setBackend()"> 
+<input type="radio" name="backend" value="svg"/>svg
+<input type="radio" name="backend" value="canvas"/>canvas
+<input type="radio" name="backend" value="vml"/>vml
+</div> 
+<div id="navi">
+</div>
+<div id="styles">
+<table><tbody id="tbody">
+</tbody>
+</table>
+</div>
+<div id="map"> </div>
+<table id="benchmark_table"> 
+<thead>
+</thead>
+<tbody id="benchmark_tbody">
+
+</tbody>
+</table>
+</table>
+</body>
+</html>

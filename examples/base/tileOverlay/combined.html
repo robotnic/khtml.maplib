@@ -1,0 +1,64 @@
+<html>
+<head>
+<style type="text/css">
+
+#map{
+width:700px;
+height:400px;
+}
+
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../../khtml_all.js"> </script> 
+
+<script type="text/javascript">
+var map=null;
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,15.4),8);
+
+	//OSM Renderer
+	map.tiles({
+ 
+                  maxzoom:16,
+                  minzoom:1,
+                  src:function(x,y,z){
+                     return "http://a.tah.openstreetmap.org/Tiles/tile/"+z+"/"+x+"/"+y+".png";
+                  },
+                  copyright:"osm"
+        });
+
+	//hike map
+   map.addTilesOverlay({
+        type:"overlay", 
+                  maxzoom:18,
+                  minzoom:1,
+                  src:function(x,y,z){
+		    return "http://osm.lonvia.de/hiking/"+z+"/"+x+"/"+y+".png";
+                  },
+                  copyright:"osm"
+        });
+	//hillshade
+    map.addTilesOverlay({
+        type:"overlay",
+          maxzoom:18,
+          minzoom:4,
+          src:function(x,y,z){
+                 //return "http://blabla.openseamap.org/seamark/"+z+"/"+x+"/"+y+".png";
+		    return "http://toolserver.org/~cmarqu/hill/"+z+"/"+x+"/"+y+".png";
+          },
+          copyright:"shade"
+    });
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<div id="map"> </div>
+<a href="http://hiking.lonvia.de">hikemap by lonvia.de</a>
+</body>
+</html>

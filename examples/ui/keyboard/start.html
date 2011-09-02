@@ -9,9 +9,8 @@ height:400px;
 
 </style>
 <title>khtml base map</title>
-<script type="text/javascript" src="../../khtml_all.js"> </script> 
-<script type="text/javascript" src="../../js/base/Map.js"> </script> 
-
+<script type="text/javascript" src="../../../khtml_all.js"> </script> 
+<script type="text/javascript" src="../../../js/ui/Keyboard.js"> </script>
 <script type="text/javascript">
 var map=null;
 function init(){
@@ -20,7 +19,8 @@ function init(){
 
 	//set map center and zoom
 	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
-
+	var keyboard=new khtml.maplib.ui.KeyBoard();
+	map.addOverlay(keyboard);
 }
 
 
@@ -28,7 +28,7 @@ function init(){
 </head>
 <body onload="init()">
 <h1>Base Map</h1>
-Mouse move, mouse wheel, touchscreen
-<div id="map"> </div>
+cursor, page up/down, pos1, end, +, -
+<div id="map"  tabIndex="1"> </div>
 </body>
 </html>

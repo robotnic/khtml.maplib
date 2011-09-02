@@ -1,0 +1,61 @@
+<html>
+<head>
+<style type="text/css">
+
+#map{
+width:700px;
+height:400px;
+}
+
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../../khtml_all.js"> </script> 
+
+<script type="text/javascript">
+var map=null;
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	map.addCallbackFunction(latlng);
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+}
+
+function latlng(){
+	document.getElementById("lat").firstChild.nodeValue=this.center().lat()+" ";
+	document.getElementById("lng").firstChild.nodeValue=this.center().lng()+" ";
+	document.getElementById("zoom").firstChild.nodeValue=this.zoom()+" ";
+}
+
+function showMouseCoords(evt){
+	var p=map.mouseToLatLng(evt);
+
+	document.getElementById("mouse_lat").firstChild.nodeValue=p.lat()+" ";
+	document.getElementById("mouse_lng").firstChild.nodeValue=p.lng()+" ";
+}
+
+</script>
+</head>
+<body onload="init()">
+<div>Lat:
+<span id="lat"> </span>
+<br/>
+Lng:
+<span id="lng"> </span>
+<br/>
+Zoom:
+<span id="zoom"> </span>
+<br/>
+Mouse Lat:
+<span id="mouse_lat"> </span>
+<br/>
+Mouse Lng:
+<span id="mouse_lng"> </span>
+</div>
+
+<h1>See Coordinates above</h1>
+Please move and zoom the map.
+<div id="map" onmousemove="showMouseCoords(event)"> </div>
+</body>
+</html>

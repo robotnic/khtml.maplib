@@ -27,6 +27,7 @@ font-family:Arial;
 <script type="text/javascript" src="../../../khtml_all.js"> </script> 
 <script type="text/javascript" src="../../../js/parser/Osm.js"> </script> 
 <script type="text/javascript" src="../../../js/overlay/Vector.js"> </script> 
+<script type="text/javascript" src="../../../js/overlay/renderer/Styler.js"> </script> 
 
 <script type="text/javascript">
 var map=null;
@@ -42,11 +43,13 @@ function init(){
 
 function loadmap(){
 	var bounds=map.bounds();
-	var url="/api/0.6/map?bbox="+bounds.sw().lng()+","+bounds.sw().lat()+","+bounds.ne().lng()+","+bounds.ne().lat();
+	var request=document.getElementById("request").value;
+	var url=request+"[bbox="+bounds.sw().lng()+","+bounds.sw().lat()+","+bounds.ne().lng()+","+bounds.ne().lat()+"]";
+	document.getElementById("request2").firstChild.nodeValue=url+" ";
 	console.log(url);
  
 	var xmlhttp=new XMLHttpRequest();
-	xmlhttp.open("GET","osmload.php?url="+url,true);
+	xmlhttp.open("GET","overpass.php?url="+url,true);
 	xmlhttp.onreadystatechange=function(){
 		var ajaxload=document.getElementById("ajaxload");
 		if(xmlhttp.readyState==4){
@@ -62,7 +65,9 @@ function loadmap(){
 </script>
 </head>
 <body onload="init()">
+<input type="text" style="width:400px" id="request" value="*[highway=residential]" onkeydown="if(event.keyCode==13)loadmap()"/>
 <button onclick="loadmap()">load</button><img src="images/ajaxload.gif" id="ajaxload" style="display:none"/>
+<div id="request2"> </div>
 <div id="map"> </div>
 </body>
 </html>

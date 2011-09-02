@@ -1,0 +1,61 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.khtml.org/osm/v0.98.2/khtml_all.js"> </script>
+<script type="text/javascript" > 
+var map=null;
+var total_frames=500;
+function init(){
+map=khtml.maplib.Map(document.getElementById("map"));
+map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.5),15)
+
+setTimeout("start(37.82012657540583,-122.478775,12)",400);
+}
+
+function start(lat,lng,z){
+goto(new khtml.maplib.LatLng(lat,lng),z);
+}
+
+function goto(point,zoom){
+	endpoint=point;
+	endzoom=zoom;
+	startPoint=map.center();
+	startZoom=map.zoom();
+	var mapdiv=document.getElementById("map");
+
+        for(var frame=0;frame<total_frames ;frame++){
+                //b=1;
+                //a=0;
+		/*
+                lambda   = frame*(1.0/(total_frames-1.0));
+                position = a+Math.pow(lambda,2.0)*(b-a);
+		*/
+		//console.log(frame -total_frames/2);
+		var position=(Math.atan((frame -total_frames/2)/total_frames*20)/Math.PI)+0.5; //+1)/2;
+		console.log(position);
+		//position=Math.sqrt(position);
+
+		var z=Math.sin(frame/total_frames * Math.PI);
+		//z=Math.pow(z,2);
+		//console.log("z:"+z);
+
+		var deltaZoom=startZoom - endzoom;
+		var dz=deltaZoom*(1+frame)/total_frames;
+
+                var cmd="pos("+position+","+(startZoom - z *13 -dz)+")";
+                setTimeout(cmd,frame*20);
+                //console.log(position);
+        }
+}
+function pos(p,z){
+	var lat=startPoint.lat()+(endpoint.lat() - startPoint.lat())*p;
+	var lng=startPoint.lng()+(endpoint.lng() - startPoint.lng())*p;
+	map.centerAndZoom(new khtml.maplib.LatLng(lat,lng),z);
+}
+</script>
+</head>
+<body onload="init()">
+<button onclick="start(37.82012657540583,-122.478775,18)">San Francisco</button>
+<button onclick="start(48.2,16.3,18)">Wien</button>
+<div id="map" style="width:500px;height:400px"> 
+</body>
+</html>
