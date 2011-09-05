@@ -2602,9 +2602,9 @@ khtml.maplib.base.Map = function(map) {
 		while(this.copyrightdiv.firstChild){this.copyrightdiv.removeChild(this.copyrightdiv.firstChild)}
 		var logo=document.createElement("img");
 		var a=document.createElement("a");
-		a.setAttribute("href","http://khtml.org");
+		a.setAttribute("href","http://maplib.khtml.org");
 		a.setAttribute("target","_blank");
-		logo.setAttribute("src","http://khtml.org/favicon.png");
+		logo.setAttribute("src","http://maplib.khtml.org/favicon.png");
 		logo.style.zIndex=10;
 		logo.style.border="0px solid black";
 		logo.style.position="absolute";
