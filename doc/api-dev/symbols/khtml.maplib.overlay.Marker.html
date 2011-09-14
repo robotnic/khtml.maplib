@@ -201,6 +201,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
@@ -217,9 +219,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -235,11 +247,15 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.html">khtml.maplib.util</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -280,9 +296,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.overlay.Marker.html#constructor">khtml.maplib.overlay.Marker</a></b>(point, el, options)
+								<b><a href="../symbols/khtml.maplib.overlay.Marker.html#constructor">khtml.maplib.overlay.Marker</a></b>(MarkerOptions)
 							</div>
-							<div class="description">Puts the supplied element at the specified positions.</div>
+							<div class="description">Puts a marker at the specified position on the map.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -307,20 +323,203 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
-							<td class="attributes">&nbsp;</td>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#clear">clear</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_dropMarker">_dropMarker</a></b>()
+								</div>
+								<div class="description">drop the marker when stop dragging</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_executeCallbackFunctions">_executeCallbackFunctions</a></b>()
+								</div>
+								<div class="description">execute the callback functions</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_mouseclickdetectmove">_mouseclickdetectmove</a></b>(evt)
 								</div>
 								<div class="description"></div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&nbsp;</td>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#down">down</a></b>(evt)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_mouseclickdetectstart">_mouseclickdetectstart</a></b>(evt)
+								</div>
+								<div class="description">workaround for detecting a mouseclick on a marker eg.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_mouseclickdetectstop">_mouseclickdetectstop</a></b>(evt)
 								</div>
 								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_mousedown">_mousedown</a></b>(evt)
+								</div>
+								<div class="description">mousedown function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_mousemove">_mousemove</a></b>(evt)
+								</div>
+								<div class="description">mousemove function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_mousemoveMap">_mousemoveMap</a></b>()
+								</div>
+								<div class="description">move map when dragging marker to the edge
+speed depending on distance to edge, the nearer, the faster</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_mouseup">_mouseup</a></b>()
+								</div>
+								<div class="description">mouseup function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_raiseMarker">_raiseMarker</a></b>()
+								</div>
+								<div class="description">raise the marker when starting to drag</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_setCursor">_setCursor</a></b>(string)
+								</div>
+								<div class="description">execute the callback functions</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_touchclickdetectmove">_touchclickdetectmove</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_touchclickdetectstart">_touchclickdetectstart</a></b>(evt)
+								</div>
+								<div class="description">workaround for detecting a click on touch devices
+original click event is suppressed by touchmove-handler of the map</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_touchclickdetectstop">_touchclickdetectstop</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_touchend">_touchend</a></b>()
+								</div>
+								<div class="description">touchend function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_touchmove">_touchmove</a></b>(evt)
+								</div>
+								<div class="description">touchmove function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#_touchstart">_touchstart</a></b>(evt)
+								</div>
+								<div class="description">touchstart function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#addCallbackFunction">addCallbackFunction</a></b>(func)
+								</div>
+								<div class="description">add a callback function</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#attachEvent">attachEvent</a></b>(t, f, fc, c)
+								</div>
+								<div class="description">attaching Eventhandlers to the marker
+e.g.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#clear">clear</a></b>()
+								</div>
+								<div class="description">remove the marker from the map, marker still exists, will still be rendered</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#destroy">destroy</a></b>()
+								</div>
+								<div class="description">destroy the marker</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#getPosition">getPosition</a></b>()
+								</div>
+								<div class="description">get the current position of the marker</div>
 							</td>
 						</tr>
 					
@@ -329,34 +528,25 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#init">init</a></b>(owner)
 								</div>
-								<div class="description"></div>
+								<div class="description">initialize the marker on the map</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#move">move</a></b>(evt)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#makeMoveable">makeMoveable</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">making the marker moveable by function</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#moveable">moveable</a></b>(enabled)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#pixelOffset">pixelOffset</a></b>()
 								</div>
-								<div class="description">Moveable extension</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#position">position</a></b>(pos)
-								</div>
-								<div class="description"></div>
+								<div class="description">get the pixelOffset of the markers anchorpoint to the anchorpoint of the infowindow</div>
 							</td>
 						</tr>
 					
@@ -365,16 +555,16 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#render">render</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">render marker, shadow, dragcross</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#up">up</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.Marker.html#setPosition">setPosition</a></b>(pos)
 								</div>
-								<div class="description"></div>
+								<div class="description">set a new position for the marker</div>
 							</td>
 						</tr>
 					
@@ -395,21 +585,25 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>khtml.maplib.overlay.Marker</b>(point, el, options)
+						<b>khtml.maplib.overlay.Marker</b>(MarkerOptions)
 				</div>
 				
 				<div class="description">
-					Puts the supplied element at the specified positions.
+					Puts a marker at the specified position on the map.<br/>
 Has the possibility to add arbitrary html as marker.
-
-DEPRECATED: please use one {khtml.maplib.displayable.Marker}
-{khtml.maplib.displayable.Marker} has the advantage to support {khtml.maplib.overlay.Layer}. (You can put those marker inside layers)
-
-This is intended to ease transition from the previous khtml api to the new, as you can first only
-rename all uses of khtml.maplib.Marker to khtml.maplib.overlay.Marker and then refactor the code to use the
-new {khtml.maplib.displayable.Marker} class.
 					
 				</div>
+				
+				
+				
+				<pre class="code">Minimum code for a static marker:
+  <pre><code>
+  var marker = new khtml.maplib.overlay.Marker({
+  	position: new khtml.maplib.LatLng( latitude, longitude), 
+  	map: map,
+  	title:"static marker on a position"
+  });
+  </code></pre></pre>
 				
 				
 				
@@ -419,22 +613,10 @@ new {khtml.maplib.displayable.Marker} class.
 						<dt class="heading">Parameters:</dt>
 						
 							<dt>
-								<span class="light fixedFont">{<a href="../symbols/khtml.maplib.LatLng.html">khtml.maplib.LatLng</a>}</span>  <b>point</b>
+								<span class="light fixedFont">{<a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a>}</span>  <b>MarkerOptions</b>
 								
 							</dt>
-								<dd></dd>
-						
-							<dt>
-								<span class="light fixedFont">{DOMElement}</span>  <b>el</b>
-								
-							</dt>
-								<dd></dd>
-						
-							<dt>
-								<span class="light fixedFont">{Object}</span>  <b>options</b>
-								
-							</dt>
-								<dd></dd>
+								<dd>markerOptions for Marker</dd>
 						
 						</dl>
 					
@@ -443,6 +625,13 @@ new {khtml.maplib.displayable.Marker} class.
 					
 					
 					
+					
+						<dl class="detailList">
+						<dt class="heading">See:</dt>
+						
+							<dd>Example with other markers: <a href="../../../examples/marker/marker.html">Markers</a></dd>
+						
+						</dl>
 					
 
 			</div>
@@ -457,15 +646,15 @@ new {khtml.maplib.displayable.Marker} class.
 					Method Detail
 				</div>
 				
-					<a name="clear"> </a>
-					<div class="fixedFont">
+					<a name="_dropMarker"> </a>
+					<div class="fixedFont">&lt;private&gt; 
 					
 					
-					<b>clear</b>()
+					<b>_dropMarker</b>()
 					
 					</div>
 					<div class="description">
-						
+						drop the marker when stop dragging
 						
 						
 					</div>
@@ -482,11 +671,36 @@ new {khtml.maplib.displayable.Marker} class.
 
 					<hr />
 				
-					<a name="down"> </a>
-					<div class="fixedFont">
+					<a name="_executeCallbackFunctions"> </a>
+					<div class="fixedFont">&lt;private&gt; 
 					
 					
-					<b>down</b>(evt)
+					<b>_executeCallbackFunctions</b>()
+					
+					</div>
+					<div class="description">
+						execute the callback functions
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mouseclickdetectmove"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mouseclickdetectmove</b>(evt)
 					
 					</div>
 					<div class="description">
@@ -518,6 +732,635 @@ new {khtml.maplib.displayable.Marker} class.
 
 					<hr />
 				
+					<a name="_mouseclickdetectstart"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mouseclickdetectstart</b>(evt)
+					
+					</div>
+					<div class="description">
+						workaround for detecting a mouseclick on a marker eg. to open infowindow
+to not open infowindow accidentially when marker is moved
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mouseclickdetectstop"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mouseclickdetectstop</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mousedown"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mousedown</b>(evt)
+					
+					</div>
+					<div class="description">
+						mousedown function
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mousemove"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mousemove</b>(evt)
+					
+					</div>
+					<div class="description">
+						mousemove function
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mousemoveMap"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mousemoveMap</b>()
+					
+					</div>
+					<div class="description">
+						move map when dragging marker to the edge
+speed depending on distance to edge, the nearer, the faster
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mouseup"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mouseup</b>()
+					
+					</div>
+					<div class="description">
+						mouseup function
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_raiseMarker"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_raiseMarker</b>()
+					
+					</div>
+					<div class="description">
+						raise the marker when starting to drag
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_setCursor"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_setCursor</b>(string)
+					
+					</div>
+					<div class="description">
+						execute the callback functions
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>string</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_touchclickdetectmove"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_touchclickdetectmove</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_touchclickdetectstart"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_touchclickdetectstart</b>(evt)
+					
+					</div>
+					<div class="description">
+						workaround for detecting a click on touch devices
+original click event is suppressed by touchmove-handler of the map
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_touchclickdetectstop"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_touchclickdetectstop</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_touchend"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_touchend</b>()
+					
+					</div>
+					<div class="description">
+						touchend function
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_touchmove"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_touchmove</b>(evt)
+					
+					</div>
+					<div class="description">
+						touchmove function
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_touchstart"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_touchstart</b>(evt)
+					
+					</div>
+					<div class="description">
+						touchstart function
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addCallbackFunction"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addCallbackFunction</b>(func)
+					
+					</div>
+					<div class="description">
+						add a callback function
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>func</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="attachEvent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>attachEvent</b>(t, f, fc, c)
+					
+					</div>
+					<div class="description">
+						attaching Eventhandlers to the marker
+e.g. for showing infobox on a click on the marker
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>t</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>f</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>fc</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>c</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="clear"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clear</b>()
+					
+					</div>
+					<div class="description">
+						remove the marker from the map, marker still exists, will still be rendered
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="destroy"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>destroy</b>()
+					
+					</div>
+					<div class="description">
+						destroy the marker
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getPosition"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getPosition</b>()
+					
+					</div>
+					<div class="description">
+						get the current position of the marker
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="init"> </a>
 					<div class="fixedFont">
 					
@@ -526,7 +1369,7 @@ new {khtml.maplib.displayable.Marker} class.
 					
 					</div>
 					<div class="description">
-						
+						initialize the marker on the map
 						
 						
 					</div>
@@ -554,32 +1397,21 @@ new {khtml.maplib.displayable.Marker} class.
 
 					<hr />
 				
-					<a name="move"> </a>
+					<a name="makeMoveable"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>move</b>(evt)
+					<b>makeMoveable</b>()
 					
 					</div>
 					<div class="description">
-						
+						making the marker moveable by function
 						
 						
 					</div>
 					
 					
 					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
 						
 						
 						
@@ -590,32 +1422,21 @@ new {khtml.maplib.displayable.Marker} class.
 
 					<hr />
 				
-					<a name="moveable"> </a>
+					<a name="pixelOffset"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>moveable</b>(enabled)
+					<b>pixelOffset</b>()
 					
 					</div>
 					<div class="description">
-						Moveable extension
+						get the pixelOffset of the markers anchorpoint to the anchorpoint of the infowindow
 						
 						
 					</div>
 					
 					
 					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>enabled</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
 						
 						
 						
@@ -626,15 +1447,40 @@ new {khtml.maplib.displayable.Marker} class.
 
 					<hr />
 				
-					<a name="position"> </a>
+					<a name="render"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>position</b>(pos)
+					<b>render</b>()
 					
 					</div>
 					<div class="description">
+						render marker, shadow, dragcross
 						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setPosition"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setPosition</b>(pos)
+					
+					</div>
+					<div class="description">
+						set a new position for the marker
 						
 						
 					</div>
@@ -660,56 +1506,6 @@ new {khtml.maplib.displayable.Marker} class.
 						
 						
 
-					<hr />
-				
-					<a name="render"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>render</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="up"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>up</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
 					
 				
 			
@@ -724,7 +1520,7 @@ new {khtml.maplib.displayable.Marker} class.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Jul 20 2011 00:37:08 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Sep 14 2011 09:52:54 GMT+0200 (MESZ)
 		</div>
 	</body>
 </html>

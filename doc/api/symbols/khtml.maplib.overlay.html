@@ -201,6 +201,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
@@ -217,9 +219,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -235,11 +247,15 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.html">khtml.maplib.util</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -293,6 +309,39 @@ ul.inheritsList
 			
 				
 				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class khtml.maplib.overlay.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.renderCount">renderCount</a></b>
+								</div>
+								<div class="description">For benchmark</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.timestamp">timestamp</a></b>
+								</div>
+								<div class="description">Here is the point where the function is recalled recursive.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
 				
 				
 			
@@ -310,6 +359,15 @@ ul.inheritsList
 						</tr>
 					</thead>
 					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.addText">addText</a></b>(line)
+								</div>
+								<div class="description">Add Text to the path.</div>
+							</td>
+						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
@@ -334,7 +392,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.cancel">cancel</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">If the user interacts with the map (move,zoom), the rendering process for overlays will be stopped.</div>
 							</td>
 						</tr>
 					
@@ -352,7 +410,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.createPolyline">createPolyline</a></b>(polyline)
 								</div>
-								<div class="description"></div>
+								<div class="description">This method is called to create a lineString, Polygon,.</div>
 							</td>
 						</tr>
 					
@@ -362,6 +420,15 @@ ul.inheritsList
 								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.createVectorElement">createVectorElement</a></b>(themap)
 								</div>
 								<div class="description">Create a vector element, depending on the active backend (svg, canvas or vml)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.createVirtualVectorElement">createVirtualVectorElement</a></b>(ownerVectorElement)
+								</div>
+								<div class="description">It's faster to draw everything to one canvas, svg-document.</div>
 							</td>
 						</tr>
 					
@@ -386,9 +453,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.init">init</a></b>(owner)
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.init">init</a></b>(owner, fcWithVectorElement)
 								</div>
-								<div class="description"></div>
+								<div class="description">Initialize the vector, create svg-element, canvas,.</div>
 							</td>
 						</tr>
 					
@@ -413,6 +480,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.remove">remove</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.removeChild">removeChild</a></b>(el)
 								</div>
 								<div class="description"></div>
@@ -422,9 +498,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.render">render</a></b>()
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.render">render</a></b>(a)
 								</div>
-								<div class="description"></div>
+								<div class="description">Render the Path.</div>
 							</td>
 						</tr>
 					
@@ -440,7 +516,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.Vector">Vector</a></b>()
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.Vector">Vector</a></b>(backend)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -488,12 +564,106 @@ Markers, Images, Placemarks, Icons, POI's, ...
 
 <!-- ============================== field details ========================== -->		
 			
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+					<a name=".renderCount"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">khtml.maplib.overlay.</span><b>renderCount</b>
+					
+					</div>
+					<div class="description">
+						For benchmark
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".timestamp"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">khtml.maplib.overlay.</span><b>timestamp</b>
+					
+					</div>
+					<div class="description">
+						Here is the point where the function is recalled recursive.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					
+				
+			
 
 <!-- ============================== method details ========================= -->		
 			
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name=".addText"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">khtml.maplib.overlay.</span><b>addText</b>(line)
+					
+					</div>
+					<div class="description">
+						Add Text to the path. At the moment only supported for SVG Backend
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>line</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
 				
 					<a name=".appendChild"> </a>
 					<div class="fixedFont">&lt;static&gt; 
@@ -570,7 +740,7 @@ Markers, Images, Placemarks, Icons, POI's, ...
 					
 					</div>
 					<div class="description">
-						
+						If the user interacts with the map (move,zoom), the rendering process for overlays will be stopped.
 						
 							<br />
 							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
@@ -626,7 +796,7 @@ Markers, Images, Placemarks, Icons, POI's, ...
 					
 					</div>
 					<div class="description">
-						
+						This method is called to create a lineString, Polygon,...
 						
 							<br />
 							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
@@ -684,6 +854,46 @@ Markers, Images, Placemarks, Icons, POI's, ...
 									
 								</dt>
 								<dd>reference to mapobject</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".createVirtualVectorElement"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">khtml.maplib.overlay.</span><b>createVirtualVectorElement</b>(ownerVectorElement)
+					
+					</div>
+					<div class="description">
+						It's faster to draw everything to one canvas, svg-document.
+	The "g" in SVG is basicly for css styling.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>ownerVectorElement</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -767,14 +977,16 @@ Markers, Images, Placemarks, Icons, POI's, ...
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">khtml.maplib.overlay.</span><b>init</b>(owner)
+					<span class="light">khtml.maplib.overlay.</span><b>init</b>(owner, fcWithVectorElement)
 					
 					</div>
 					<div class="description">
-						
+						Initialize the vector, create svg-element, canvas,...
+	For speed, vectors are draw to the same vector element even if they are in differend FeatureCollection.
+	For SVG every FeatureCollection has a "g" Element. This is used mainly for styling.
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_overlay_FeatureCollection.js.html">FeatureCollection.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
 						
 						
 					</div>
@@ -787,6 +999,12 @@ Markers, Images, Placemarks, Icons, POI's, ...
 							
 								<dt>
 									<b>owner</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>fcWithVectorElement</b>
 									
 								</dt>
 								<dd></dd>
@@ -869,6 +1087,34 @@ Markers, Images, Placemarks, Icons, POI's, ...
 
 					<hr />
 				
+					<a name=".remove"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">khtml.maplib.overlay.</span><b>remove</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name=".removeChild"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
@@ -912,20 +1158,34 @@ Markers, Images, Placemarks, Icons, POI's, ...
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">khtml.maplib.overlay.</span><b>render</b>()
+					<span class="light">khtml.maplib.overlay.</span><b>render</b>(a)
 					
 					</div>
 					<div class="description">
-						
+						Render the Path.
+	This Method is call recursive to allow stop of rendering.
+	This stop is needed for repsonsive ui - otherwise the browser may freece.
+	The render method is called for all overlays by the main map object
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_overlay_FeatureCollection.js.html">FeatureCollection.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
 						
 						
 					</div>
 					
 					
 					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>a</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
 						
 						
 						
@@ -980,7 +1240,7 @@ Previous rendered content (the old overlay) is discarded!
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">khtml.maplib.overlay.</span><b>Vector</b>()
+					<span class="light">khtml.maplib.overlay.</span><b>Vector</b>(backend)
 					
 					</div>
 					<div class="description">
@@ -994,6 +1254,17 @@ Previous rendered content (the old overlay) is discarded!
 					
 					
 					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>backend</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
 						
 						
 						
@@ -1016,7 +1287,7 @@ Previous rendered content (the old overlay) is discarded!
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Jul 20 2011 00:36:36 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Sep 14 2011 09:52:32 GMT+0200 (MESZ)
 		</div>
 	</body>
 </html>

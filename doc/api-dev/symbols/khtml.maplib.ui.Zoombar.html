@@ -201,6 +201,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
@@ -217,9 +219,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -235,11 +247,15 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.html">khtml.maplib.util</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -328,9 +344,36 @@ without stopping further propagation of the event.</div>
 						<tr>
 							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#_down">_down</a></b>(evt)
+								</div>
+								<div class="description">Mousedown or Touchstart</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#_move">_move</a></b>(evt)
+								</div>
+								<div class="description">Called while scrolling and Touchmove</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#_stopEventPropagation">_stopEventPropagation</a></b>(evt)
 								</div>
 								<div class="description">Prevents further propagation of the current event.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#_up">_up</a></b>(evt)
+								</div>
+								<div class="description">Mouseup or Touchend</div>
 							</td>
 						</tr>
 					
@@ -346,15 +389,6 @@ without stopping further propagation of the event.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#down">down</a></b>(evt)
-								</div>
-								<div class="description">Mouse DOWN</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#init">init</a></b>(themap)
 								</div>
 								<div class="description">called by maplib once</div>
@@ -364,27 +398,9 @@ without stopping further propagation of the event.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#move">move</a></b>(evt)
-								</div>
-								<div class="description">Called while scrolling.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#render">render</a></b>()
 								</div>
 								<div class="description">called by maplib on every map change</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.ui.Zoombar.html#up">up</a></b>(evt)
-								</div>
-								<div class="description">Mouse UP</div>
 							</td>
 						</tr>
 					
@@ -509,6 +525,78 @@ without stopping further propagation of the event.
 
 					<hr />
 				
+					<a name="_down"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_down</b>(evt)
+					
+					</div>
+					<div class="description">
+						Mousedown or Touchstart
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_move"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_move</b>(evt)
+					
+					</div>
+					<div class="description">
+						Called while scrolling and Touchmove
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="_stopEventPropagation"> </a>
 					<div class="fixedFont">&lt;private&gt; 
 					
@@ -518,6 +606,42 @@ without stopping further propagation of the event.
 					</div>
 					<div class="description">
 						Prevents further propagation of the current event.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_up"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_up</b>(evt)
+					
+					</div>
+					<div class="description">
+						Mouseup or Touchend
 						
 						
 					</div>
@@ -581,42 +705,6 @@ without stopping further propagation of the event.
 
 					<hr />
 				
-					<a name="down"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>down</b>(evt)
-					
-					</div>
-					<div class="description">
-						Mouse DOWN
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
 					<a name="init"> </a>
 					<div class="fixedFont">
 					
@@ -638,42 +726,6 @@ without stopping further propagation of the event.
 							
 								<dt>
 									<b>themap</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="move"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>move</b>(evt)
-					
-					</div>
-					<div class="description">
-						Called while scrolling.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
 									
 								</dt>
 								<dd></dd>
@@ -712,42 +764,6 @@ without stopping further propagation of the event.
 						
 						
 
-					<hr />
-				
-					<a name="up"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>up</b>(evt)
-					
-					</div>
-					<div class="description">
-						Mouse UP
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
 					
 				
 			
@@ -762,7 +778,7 @@ without stopping further propagation of the event.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Jul 20 2011 00:37:08 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Sep 14 2011 09:52:54 GMT+0200 (MESZ)
 		</div>
 	</body>
 </html>

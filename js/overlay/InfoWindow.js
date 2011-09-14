@@ -85,25 +85,32 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	upperleftdiv.style.top = 0;
 	upperleftdiv.style.left = 0;
 	upperleftdiv.style.overflow = 'hidden';
-	upperleftimg = document.createElement('img');
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+		upperleftimg = document.createElement('div');
+		upperleftimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + corner_image + "')";
+		upperleftimg.style.width = "100%";
+		upperleftimg.style.height = "100%";
+	}
+	else{
+		upperleftimg = document.createElement('img');
+		upperleftimg.setAttribute('src', corner_image);
+	}
 	upperleftimg.style.position = 'absolute';
 	upperleftimg.style.top = 0;
 	upperleftimg.style.left = 0;
-	upperleftimg.setAttribute('src', corner_image);
 	khtml.maplib.base.helpers.imageNotSelectable(upperleftimg);
 	upperleftdiv.appendChild(upperleftimg);
 	this.infobox.appendChild(upperleftdiv);
 	
-	upperdiv = document.createElement('div');
-	upperdiv.style.position = 'absolute';
-	upperdiv.style.height = '10px';
-	upperdiv.style.left = '9px';
-	upperdiv.style.right = '9px';
-	upperdiv.style.top = 0;
-	// todo: workaround for IE6, doesnt know borderTop -> image instead of backgroundColor and border?
-	upperdiv.style.borderTop = '1px solid grey';
-	upperdiv.style.backgroundColor = 'white';
-	this.infobox.appendChild(upperdiv);
+	this.upperdiv = document.createElement('div');
+	this.upperdiv.style.position = 'absolute';
+	this.upperdiv.style.height = '10px';
+	this.upperdiv.style.left = '10px';
+	this.upperdiv.style.top = 0;
+	this.upperdiv.style.borderTop = '1px solid gray';
+	this.upperdiv.style.backgroundColor = 'white';
+	this.infobox.appendChild(this.upperdiv);
 	
 	upperrightdiv = document.createElement('div');
 	upperrightdiv.style.position = 'absolute';
@@ -112,25 +119,32 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	upperrightdiv.style.top = 0;
 	upperrightdiv.style.right = 0;
 	upperrightdiv.style.overflow = 'hidden';
-	upperrightimg = document.createElement('img');
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+		upperrightimg = document.createElement('div');
+		upperrightimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + corner_image + "')";
+		upperrightimg.style.width = "100%";
+		upperrightimg.style.height = "100%";
+	}
+	else{
+		upperrightimg = document.createElement('img');
+		upperrightimg.setAttribute('src', corner_image);
+	}
 	upperrightimg.style.position = 'absolute';
 	upperrightimg.style.top = 0;
 	upperrightimg.style.right = 0;
-	upperrightimg.setAttribute('src', corner_image);
 	khtml.maplib.base.helpers.imageNotSelectable(upperrightimg);
 	upperrightdiv.appendChild(upperrightimg);
 	this.infobox.appendChild(upperrightdiv);
 	
-	leftdiv = document.createElement('div');
-	leftdiv.style.position = 'absolute';
-	leftdiv.style.width = '10px';
-	leftdiv.style.top = '9px';
-	leftdiv.style.bottom = '9px';
-	leftdiv.style.left = 0;
-	// todo: workaround for IE6, doesnt know borderLeft -> image instead of backgroundColor and border?
-	leftdiv.style.borderLeft = '1px solid grey';
-	leftdiv.style.backgroundColor = 'white';
-	this.infobox.appendChild(leftdiv);
+	this.leftdiv = document.createElement('div');
+	this.leftdiv.style.position = 'absolute';
+	this.leftdiv.style.width = '10px';
+	this.leftdiv.style.top = '10px';
+	this.leftdiv.style.left = 0;
+	this.leftdiv.style.borderLeft = '1px solid gray';
+	this.leftdiv.style.backgroundColor = 'white';
+	this.infobox.appendChild(this.leftdiv);
 	
 	lowerleftdiv = document.createElement('div');
 	lowerleftdiv.style.position = 'absolute';
@@ -139,25 +153,32 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	lowerleftdiv.style.bottom = 0;
 	lowerleftdiv.style.left = 0;
 	lowerleftdiv.style.overflow = 'hidden';
-	lowerleftimg = document.createElement('img');
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+		lowerleftimg = document.createElement('div');
+		lowerleftimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + corner_image + "')";
+		lowerleftimg.style.width = "100%";
+		lowerleftimg.style.height = "100%";
+	}
+	else{
+		lowerleftimg = document.createElement('img');
+		lowerleftimg.setAttribute('src', corner_image);
+	}
 	lowerleftimg.style.position = 'absolute';
 	lowerleftimg.style.bottom = 0;
 	lowerleftimg.style.left = 0;
-	lowerleftimg.setAttribute('src', corner_image);
 	khtml.maplib.base.helpers.imageNotSelectable(lowerleftimg);
 	lowerleftdiv.appendChild(lowerleftimg);
 	this.infobox.appendChild(lowerleftdiv);
 	
-	rightdiv = document.createElement('div');
-	rightdiv.style.position = 'absolute';
-	rightdiv.style.width = '10px';
-	rightdiv.style.top = '9px';
-	rightdiv.style.bottom = '9px';
-	rightdiv.style.right = 0;
-	// todo: workaround for IE6, doesnt know borderRight -> image instead of backgroundColor and border?
-	rightdiv.style.borderRight = '1px solid grey';
-	rightdiv.style.backgroundColor = 'white';
-	this.infobox.appendChild(rightdiv);
+	this.rightdiv = document.createElement('div');
+	this.rightdiv.style.position = 'absolute';
+	this.rightdiv.style.width = '10px';
+	this.rightdiv.style.top = '10px';
+	this.rightdiv.style.right = 0;
+	this.rightdiv.style.borderRight = '1px solid gray';
+	this.rightdiv.style.backgroundColor = 'white';
+	this.infobox.appendChild(this.rightdiv);
 	
 	lowerrightdiv = document.createElement('div');
 	lowerrightdiv.style.position = 'absolute';
@@ -166,28 +187,32 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	lowerrightdiv.style.bottom = 0;
 	lowerrightdiv.style.right = 0;
 	lowerrightdiv.style.overflow = 'hidden';
-	lowerrightimg = document.createElement('img');
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+		lowerrightimg = document.createElement('div');
+		lowerrightimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + corner_image + "')";
+		lowerrightimg.style.width = "100%";
+		lowerrightimg.style.height = "100%";
+	}
+	else{
+		lowerrightimg = document.createElement('img');
+		lowerrightimg.setAttribute('src', corner_image);
+	}
 	lowerrightimg.style.position = 'absolute';
 	lowerrightimg.style.bottom = 0;
 	lowerrightimg.style.right = 0;
-	/*lowerrightimg.style.width = "20px";
-	lowerrightimg.style.height = "20px";
-	lowerrightimg.style.zIndex = 1;*/
-	lowerrightimg.setAttribute('src', corner_image);
 	khtml.maplib.base.helpers.imageNotSelectable(lowerrightimg);
 	lowerrightdiv.appendChild(lowerrightimg);
 	this.infobox.appendChild(lowerrightdiv);
 	
-	lowerdiv = document.createElement('div');
-	lowerdiv.style.position = 'absolute';
-	lowerdiv.style.height = '10px';
-	lowerdiv.style.left = '9px';
-	lowerdiv.style.right = '9px';
-	lowerdiv.style.bottom = 0;
-	// todo: workaround for IE6, doesnt know borderBottom -> image instead of backgroundColor and border?
-	lowerdiv.style.borderBottom = '1px solid grey';
-	lowerdiv.style.backgroundColor = 'white';
-	this.infobox.appendChild(lowerdiv);
+	this.lowerdiv = document.createElement('div');
+	this.lowerdiv.style.position = 'absolute';
+	this.lowerdiv.style.height = '10px';
+	this.lowerdiv.style.left = '10px';
+	this.lowerdiv.style.bottom = 0;
+	this.lowerdiv.style.borderBottom = '1px solid gray';
+	this.lowerdiv.style.backgroundColor = 'white';
+	this.infobox.appendChild(this.lowerdiv);
 	
 	khtml.maplib.base.helpers.setCursor(this.infobox, "default");
 	
@@ -217,8 +242,17 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 		el.style.width = pointerwidth/2+4 - pointerwidth/steps/2*i +2 + 'px';
 		el.style.bottom = (-(i+1)*pointerheight/steps ) + 'px';
 		el.style.left = pointerwidth/2-steps/2*i-(steps-i)/2 + 'px';
-		var img = document.createElement('img');
-		img.setAttribute('src', pointer_image);				// embedded image for close button
+		if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+		&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+			var img = document.createElement('div');
+			img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + pointer_image + "')";
+			img.style.width = "100%";
+			img.style.height = "100%";
+		}
+		else{
+			var img = document.createElement('img');
+			img.setAttribute('src', pointer_image);				// embedded image for pointer
+		}
 		img.style.cursor = 'default'; 
 		img.style.position = 'absolute';
 		img.style.top = (-i*pointerheight/steps) + 'px';
@@ -248,8 +282,17 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	}
 	this.closebutton.style.padding = "0";
 	this.closebutton.style.zIndex = "10000";
-	el = document.createElement('img');
-	el.setAttribute('src', close_image);				// embedded image for close button
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+		el = document.createElement('div');
+		el.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + close_image + "')";
+		el.style.width = "100%";
+		el.style.height = "100%";
+	}
+	else{
+		el = document.createElement('img');
+		el.setAttribute('src', close_image);				// embedded image for close button
+	}
 	el.style.opacity = 0.6; 
 	el.style.cursor = 'pointer'; 
 	el.style.position = 'absolute';
@@ -288,7 +331,11 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	shadow.upperleftimg.style.position = 'absolute';
 	shadow.upperleftimg.style.top = 0;
 	shadow.upperleftimg.style.left = "-309px";
-	shadow.upperleftimg.setAttribute('src', shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.upperleftimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.upperleftimg.setAttribute('src', shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.upperleftimg);
 	this.shadow.upperleftdiv.appendChild(shadow.upperleftimg);
 	this.shadow.appendChild(this.shadow.upperleftdiv);
@@ -304,7 +351,11 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	shadow.upperrightimg.style.position = 'absolute';
 	shadow.upperrightimg.style.top = 0;
 	shadow.upperrightimg.style.right = 0;
-	shadow.upperrightimg.setAttribute('src', shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.upperrightimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.upperrightimg.setAttribute('src', shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.upperrightimg);
 	this.shadow.upperrightdiv.appendChild(shadow.upperrightimg);
 	this.shadow.appendChild(this.shadow.upperrightdiv);
@@ -312,14 +363,18 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	this.shadow.upperdiv = document.createElement('div');
 	this.shadow.upperdiv.style.position = 'absolute';
 	this.shadow.upperdiv.style.height = this.shadow.upperrightdiv.style.height;
-	this.shadow.upperdiv.style.right = this.shadow.upperrightdiv.style.width;
+	//this.shadow.upperdiv.style.right = this.shadow.upperrightdiv.style.width;
 	this.shadow.upperdiv.style.top = this.shadow.upperleftdiv.style.top;
 	this.shadow.upperdiv.style.overflow = "hidden";
 	shadow.upperimg = document.createElement("img");
 	shadow.upperimg.style.position = "absolute";
 	shadow.upperimg.style.top = 0;
 	shadow.upperimg.style.right = "-" + this.shadow.upperrightdiv.style.width;
-	shadow.upperimg.setAttribute("src", shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.upperimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.upperimg.setAttribute("src", shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.upperimg);
 	this.shadow.upperdiv.appendChild(shadow.upperimg);
 	this.shadow.appendChild(this.shadow.upperdiv);
@@ -334,7 +389,11 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	shadow.lowerleftimg.style.position = 'absolute';
 	shadow.lowerleftimg.style.bottom = 0;
 	shadow.lowerleftimg.style.left = 0;
-	shadow.lowerleftimg.setAttribute('src', shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.lowerleftimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.lowerleftimg.setAttribute('src', shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.lowerleftimg);
 	this.shadow.lowerleftdiv.appendChild(shadow.lowerleftimg);
 	this.shadow.appendChild(this.shadow.lowerleftdiv);
@@ -348,7 +407,11 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	shadow.lowerrightimg.style.position = 'absolute';
 	shadow.lowerrightimg.style.bottom = 0;
 	shadow.lowerrightimg.style.right = "-300px";
-	shadow.lowerrightimg.setAttribute('src', shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.lowerrightimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.lowerrightimg.setAttribute('src', shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.lowerrightimg);
 	this.shadow.lowerrightdiv.appendChild(shadow.lowerrightimg);
 	this.shadow.appendChild(this.shadow.lowerrightdiv);
@@ -356,14 +419,18 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	this.shadow.rightdiv = document.createElement("div");
 	this.shadow.rightdiv.style.position = "absolute";
 	this.shadow.rightdiv.style.top = this.shadow.upperrightdiv.style.height;
-	this.shadow.rightdiv.style.bottom = this.shadow.lowerrightdiv.style.height;
+	//this.shadow.rightdiv.style.bottom = this.shadow.lowerrightdiv.style.height;
 	this.shadow.rightdiv.style.right = 0;
 	this.shadow.rightdiv.style.overflow = "hidden";
 	shadow.rightimg = document.createElement("img");
 	shadow.rightimg.style.position = "absolute";
 	shadow.rightimg.style.top = "-" + this.shadow.upperrightdiv.style.height;
 	shadow.rightimg.style.right = 0;
-	shadow.rightimg.setAttribute("src", shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.rightimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.rightimg.setAttribute("src", shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.rightimg);
 	this.shadow.rightdiv.appendChild(shadow.rightimg);
 	this.shadow.appendChild(this.shadow.rightdiv);	
@@ -371,14 +438,18 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	this.shadow.leftdiv = document.createElement("div");
 	this.shadow.leftdiv.style.position = "absolute";
 	this.shadow.leftdiv.style.top = this.shadow.upperleftdiv.style.height;
-	this.shadow.leftdiv.style.bottom = this.shadow.lowerleftdiv.style.height;
+	//this.shadow.leftdiv.style.bottom = this.shadow.lowerleftdiv.style.height;
 	this.shadow.leftdiv.style.left = 0;
 	this.shadow.leftdiv.style.overflow = "hidden";
 	shadow.leftimg = document.createElement("img");
 	shadow.leftimg.style.position = "absolute";
 	shadow.leftimg.style.bottom = "-" + this.shadow.lowerleftdiv.style.height;
 	shadow.leftimg.style.left = 0;
-	shadow.leftimg.setAttribute("src", shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.leftimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.leftimg.setAttribute("src", shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.leftimg);
 	this.shadow.leftdiv.appendChild(shadow.leftimg);
 	this.shadow.appendChild(this.shadow.leftdiv);
@@ -386,13 +457,17 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	this.shadow.middlediv = document.createElement("div");
 	this.shadow.middlediv.style.position = "absolute";
 	this.shadow.middlediv.style.top = this.shadow.upperleftdiv.style.height;
-	this.shadow.middlediv.style.bottom = this.shadow.lowerrightdiv.style.height;
+	//this.shadow.middlediv.style.bottom = this.shadow.lowerrightdiv.style.height;
 	this.shadow.middlediv.style.overflow = "hidden";
 	shadow.middleimg = document.createElement("img");
 	shadow.middleimg.style.position = "absolute";
 	shadow.middleimg.style.top = "-" + this.shadow.upperleftdiv.style.height;
 	shadow.middleimg.style.left = parseInt(shadow.upperleftimg.style.left) - parseInt(this.shadow.upperleftdiv.style.height) + "px";
-	shadow.middleimg.setAttribute("src", shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.middleimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.middleimg.setAttribute("src", shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.middleimg);
 	this.shadow.middlediv.appendChild(shadow.middleimg);
 	this.shadow.appendChild(this.shadow.middlediv);
@@ -407,7 +482,11 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	shadow.pointerimg.style.position = 'absolute';
 	shadow.pointerimg.style.bottom = 0;
 	shadow.pointerimg.style.left = "-255px";
-	shadow.pointerimg.setAttribute('src', shadow_image);
+	if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7))
+		shadow.pointerimg.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + shadow_image + "')";
+	else
+		shadow.pointerimg.setAttribute('src', shadow_image);
 	khtml.maplib.base.helpers.imageNotSelectable(shadow.pointerimg);
 	this.shadow.pointer.appendChild(shadow.pointerimg);
 	this.shadow.appendChild(this.shadow.pointer);
@@ -530,44 +609,51 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 			this.infobox.style.width = 640 + 20 + "px";
 			this.infobox.style.whiteSpace = "normal";
 		}
-		
-		// todo: workaround for IE6 with content stretching over infowindow, no scrollbar, ....
+				
+		this.infobox.content.style.left = "10px";
+		this.infobox.content.style.width = parseInt(this.infobox.style.width) - 20 + "px";
 		
 		// adjust infobox-height according to content
 		if (parseInt(this.infobox.content.offsetHeight) > (parseInt(this.infobox.style.minHeight) - 20)){	// larger than minHeight
-			this.infobox.style.height = this.infobox.content.offsetHeight + 20 + "px";
+			this.infobox.style.height = parseInt(this.infobox.content.offsetHeight) + 20 + "px";
 		}
 		else
 			this.infobox.style.height = this.infobox.style.minHeight;
-		if (parseInt(this.infobox.content.offsetHeight) > (parseInt(this.mapObj.size.height) - 40 - pointerheight)){	// larger than map
-			this.infobox.style.height = this.mapObj.size.height - pointerheight - 20 + "px";	// fixed distance of 10px top and bottom to mapedge
+		if (parseInt(this.infobox.content.offsetHeight) > (parseInt(this.mapObj.size.height) - 40 - pointerheight - this.offset["y"])){	// larger than map
+			this.infobox.style.height = this.mapObj.size.height - pointerheight - this.offset["y"] - 20 + "px";	// fixed distance of 10px top and bottom to mapedge
 			this.infobox.content.style.overflowY = "scroll";
 		}
 		
 		// todo: infobox needs to be resized when images in content are fully loaded
 		
+		this.upperdiv.style.width = parseInt(this.infobox.style.width) - 20 + "px";
+		this.leftdiv.style.height = parseInt(this.infobox.style.height) - 20 + "px";
+		this.rightdiv.style.height = parseInt(this.infobox.style.height) - 20 + "px";
+		this.lowerdiv.style.width = parseInt(this.infobox.style.width) - 20 + "px";
+		
 		this.infobox.content.style.top = "10px";
-		this.infobox.content.style.left = "10px";
-		this.infobox.content.style.right = "10px";
-		this.infobox.content.style.bottom = "10px";
+		this.infobox.content.style.height =  parseInt(this.infobox.style.height) - 20 + "px";
 		this.infobox.pointer.style.left = ((this.infobox.offsetWidth - pointerwidth)/2)  + "px";
 		
 		// calculate shadow size
-		this.shadow.style.width = parseInt(this.infobox.style.width) + parseInt(this.infobox.style.height)/2 + "px";
-		this.shadow.style.height = parseInt(this.infobox.style.height)/2 + pointerheight/2 + "px";
+		this.shadow.style.width = parseInt(this.infobox.style.width) + Math.floor(parseInt(this.infobox.style.height)/2) + "px";
+		this.shadow.style.height = Math.ceil(parseInt(this.infobox.style.height)/2) + pointerheight/2 + "px";
 		this.shadow.pointer.style.left = parseInt(this.infobox.pointer.style.left) - pointerheight/2 + "px";
-		this.shadow.lowerleftdiv.style.right = parseInt(this.shadow.style.width) - parseInt(this.shadow.pointer.style.left) + "px";
-		this.shadow.lowerrightdiv.style.right =  parseInt(this.infobox.style.height)/2 - (parseInt(this.shadow.lowerrightdiv.style.height) - pointerheight/2) - 18 + "px";
+		this.shadow.lowerleftdiv.style.width = this.shadow.pointer.style.left;
+		this.shadow.upperleftdiv.style.left = Math.floor(parseInt(this.infobox.style.height)/2) - (parseInt(this.shadow.lowerrightdiv.style.height) - pointerheight/2) - 9 + "px";
 		this.shadow.lowerrightdiv.style.left = parseInt(this.shadow.pointer.style.left) + parseInt(this.shadow.pointer.style.width) + "px";
-		this.shadow.upperleftdiv.style.left = parseInt(this.infobox.style.height)/2 - (parseInt(this.shadow.lowerrightdiv.style.height) - pointerheight/2) - 9 + "px";
+		this.shadow.lowerrightdiv.style.width =  parseInt(this.shadow.style.width) - parseInt(this.shadow.pointer.style.left) - parseInt(this.shadow.pointer.style.width) - parseInt(this.shadow.upperleftdiv.style.left)  + 9 + "px";
+		
 		this.shadow.upperdiv.style.left = parseInt(this.shadow.upperleftdiv.style.left) + parseInt(this.shadow.upperleftdiv.style.width) + "px";
-		//this.shadow.lowerdiv1.style.right = parseInt(this.shadow.style.width) - parseInt(this.shadow.pointer.style.left) + "px";
-		//this.shadow.lowerdiv2.style.right = parseInt(this.shadow.lowerrightdiv.style.right) + parseInt(this.shadow.lowerrightdiv.style.width) + "px";
-		//this.shadow.lowerdiv2.style.left = parseInt(this.shadow.pointer.style.left) + parseInt(this.shadow.pointer.style.width) + "px";
-		this.shadow.rightdiv.style.width = parseInt(this.infobox.style.height)/2 + "px";
-		this.shadow.leftdiv.style.width = parseInt(this.infobox.style.height)/2 + "px";
+		this.shadow.upperdiv.style.width = parseInt(this.shadow.style.width) - parseInt(this.shadow.upperleftdiv.style.left) - parseInt(this.shadow.upperleftdiv.style.width) - parseInt(this.shadow.upperrightdiv.style.width) + "px";
+		
+		this.shadow.rightdiv.style.width = Math.floor(parseInt(this.infobox.style.height)/2)  + "px";
+		this.shadow.rightdiv.style.height = parseInt(this.shadow.style.height) - 74 + "px";
+		this.shadow.leftdiv.style.width = Math.floor(parseInt(this.infobox.style.height)/2) + "px";
+		this.shadow.leftdiv.style.height = parseInt(this.shadow.style.height) - 74 + "px";
 		this.shadow.middlediv.style.left = this.shadow.leftdiv.style.width;
-		this.shadow.middlediv.style.right = this.shadow.rightdiv.style.width;
+		this.shadow.middlediv.style.width = parseInt(this.shadow.style.width) - parseInt(this.shadow.leftdiv.style.width) - parseInt(this.shadow.rightdiv.style.width) + "px";
+		this.shadow.middlediv.style.height = parseInt(this.shadow.style.height) - parseInt(this.shadow.upperdiv.style.height) - parseInt(this.shadow.lowerleftdiv.style.height) + "px";
 		
 		//suppress zooming map when scrolling with mousewheel in content-area
 		khtml.maplib.base.helpers.eventAttach(this.infobox, "DOMMouseScroll", khtml.maplib.base.helpers.cancelEvent, this, false);
