@@ -2181,6 +2181,9 @@ khtml.maplib.base.Map = function(map) {
 
 		//set the visibleZoom to visible
 		layerDiv.style.visibility = "";
+		//ewi : problem with not showing layers in IE6
+		layerDiv.style.opacity = 1;
+		layerDiv.style.filter = "";
 
 		//not needed images are removed now. Lets check if all needed images are loaded already
 		var notLoaded = 0;

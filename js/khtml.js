@@ -104,3 +104,6 @@ khtml.maplib.Map = function(arg1) {
 khtml.maplib.LatLng = function(arg1,arg2) {
 	return new khtml.maplib.geometry.LatLng(arg1,arg2);
 }
+
+//path to standardmarker-images (IE6-7 do not support data-URI)
+khtml.maplib.standardimagepath = "http://maplib.khtml.org/img/";

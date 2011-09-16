@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<style type="text/css">
+html,body{
+	margin:0px;
+	width: 100%;
+	height:100%;
+}
+#map{
+width:400px;
+height:300px;
+}
+
+	
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../js/overlay/Marker.js"> </script>
+
+<script type="text/javascript">
+
+var mr=new Object(khtml.maplib);
+var map;
+
+
+function init(){
+	map=new mr.Map(document.getElementById("map"));  //dom element
+	
+	var center=new mr.LatLng(0,0);  //latitude, longitude
+	map.centerAndZoom(new mr.LatLng(27, 74),1); //12 = zoomlevel
+	
+	
+	// define position
+	var point = new mr.LatLng(50.875311, 0.351563);
+	// define icon
+	var image = new mr.overlay.MarkerImage(
+	  'img/image.png',
+	  {width: 20,height: 20},
+	  {x: 0,y:0},
+	  {x:10,y:20}
+	);
+	// define shadow
+	var shadow = new mr.overlay.MarkerImage(
+	  'img/shadow.png',
+	  {width:34,height:20},
+	  {x:0,y:0},
+	  {x:10,y:20}
+	);
+	// define shape
+	var shape = {
+	  coord: [14,0,15,1,16,2,17,3,18,4,19,5,19,6,19,7,19,8,19,9,19,10,19,11,19,12,19,13,19,14,18,15,17,16,16,17,15,18,13,19,5,19,4,18,2,17,2,16,1,15,0,14,0,13,0,12,0,11,0,10,0,9,0,8,0,7,0,6,0,5,1,4,2,3,2,2,4,1,5,0,14,0],
+	  type: 'poly'
+	};
+	// moveable marker
+	var marker = new mr.overlay.Marker({
+	  draggable: true,
+	  raiseOnDrag: true,
+	  icon: image,
+	  shadow: shadow,
+	  shape: shape,
+	  map: map,
+	  position: point,
+	  title: "moveable marker"
+	});
+	
+	
+	// static marker on Mt. Uluru/Australia
+	var myLatlng = new mr.LatLng(-25.363882,131.044922);
+	var marker2 = new mr.overlay.Marker({
+        position: myLatlng, 
+        map: map,
+        title:"static marker on Mt. Uluru/Australia"
+    });
+	
+	
+	// moveable custom marker with shadow
+	var marker3 = new mr.overlay.Marker({
+			position: new mr.LatLng(center),
+			icon: {
+				url: "http://maps.gstatic.com/intl/de_de/mapfiles/ms/micons/red-pushpin.png",
+				size: {width:26,height:32},
+				origin: {x:0,y:0},
+				anchor: {
+					x:"-10px",
+					y:"-32px"
+				}
+			},
+			shadow: {
+				url: "http://maps.gstatic.com/intl/de_de/mapfiles/ms/micons/pushpin_shadow.png",
+				size: {
+					width:"40px",
+					height:"32px"
+				},
+				origin: {x: 0,y: 0},
+				anchor: {x: 0,y: -32}
+			},
+			draggable: true,
+			title: "moveable marker",
+			map: map
+		});
+
+	
+	
+	//DOM-element as marker
+	var p=document.createElement("span");
+	p.innerHTML="Hello World!";
+	var marker4 = new mr.overlay.Marker({
+		position: new mr.LatLng(center),
+		icon:{
+			url:p
+		},
+		raiseOnDrag: false, 
+		title:"DOM-element"
+	});
+	map.addOverlay(marker4);
+	marker4.makeMoveable();
+	
+	
+	// another DOM-element marker with css-styles
+	var div=document.createElement("div");
+	var marker5 = new mr.overlay.Marker({position: new mr.LatLng(-20,-20), icon:div, raiseOnDrag: false, title: "DOM-element"});
+	map.addOverlay(marker5);
+	div.style.height = "20px";
+	div.style.width = "20px";
+	div.style.backgroundColor="red";
+	marker5.makeMoveable();
+	
+}
+
+
+</script>
+
+<title>Markers</title>
+</head>
+<body onload="init()"> 
+<div id="map"></div>
+</body>
+</html>

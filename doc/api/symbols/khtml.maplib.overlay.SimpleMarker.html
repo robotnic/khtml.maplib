@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - khtml.maplib.geometry.bounds</title>
+		<title>JsDoc Reference - khtml.maplib.overlay.SimpleMarker</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -201,9 +201,9 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.geometry.bounds.html">khtml.maplib.geometry.bounds</a></li>
+	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
 	
@@ -219,7 +219,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -229,9 +241,13 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.parser.Kml.html">khtml.maplib.parser.Kml</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.parser.MapCSS.html">khtml.maplib.parser.MapCSS</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.parser.Osm.html">khtml.maplib.parser.Osm</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
@@ -239,7 +255,7 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.vector.html">khtml.maplib.vector</a></li>
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -250,7 +266,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class khtml.maplib.geometry.bounds
+				Class khtml.maplib.overlay.SimpleMarker
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -261,13 +277,13 @@ ul.inheritsList
 				
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/js_geometry_Bounds.js.html">Bounds.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/js_overlay_SimpleMarker.js.html">SimpleMarker.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class khtml.maplib.geometry.bounds.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class khtml.maplib.overlay.SimpleMarker.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -280,9 +296,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.geometry.bounds.html#constructor">khtml.maplib.geometry.bounds</a></b>()
+								<b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#constructor">khtml.maplib.overlay.SimpleMarker</a></b>(point, el, options)
 							</div>
-							<div class="description">Static bounds helper methods.</div>
+							<div class="description">Puts the supplied element at the specified positions.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -296,7 +312,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class khtml.maplib.geometry.bounds.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class khtml.maplib.overlay.SimpleMarker.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -307,29 +323,74 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.geometry.bounds.<b><a href="../symbols/khtml.maplib.geometry.bounds.html#.createFrom2Points">createFrom2Points</a></b>(p1, p2)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#clear">clear</a></b>()
 								</div>
-								<div class="description">(Static helper) create a {khtml.maplib.geometry.Bounds} - automatically sort's out which point/coordinate to put to north/east/south/west.</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.geometry.bounds.<b><a href="../symbols/khtml.maplib.geometry.bounds.html#.createFromMultiplePoints">createFromMultiplePoints</a></b>(pointArray)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#down">down</a></b>(evt)
 								</div>
-								<div class="description">(Static helper) create a {khtml.maplib.geometry.Bounds} from a point array.</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.geometry.bounds.<b><a href="../symbols/khtml.maplib.geometry.bounds.html#.merge">merge</a></b>(bounds1, bounds2)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#init">init</a></b>(owner)
 								</div>
-								<div class="description">(Static helper) merge two {khtml.maplib.geometry.Bounds} into 1 bounds.</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#move">move</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#moveable">moveable</a></b>(enabled)
+								</div>
+								<div class="description">Moveable extension</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#position">position</a></b>(pos)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#render">render</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html#up">up</a></b>()
+								</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
@@ -350,17 +411,48 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>khtml.maplib.geometry.bounds</b>()
+						<b>khtml.maplib.overlay.SimpleMarker</b>(point, el, options)
 				</div>
 				
 				<div class="description">
-					Static bounds helper methods.
+					Puts the supplied element at the specified positions.
+Has the possibility to add arbitrary html as marker.
+
+DEPRECATED: please use one {khtml.maplib.displayable.Marker}
+{khtml.maplib.displayable.Marker} has the advantage to support {khtml.maplib.overlay.Layer}. (You can put those marker inside layers)
+
+This is intended to ease transition from the previous khtml api to the new, as you can first only
+rename all uses of khtml.maplib.Marker to khtml.maplib.overlay.Marker and then refactor the code to use the
+new {khtml.maplib.displayable.Marker} class.
 					
 				</div>
 				
 				
 				
 				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{<a href="../symbols/khtml.maplib.LatLng.html">khtml.maplib.LatLng</a>}</span>  <b>point</b>
+								
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								<span class="light fixedFont">{DOMElement}</span>  <b>el</b>
+								
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>options</b>
+								
+							</dt>
+								<dd></dd>
+						
+						</dl>
 					
 					
 					
@@ -381,16 +473,15 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name=".createFrom2Points"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="clear"> </a>
+					<div class="fixedFont">
 					
-					<span class="light">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span>
-					<span class="light">khtml.maplib.geometry.bounds.</span><b>createFrom2Points</b>(p1, p2)
+					
+					<b>clear</b>()
 					
 					</div>
 					<div class="description">
-						(Static helper) create a {khtml.maplib.geometry.Bounds} - automatically sort's out which point/coordinate to put to north/east/south/west.
-Problem solved: which point to use as first/second argument to Bounds constructor.
+						
 						
 						
 					</div>
@@ -398,50 +489,24 @@ Problem solved: which point to use as first/second argument to Bounds constructo
 					
 					
 						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>p1</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>p2</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
 						
 						
 						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span> </dd>
-							
-							</dl>
 						
 						
 						
 
 					<hr />
 				
-					<a name=".createFromMultiplePoints"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="down"> </a>
+					<div class="fixedFont">
 					
 					
-					<span class="light">khtml.maplib.geometry.bounds.</span><b>createFromMultiplePoints</b>(pointArray)
+					<b>down</b>(evt)
 					
 					</div>
 					<div class="description">
-						(Static helper) create a {khtml.maplib.geometry.Bounds} from a point array.
-Problem: You cannot initialize an empty bounds and then add all points, because then it contains the coordinates 0,0.
-Solution: This function creates a bounds at the coordinates of the first two points and enlarges it afterwards with the remaining points.
+						
 						
 						
 					</div>
@@ -453,7 +518,7 @@ Solution: This function creates a bounds at the coordinates of the first two poi
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>pointArray</b>
+									<b>evt</b>
 									
 								</dt>
 								<dd></dd>
@@ -463,29 +528,21 @@ Solution: This function creates a bounds at the coordinates of the first two poi
 						
 						
 						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>null if arguments doesn't less than 2 points. Otherwise {khtml.maplib.geometry.Bounds}</dd>
-							
-							</dl>
 						
 						
 						
 
 					<hr />
 				
-					<a name=".merge"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="init"> </a>
+					<div class="fixedFont">
 					
-					<span class="light">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span>
-					<span class="light">khtml.maplib.geometry.bounds.</span><b>merge</b>(bounds1, bounds2)
+					
+					<b>init</b>(owner)
 					
 					</div>
 					<div class="description">
-						(Static helper) merge two {khtml.maplib.geometry.Bounds} into 1 bounds.
-The original input bounds are not modified!
+						
 						
 						
 					</div>
@@ -497,13 +554,7 @@ The original input bounds are not modified!
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>bounds1</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>bounds2</b>
+									<b>owner</b>
 									
 								</dt>
 								<dd></dd>
@@ -513,13 +564,164 @@ The original input bounds are not modified!
 						
 						
 						
+						
+						
+						
+
+					<hr />
+				
+					<a name="move"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>move</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
 						
 							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
+							<dt class="heading">Parameters:</dt>
 							
-								<dd><span class="light fixedFont">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span> </dd>
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="moveable"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>moveable</b>(enabled)
+					
+					</div>
+					<div class="description">
+						Moveable extension
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>enabled</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="position"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>position</b>(pos)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>pos</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="render"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>render</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="up"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>up</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
 						
 						
 						
@@ -538,7 +740,7 @@ The original input bounds are not modified!
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 19 2011 00:04:11 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Sep 14 2011 09:52:32 GMT+0200 (MESZ)
 		</div>
 	</body>
 </html>

@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - khtml.maplib.geometry.bounds</title>
+		<title>JsDoc Reference - khtml.maplib.overlay.InfoWindow</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -201,9 +201,9 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.geometry.bounds.html">khtml.maplib.geometry.bounds</a></li>
+	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
 	
@@ -219,7 +219,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -229,9 +241,13 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.parser.Kml.html">khtml.maplib.parser.Kml</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.parser.MapCSS.html">khtml.maplib.parser.MapCSS</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.parser.Osm.html">khtml.maplib.parser.Osm</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
@@ -239,7 +255,7 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.vector.html">khtml.maplib.vector</a></li>
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -250,7 +266,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class khtml.maplib.geometry.bounds
+				Class khtml.maplib.overlay.InfoWindow
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -261,13 +277,13 @@ ul.inheritsList
 				
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/js_geometry_Bounds.js.html">Bounds.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/js_overlay_InfoWindow.js.html">InfoWindow.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class khtml.maplib.geometry.bounds.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class khtml.maplib.overlay.InfoWindow.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -280,9 +296,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.geometry.bounds.html#constructor">khtml.maplib.geometry.bounds</a></b>()
+								<b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#constructor">khtml.maplib.overlay.InfoWindow</a></b>(InfoWindowOptions)
 							</div>
-							<div class="description">Static bounds helper methods.</div>
+							<div class="description">Generates an InfoWindow-object with the specified InfoWindowOptions.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -296,7 +312,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class khtml.maplib.geometry.bounds.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class khtml.maplib.overlay.InfoWindow.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -307,29 +323,66 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.geometry.bounds.<b><a href="../symbols/khtml.maplib.geometry.bounds.html#.createFrom2Points">createFrom2Points</a></b>(p1, p2)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#_clickdetectmove">_clickdetectmove</a></b>(evt)
 								</div>
-								<div class="description">(Static helper) create a {khtml.maplib.geometry.Bounds} - automatically sort's out which point/coordinate to put to north/east/south/west.</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.geometry.bounds.<b><a href="../symbols/khtml.maplib.geometry.bounds.html#.createFromMultiplePoints">createFromMultiplePoints</a></b>(pointArray)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#_clickdetectstart">_clickdetectstart</a></b>(evt)
 								</div>
-								<div class="description">(Static helper) create a {khtml.maplib.geometry.Bounds} from a point array.</div>
+								<div class="description">workaround for detecting a click on touch devices
+original click event is suppressed by touchmove-handler of the map</div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.geometry.bounds.<b><a href="../symbols/khtml.maplib.geometry.bounds.html#.merge">merge</a></b>(bounds1, bounds2)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#_clickdetectstop">_clickdetectstop</a></b>(evt)
 								</div>
-								<div class="description">(Static helper) merge two {khtml.maplib.geometry.Bounds} into 1 bounds.</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#_moveMap">_moveMap</a></b>()
+								</div>
+								<div class="description">move map when opening infobox thats outside</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#close">close</a></b>()
+								</div>
+								<div class="description">close the infowindow</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#open">open</a></b>(mapObj, anchorObject)
+								</div>
+								<div class="description">open the infowindow on the map at an anchorObject</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#render">render</a></b>()
+								</div>
+								<div class="description">render infowindow, pointer, shadow, .</div>
 							</td>
 						</tr>
 					
@@ -350,23 +403,56 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>khtml.maplib.geometry.bounds</b>()
+						<b>khtml.maplib.overlay.InfoWindow</b>(InfoWindowOptions)
 				</div>
 				
 				<div class="description">
-					Static bounds helper methods.
+					Generates an InfoWindow-object with the specified InfoWindowOptions.<br/>
+Can be opened on any anchorObject, that exposes position and pixelOffset function.
 					
 				</div>
 				
 				
 				
+				<pre class="code">Minimum code to open an infowindow on a marker:
+   <pre><code>
+  var infowindow = new mr.overlay.InfoWindow({
+  	content: 'Text in the InfoWindow'
+  });
+  
+  marker.attachEvent( 'click', function() {
+  	// Opening the InfoWindow
+  	infowindow.open(map, this);
+  }); 
+  </code></pre></pre>
+				
+				
+				
 				
 					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{<a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a>}</span>  <b>InfoWindowOptions</b>
+								
+							</dt>
+								<dd>Options for InfoWindow</dd>
+						
+						</dl>
 					
 					
 					
 					
 					
+					
+					
+						<dl class="detailList">
+						<dt class="heading">See:</dt>
+						
+							<dd>Example (click on the marker): <a href="../../../examples/infowindow/infowindow.html">Infowindow</a>}</dd>
+						
+						</dl>
 					
 
 			</div>
@@ -381,16 +467,15 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name=".createFrom2Points"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="_clickdetectmove"> </a>
+					<div class="fixedFont">&lt;private&gt; 
 					
-					<span class="light">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span>
-					<span class="light">khtml.maplib.geometry.bounds.</span><b>createFrom2Points</b>(p1, p2)
+					
+					<b>_clickdetectmove</b>(evt)
 					
 					</div>
 					<div class="description">
-						(Static helper) create a {khtml.maplib.geometry.Bounds} - automatically sort's out which point/coordinate to put to north/east/south/west.
-Problem solved: which point to use as first/second argument to Bounds constructor.
+						
 						
 						
 					</div>
@@ -402,13 +487,7 @@ Problem solved: which point to use as first/second argument to Bounds constructo
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>p1</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>p2</b>
+									<b>evt</b>
 									
 								</dt>
 								<dd></dd>
@@ -418,30 +497,22 @@ Problem solved: which point to use as first/second argument to Bounds constructo
 						
 						
 						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span> </dd>
-							
-							</dl>
 						
 						
 						
 
 					<hr />
 				
-					<a name=".createFromMultiplePoints"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="_clickdetectstart"> </a>
+					<div class="fixedFont">&lt;private&gt; 
 					
 					
-					<span class="light">khtml.maplib.geometry.bounds.</span><b>createFromMultiplePoints</b>(pointArray)
+					<b>_clickdetectstart</b>(evt)
 					
 					</div>
 					<div class="description">
-						(Static helper) create a {khtml.maplib.geometry.Bounds} from a point array.
-Problem: You cannot initialize an empty bounds and then add all points, because then it contains the coordinates 0,0.
-Solution: This function creates a bounds at the coordinates of the first two points and enlarges it afterwards with the remaining points.
+						workaround for detecting a click on touch devices
+original click event is suppressed by touchmove-handler of the map
 						
 						
 					</div>
@@ -453,7 +524,7 @@ Solution: This function creates a bounds at the coordinates of the first two poi
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>pointArray</b>
+									<b>evt</b>
 									
 								</dt>
 								<dd></dd>
@@ -463,29 +534,21 @@ Solution: This function creates a bounds at the coordinates of the first two poi
 						
 						
 						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>null if arguments doesn't less than 2 points. Otherwise {khtml.maplib.geometry.Bounds}</dd>
-							
-							</dl>
 						
 						
 						
 
 					<hr />
 				
-					<a name=".merge"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="_clickdetectstop"> </a>
+					<div class="fixedFont">&lt;private&gt; 
 					
-					<span class="light">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span>
-					<span class="light">khtml.maplib.geometry.bounds.</span><b>merge</b>(bounds1, bounds2)
+					
+					<b>_clickdetectstop</b>(evt)
 					
 					</div>
 					<div class="description">
-						(Static helper) merge two {khtml.maplib.geometry.Bounds} into 1 bounds.
-The original input bounds are not modified!
+						
 						
 						
 					</div>
@@ -497,13 +560,99 @@ The original input bounds are not modified!
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>bounds1</b>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_moveMap"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_moveMap</b>()
+					
+					</div>
+					<div class="description">
+						move map when opening infobox thats outside
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="close"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>close</b>()
+					
+					</div>
+					<div class="description">
+						close the infowindow
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="open"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>open</b>(mapObj, anchorObject)
+					
+					</div>
+					<div class="description">
+						open the infowindow on the map at an anchorObject
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>mapObj</b>
 									
 								</dt>
 								<dd></dd>
 							
 								<dt>
-									<b>bounds2</b>
+									<b>anchorObject</b>
 									
 								</dt>
 								<dd></dd>
@@ -514,12 +663,30 @@ The original input bounds are not modified!
 						
 						
 						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a>}</span> </dd>
-							
-							</dl>
+						
+						
+
+					<hr />
+				
+					<a name="render"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>render</b>()
+					
+					</div>
+					<div class="description">
+						render infowindow, pointer, shadow, ...
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
 						
 						
 						
@@ -538,7 +705,7 @@ The original input bounds are not modified!
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 19 2011 00:04:42 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Sep 14 2011 09:52:54 GMT+0200 (MESZ)
 		</div>
 	</body>
 </html>
