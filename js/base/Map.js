@@ -531,7 +531,7 @@ khtml.maplib.base.Map = function(map) {
 		this.moveAnimationBlocked = true;
 		if (this.mousedownTime2 != null) {
 			var now = (new Date()).getTime();
-			if (now - this.mousedownTime2 < this.doubleclickTime2) {
+			if (now - this.mousedownTime2 < this._doubleclickTime2) {
 				this._doubleclick(evt);
 				return;
 			}
@@ -2798,10 +2798,10 @@ khtml.maplib.base.Map = function(map) {
 
 	//touchscreen
 	this.mousedownTime = null;
-	this.doubleclickTime = 400;
+	this._doubleclickTime = 400;
 	//mouse
 	this.mousedownTime2 = null;
-	this.doubleclickTime2 = 500;
+	this._doubleclickTime2 = 500;
 
 	this.zoomOutTime = 1000;
 	this.zoomOutSpeed = 0.01;
