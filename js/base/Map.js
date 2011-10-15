@@ -613,11 +613,13 @@ khtml.maplib.base.Map = function(map) {
 		return false;
 	}
 	this._mouseup = function(evt) {
+		/*
 		if (evt.preventDefault) {
 			evt.preventDefault(); // The W3C DOM way
 		} else {
 			evt.returnValue = false; // The IE way
 		}
+		*/
 		// ewi: hand-cursor
 		khtml.maplib.base.helpers.setCursor(this.mapParent, "grab");
 		this.lastMouseX = this.pageX(evt);
@@ -2851,7 +2853,7 @@ khtml.maplib.base.Map = function(map) {
 	khtml.maplib.base.helpers.eventAttach(map, "touchend", this._end, this, false);
 	khtml.maplib.base.helpers.eventAttach(w, "mousemove", this._mousemove, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "mousedown", this._mousedown, this, false);
-	khtml.maplib.base.helpers.eventAttach(w, "mouseup", this._mouseup, this, false);
+	khtml.maplib.base.helpers.eventAttach(w, "mouseup", this._mouseup, this, true);
 	khtml.maplib.base.helpers.eventAttach(w, "orientationchange", this.reSize, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "DOMMouseScroll", this._mousewheel, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "dblclick", this._doubleclick, this, false);
