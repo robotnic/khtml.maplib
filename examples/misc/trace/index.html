@@ -1,0 +1,35 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+width:600px;
+height:400px;
+}
+</style>
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript">
+var map=null;
+var line=null;
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	var center=new khtml.maplib.LatLng(48.2,16.5);
+	map.centerAndZoom(center,12);
+	map.addCallbackFunction(trace);
+	line=new khtml.maplib.geometry.Feature({type:"LineString",coordinates:[center]});
+	map.featureCollection.appendChild(line);
+	line.style.stroke="red";
+	line.style.strokeWidth="4";
+}
+function trace(){
+	var pos=this.center();
+	line.geometry.coordinates.push(pos);	
+}
+</script>
+</head>
+<body onload="init()">
+move the map
+<div id="map">
+
+</div>
+</body>
+</html>
