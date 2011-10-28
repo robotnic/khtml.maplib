@@ -234,11 +234,18 @@ khtml.maplib.overlay.Vector = function(backend) {
 			return new khtml.maplib.LatLng(sumLat/polyline.points.length/*lat*/, sumLng/polyline.points.length/*lng*/);
 		}
 		var that=this;
-		polyline.bbox=this.makeBounds(polyline.geometry.coordinates);
+		polyline.repairBBox=function(force){
+			if(force || polyline.geometry.coordinates.length != polyline.length){
+				polyline.bbox=that.makeBounds(polyline.geometry.coordinates);
+				polyline.length=polyline.geometry.coordinates.length;
+			}
+		}
+		polyline.repairBBox(true);
 		//render a single vector element
 		polyline.render=function(){
 			that.render(polyline);
 		}
+		polyline.bbox=this.makeBounds(polyline.geometry.coordinates);
 		polyline.clear=function(){
 			//VML missing
 			if(that.backend=="svg"){
@@ -389,6 +396,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 		}else{
 			var line=a;  //a single vector. mainly used for editing a vector. Rendering only one line is faster than rendering everything (on SVG).
 		}
+		line.repairBBox(); //here maybe optimization is possible. 
 
 		//console.log(line,line.bounds.sw().lat(),line.bounds.sw().lng(),line.bounds.ne().lat(),line.bounds.ne().lng());
 		//check if line bounds are inside map bounds
