@@ -325,9 +325,18 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#clear">clear</a></b>()
+								</div>
+								<div class="description">Remove the infowindow from the map.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#close">close</a></b>()
 								</div>
-								<div class="description">close the infowindow</div>
+								<div class="description">Closes the infowindow.</div>
 							</td>
 						</tr>
 					
@@ -336,7 +345,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#open">open</a></b>(mapObj, anchorObject)
 								</div>
-								<div class="description">open the infowindow on the map at an anchorObject</div>
+								<div class="description">Open the infowindow on the map at an anchorObject.</div>
 							</td>
 						</tr>
 					
@@ -345,7 +354,16 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#render">render</a></b>()
 								</div>
-								<div class="description">render infowindow, pointer, shadow, .</div>
+								<div class="description">Render infowindow, pointer and shadow.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.InfoWindow.html#setContent">setContent</a></b>(content)
+								</div>
+								<div class="description">Set the content for the infowindow.</div>
 							</td>
 						</tr>
 					
@@ -430,6 +448,31 @@ Can be opened on any anchorObject, that exposes position and pixelOffset functio
 					Method Detail
 				</div>
 				
+					<a name="clear"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clear</b>()
+					
+					</div>
+					<div class="description">
+						Remove the infowindow from the map. Infowindow still exists, will still be rendered.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="close"> </a>
 					<div class="fixedFont">
 					
@@ -438,7 +481,7 @@ Can be opened on any anchorObject, that exposes position and pixelOffset functio
 					
 					</div>
 					<div class="description">
-						close the infowindow
+						Closes the infowindow. Will not be rendered any more.
 						
 						
 					</div>
@@ -463,7 +506,8 @@ Can be opened on any anchorObject, that exposes position and pixelOffset functio
 					
 					</div>
 					<div class="description">
-						open the infowindow on the map at an anchorObject
+						Open the infowindow on the map at an anchorObject. The infowindow is moved with the anchorObject.
+	 The anchorObject is not necessarily needed. The infowindow can also be positioned via the position property in the InfoWindowOptions.
 						
 						
 					</div>
@@ -475,16 +519,16 @@ Can be opened on any anchorObject, that exposes position and pixelOffset functio
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>mapObj</b>
+									<span class="light fixedFont">{<a href="../symbols/khtml.maplib.Map.html">khtml.maplib.Map</a>}</span> <b>mapObj</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The map to open the infowindow in.</dd>
 							
 								<dt>
-									<b>anchorObject</b>
-									
+									<span class="light fixedFont">{Object}</span> <b>anchorObject</b>
+									<i>Optional</i>
 								</dt>
-								<dd></dd>
+								<dd>A object of the map that provides a getPosition()-method.</dd>
 							
 							</dl>
 						
@@ -505,13 +549,49 @@ Can be opened on any anchorObject, that exposes position and pixelOffset functio
 					
 					</div>
 					<div class="description">
-						render infowindow, pointer, shadow, ...
+						Render infowindow, pointer and shadow. Automatically called by the map.
 						
 						
 					</div>
 					
 					
 					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setContent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setContent</b>(content)
+					
+					</div>
+					<div class="description">
+						Set the content for the infowindow.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>content</b>
+									
+								</dt>
+								<dd>Any string, may also contain HTML-tags.</dd>
+							
+							</dl>
 						
 						
 						
@@ -534,7 +614,7 @@ Can be opened on any anchorObject, that exposes position and pixelOffset functio
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Sep 14 2011 09:52:32 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Nov 08 2011 10:08:02 GMT+0100 (MEZ)
 		</div>
 	</body>
 </html>
