@@ -1,0 +1,109 @@
+<html>
+<head>
+<style type="text/css">
+.button{
+position:absolute;top:520px;left:330px;width:20px;height:20px;background-color:red;
+opacity:0;
+}
+</style>
+<title>OpenStreetMap TV</title>
+
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/base/Map.js"> </script>
+
+<script type="text/javascript">
+
+var animcount=0;
+var bikemap="http://a.andy.sandbox.cloudmade.com/tiles/cycle/{z}/{x}/{y}.png";
+var osma="http://c.tah.openstreetmap.org/Tiles/tile/{z}/{x}/{y}.png";
+var mapnik="http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+var map=null;
+var wms;
+
+function init(){
+
+        var centerLat=48.2;
+        var centerLon=5.633;
+
+        map=new khtml.maplib.Map(document.getElementById("map"));
+        var center=new khtml.maplib.LatLng(centerLat,centerLon);
+        //var center=new kPoint(-33.42628,-70.56656);   //santiago
+
+	wms=null;
+//	var wms="/phototiles/tiles3/img-{z}-{x}-{y}.jpg";
+
+
+	if(wms){
+//		setFunc();
+		
+		map.tiles=function(x,y,z){
+                        //var src="http://khm1.google.com/kh/v=58&x="+x+"&s=&y="+y+"&z="+z+"&s=Gal";
+			src = wms.replace(/{x}/, x);
+			src = src.replace(/{y}/, y);
+			src = src.replace(/{z}/, z);
+                        return src;
+		}
+	
+		mapType(mapnik);
+        }
+
+
+        map.center(center,1);
+
+}
+
+function mapType(type){
+	wms=type;		
+	map.tiles({
+		  maxzoom:18,
+		  minzoom:1,
+		  src:function(x,y,z){
+                        src = wms.replace(/{x}/, x);
+                        src = src.replace(/{y}/, y);
+                        src = src.replace(/{z}/, z);
+                        return src;
+
+		  },
+		  copyright:"osm"
+	});
+		
+	var center=map.center();
+	var zoom=map.zoom();
+	if(center){
+		map.centerAndZoom(center,zoom);
+	}
+
+}
+/*
+function mapType(type){
+	wms=type;
+}
+function osma(){
+	wms=osma;
+	alert(wms);
+}
+*/
+
+
+</script>
+</head>
+<body onload="init()" style="margin:0">
+<div style="position:absolute;top:0px;left:0px;z-index:10">
+</div>
+<div id="map" style="width:600px;height:400px;border:1px solid red"> 
+<img style="margin-left:50px" src="images/rauschen.gif"/>
+<!--
+image from http://commons.wikimedia.org/wiki/File:Stig_Lindberg_Luma.jpg
+-->
+<img style="position:absolute;top:0px;left:0px;" src="images/tv.png"/>
+</div>
+<div class="button" style="left:330px;" onmousedown="mapType(mapnik)"> </div>
+<div class="button" style="left:362px;" onmousedown="mapType(osma)"> </div>
+<div class="button" style="left:394px;" onmousedown="mapType(bikemap)"> </div>
+<div class="button" style="left:461px;" onmousedown="search()"> </div>
+<!--
+<div id="debug" style="position:absolute;top:0;left:0;z-index:20">debug</div>
+-->
+</body>
+</html>
