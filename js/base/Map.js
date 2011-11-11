@@ -2610,7 +2610,7 @@ khtml.maplib.base.Map = function(map) {
 		a.setAttribute("href","http://maplib.khtml.org");
 		a.setAttribute("target","_blank");
 		logo.setAttribute("src","http://maplib.khtml.org/favicon.png");
-		logo.style.zIndex=10;
+		//logo.style.zIndex=10;
 		logo.style.border="0px solid black";
 		logo.style.position="absolute";
 		var top=this.size.height+this.size.deltaTop -24;
