@@ -1,0 +1,111 @@
+<html>
+<!--
+Author: Bernhard Zwischenbrugger
+This page all free to use (Copyleft)
+The maplib is lgpl
+-->
+<head>
+<style type="text/css">
+#map{
+width:800px;
+height:600px;
+border:!px solid black;
+}
+</style>
+<title>keepright</title>
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+
+<script type="text/javascript">
+var xmlhttp=new XMLHttpRequest();
+var map=null;
+var infobox=new Array();
+var marker=new Array();
+var openMarker=null;
+
+function init(){
+	map=khtml.maplib.Map(document.getElementById("map"));
+	map.centerAndZoom(new khtml.maplib.LatLng(48.209473908172887,16.370225501046987),15)
+	//daten nachladen beim verschieben der Karte
+	map.addCallbackFunction(movemap);
+
+	//daten laden
+	loadData();
+}
+
+function loadData(){
+	var lat=map.center().lat();
+	var lng=map.center().lng();
+	var zoom=map.zoom();
+	if(zoom<14)return;
+	document.getElementById("loading").style.display="";
+	var url="points.php?lat="+lat+"&lon="+lng+"&zoom="+zoom+"&show_ign=1&show_tmpign=1&lang=en&ch=0,30,40,50,60,70,90,100,110,120,130,150,160,170,180,191,192,193,194,195,196,197,198,201,202,203,204,205,206,207,208,210,220,231,232,270,281,282,283,284,291,292,293,311,312,313,350,380,411,412,413";
+	xmlhttp.open("GET",url,true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			render(xmlhttp.responseText);
+		}
+	}
+	xmlhttp.send(null);
+}
+
+function render(text){
+	map.removeOverlays();
+	var lines=text.split("\n");
+	for(var i=1;i<lines.length -1;i++){
+		var line=lines[i];
+		var data=line.split("\t");
+
+		//see http://wiki.openstreetmap.org/wiki/Marker_API	
+		marker[i] = new khtml.maplib.overlay.Marker({
+			position: new khtml.maplib.LatLng(data[0], data[1]),
+			map: map,
+			icon: {
+				url: "http://keepright.ipax.at/"+data[13],
+				size: {width: 24, height: 24},
+				origin: {x: 0, y: 0},
+				anchor: {
+					x: "-10px",
+					y: "-12px"
+				}
+			},
+			title: "moveable marker"
+		});	
+		var html="<b>"+data[2]+"</b><b>"+data[5]+"</b>";
+		html+="<a href='http://www.openstreetmap.org/browse/node/"+data[6]+"'>"+data[6]+"</a>";
+		html+="<div style='background-color:pink'>"+data[10]+"</div>";
+		var infobox = new khtml.maplib.overlay.InfoWindow({content: html});
+		marker[i].infobox=infobox;
+
+		//for mouseover mouseout sollte das wie mit dem click gehen.
+		marker[i].attachEvent('click', (function(marker, i) {
+                    return function() {
+			if(openMarker!=null){
+				openMarker.close();
+			}
+                        marker[i].infobox.open(map, this);
+			openMarker=marker[i].infobox;	
+                    }
+                })(marker, i));
+	}
+	
+	document.getElementById("loading").style.display="none";
+}
+
+var timeout=null;
+function movemap(){
+	if(timeout){
+		clearTimeout(timeout);
+	}
+	var func=function(){
+		loadData();
+	}
+	timeout=setTimeout(func,100);
+}
+</script>
+</head>
+<body onload="init()">
+<div id="map">
+</div>
+<div id="loading" style="display:none;font-size:20px">loading...</div>
+</body>
+</html>
