@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<style type="text/css">
+body{
+margin:0px;
+overflow:hidden;
+}
+#map{
+width:400px;
+height:300px;
+position:absolute;
+top:100px;
+left:100px;
+padding:5px;
+border:1px solid #efefef;
+background-color:white;
+-moz-box-shadow: 1px 1px 14px #dfdfdf;
+-webkit-box-shadow: 1px 1px 14px #dfdfdf;
+box-shadow: 1px 1px 14px #dfdfdf;
+
+}
+</style>
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript">
+
+
+var mr=new Object(khtml.maplib);
+var map=null; //global map object
+
+var fhstp=new mr.LatLng(48.21379182397267,15.63226605436995);
+
+function init(){
+	map=new mr.Map(document.getElementById("map"));
+	var center=new mr.LatLng(48.2,15.6);
+	map.centerAndZoom(center,12); //12 = zoomlevel
+	//animations();
+
+	//fullscreen();
+}
+
+function zoomAni(){
+	for(var i=10; i <=180; i++){
+		var z=i/10;
+		var cmd="map.centerAndZoom(fhstp,"+z+")";
+		setTimeout(cmd,(i -10)*20);
+	}
+}
+
+
+var origmapstyle=new Object();
+function fullscreen(){
+	var button=document.getElementById("fullscreenbutton");
+	var mapdiv= document.getElementById("map")
+	if(button.textContent=="fullscreen"){
+		button.textContent="back";
+		var padding="0px";
+	}else{
+		button.textContent="fullscreen";
+		var padding=origmapstyle.padding;
+		origscreen();
+		return;
+	}
+	
+
+	origmapstyle.top=parseFloat(mapdiv.offsetTop);
+	origmapstyle.left=parseFloat(mapdiv.offsetLeft);
+	origmapstyle.width=parseFloat(mapdiv.offsetWidth);
+	origmapstyle.height=parseFloat(mapdiv.offsetHeight);
+	origmapstyle.padding=mapdiv.style.padding;
+	mapdiv.style.padding=padding;
+	var steps=20;
+	for(var i=00; i <= steps;i++){
+		var cmd="fullscreenIt("+i+","+steps+")";
+		setTimeout(cmd,i*20);	
+	}
+//	setTimeout("origscreen()",5000);	
+	document.getElementById("fullscreenbutton").textContent="back";
+}
+
+function origscreen(){
+	
+	var button=document.getElementById("fullscreenbutton");
+	var mapdiv= document.getElementById("map")
+	mapdiv.style.padding=origmapstyle.padding;
+	var steps=40;
+	for(var i=steps; i >= 0;i--){
+		var cmd="fullscreenIt("+i+","+steps+")";
+		setTimeout(cmd,(steps -i)*20);	
+	}
+	button.textContent="fullscreen";
+}
+
+
+function fullscreenIt(i,steps){
+	var mapdiv= document.getElementById("map");
+	mapdiv.style.top=origmapstyle.top*(steps-i)/steps+"px";
+	mapdiv.style.left=origmapstyle.left*(steps-i)/steps+"px";
+	mapdiv.style.width=origmapstyle.width+(parseFloat(window.innerWidth ) - origmapstyle.width)*i/steps+"px";
+	mapdiv.style.height=origmapstyle.height+(parseFloat(window.innerHeight) - origmapstyle.height)*i/steps+"px";
+//	mapdiv.style.padding=origmapstyle.padding;
+	
+	map.redraw();
+}
+
+</script>
+</head>
+<body onload="init()" onkeydown="if(evt.keyCode==27)origscreen()">
+<h1>Frame based Animations</h1>
+<p>The map libaray should automaticaly drop frames if the load is too high to prevent stall. Before loosing animation, slow overlays are dropped. Firefox has weak support for that.
+<div id="map">
+</div>
+<button id="fullscreenbutton" style="position:absolute;bottom:3px;z-index:10;font-size:20px;" onmousedown="fullscreen()">fullscreen</button> 
+</body>
+</html>
