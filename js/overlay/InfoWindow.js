@@ -23,12 +23,12 @@
 /**
  * generates a InfoWindowOptions-object<br/>
  * options for a infowindow
- * @param {string} content content to show in infowindow
- * @param {bool} disableAutoPan  not used yet, only for compatibility to Google Markers
- * @param {number} maxWidth not used yet, only for compatibility to Google Markers
- * @param pixelOffset  not used yet, only for compatibility to Google Markers
- * @param {khtml.maplib.LatLng} position LatLng where to place InfoWindow when it's not attached to an anchor
- * @param {number} zIndex  not used yet, only for compatibility to Google Markers
+ * @param {string} [content] Content to show in infowindow. Any string, may also contain HTML-tags.
+ * @param {bool} [disableAutoPan]  not used yet, only for compatibility to Google Markers
+ * @param {number} [maxWidth] not used yet, only for compatibility to Google Markers
+ * @param [pixelOffset]  not used yet, only for compatibility to Google Markers
+ * @param {khtml.maplib.LatLng} [position] LatLng where to place InfoWindow when it's not attached to an anchor
+ * @param {number} [zIndex]  not used yet, only for compatibility to Google Markers
  * @class
 */
 khtml.maplib.overlay.InfoWindowOptions = function(content, disableAutoPan, maxWidth, pixelOffset, position, zIndex){
@@ -64,6 +64,7 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	
 	this.infobox = document.createElement("div");
 	this.infobox.style.position = "absolute";
+	this.infobox.style.left = "-1000px";
 		
 	// HTML5-infobox
 	//this.infobox.style.border = "1px solid grey";
@@ -72,8 +73,8 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	//this.infobox.style.WebkitBorderRadius = "10px";
 	//this.infobox.style.padding = "15px";
 	
-	this.infobox.style.minWidth = "210px";
-	this.infobox.style.minHeight = "80px";
+	//this.infobox.style.minWidth = "210px";
+	//this.infobox.style.minHeight = "80px";
 	//this.infobox.style.overflow = "visible";
 	this.infobox.style.whiteSpace = "nowrap";
 	
@@ -320,6 +321,7 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	shadow = {};
 	this.shadow = document.createElement('div');
 	this.shadow.style.position = "absolute";
+	this.shadow.style.left = "-1000px";
 	
 	this.shadow.upperleftdiv = document.createElement('div');
 	this.shadow.upperleftdiv.style.position = 'absolute';
@@ -494,7 +496,7 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	
 	
 	/**
-	 * render infowindow, pointer, shadow, ...
+	 * Render infowindow, pointer and shadow. Automatically called by the map.
 	*/
 	this.render = function() {
 		// attach infobox to anchorObject
@@ -537,13 +539,13 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 			else
 				this.xy = this.mapObj.latlngToXY(this.mapObj.getCenter());	// point to center of map
 		}
-			
-		this.infobox.style.left = (this.xy["x"] + this.offset["x"] - ((this.infobox.offsetWidth - pointerwidth)/2))  + "px";
+		
+		this.infobox.style.left = (this.xy["x"] + this.offset["x"] - ((parseInt(this.infobox.style.width) - pointerwidth)/2))  + "px";
 		this.infobox.style.bottom =  (-this.xy["y"] + this.offset["y"] + pointerheight -1)  + "px";
 		this.infobox.style.zIndex = parseInt(this.xy["y"]) + this.mapObj.size.height;
 		
 		this.shadow.style.left = parseInt(this.infobox.style.left) + pointerheight/2 + "px";
-		this.shadow.style.bottom = parseInt(this.infobox.style.bottom) - pointerheight + "px";	
+		this.shadow.style.bottom = parseInt(this.infobox.style.bottom) - pointerheight + "px";
 		this.shadow.style.zIndex = parseInt(this.xy["y"]);
 		
 		// move map when opening infobox thats outside
@@ -554,7 +556,10 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	
 	
 	/**
-	 * open the infowindow on the map at an anchorObject
+	 * Open the infowindow on the map at an anchorObject. The infowindow is moved with the anchorObject.
+	 The anchorObject is not necessarily needed. The infowindow can also be positioned via the position property in the InfoWindowOptions.
+	 * @param {khtml.maplib.Map} mapObj The map to open the infowindow in.
+	 * @param {Object} [anchorObject] A object of the map that provides a getPosition()-method.
 	*/
 	this.open = function(mapObj, anchorObject) {
 		this.mapObj = mapObj;
@@ -589,39 +594,41 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 			
 		// append infobox
         this.mapObj.overlayDiv.infoboxDiv.appendChild(this.infobox);
-		this.mapObj.addOverlay(this);
-		
 		this.opened = true;
+		this.mapObj.addOverlay(this);
 		
 		//alert(this.infobox.content.offsetWidth + " " + this.infobox.content.offsetHeight);
 		
 		// adjust infobox-width according to content
-		if (parseInt(this.infobox.content.offsetWidth) > (parseInt(this.infobox.style.minWidth) - 20)){	// larger than minWidth
-			this.infobox.style.width = this.infobox.content.offsetWidth + 20 + "px";
+		if (parseInt(this.infobox.content.offsetWidth) > (270 - 20)){	// larger than minWidth
+			this.infobox.style.width = parseInt(this.infobox.content.offsetWidth) + 20 + "px";
 		}
 		else
-			this.infobox.style.width = this.infobox.style.minWidth;
+			this.infobox.style.width = "270px";
 		if (parseInt(this.infobox.content.offsetWidth) > (parseInt(this.mapObj.size.width) - 40)){	// larger than map
-			this.infobox.style.width = this.mapObj.size.width - 20 + "px";	// fixed distance of 10px left an right to mapedge
+			this.infobox.style.width = parseInt(this.mapObj.size.width) - 20 + "px";	// fixed distance of 10px left an right to mapedge
 			this.infobox.style.whiteSpace = "normal";
 		}
 		if (parseInt(this.infobox.content.offsetWidth) > 640){	// maximum width of 640px
 			this.infobox.style.width = 640 + 20 + "px";
 			this.infobox.style.whiteSpace = "normal";
 		}
-				
+		
 		this.infobox.content.style.left = "10px";
 		this.infobox.content.style.width = parseInt(this.infobox.style.width) - 20 + "px";
 		
 		// adjust infobox-height according to content
-		if (parseInt(this.infobox.content.offsetHeight) > (parseInt(this.infobox.style.minHeight) - 20)){	// larger than minHeight
+		if (parseInt(this.infobox.content.offsetHeight) > (80 - 20)){	// larger than minHeight
 			this.infobox.style.height = parseInt(this.infobox.content.offsetHeight) + 20 + "px";
 		}
 		else
-			this.infobox.style.height = this.infobox.style.minHeight;
+			this.infobox.style.height = "80px";
 		if (parseInt(this.infobox.content.offsetHeight) > (parseInt(this.mapObj.size.height) - 40 - pointerheight - this.offset["y"])){	// larger than map
 			this.infobox.style.height = this.mapObj.size.height - pointerheight - this.offset["y"] - 20 + "px";	// fixed distance of 10px top and bottom to mapedge
 			this.infobox.content.style.overflowY = "scroll";
+			// allow scrolling in infowindow-content in ios5
+			this.infobox.content.style.overflow = "auto";
+			this.infobox.content.style.WebkitOverflowScrolling = "touch";
 		}
 		
 		// todo: infobox needs to be resized when images in content are fully loaded
@@ -633,7 +640,7 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 		
 		this.infobox.content.style.top = "10px";
 		this.infobox.content.style.height =  parseInt(this.infobox.style.height) - 20 + "px";
-		this.infobox.pointer.style.left = ((this.infobox.offsetWidth - pointerwidth)/2)  + "px";
+		this.infobox.pointer.style.left = ((parseInt(this.infobox.style.width) - pointerwidth)/2)  + "px";
 		
 		// calculate shadow size
 		this.shadow.style.width = parseInt(this.infobox.style.width) + Math.floor(parseInt(this.infobox.style.height)/2) + "px";
@@ -661,6 +668,10 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 		khtml.maplib.base.helpers.eventAttach(this.infobox, "dblclick", khtml.maplib.base.helpers.cancelEvent, this, false);
 		//suppress moving map when clicking and dragging in content-area
 		khtml.maplib.base.helpers.eventAttach(this.infobox.content, "mousedown", khtml.maplib.base.helpers.cancelEvent, this, false);
+		//suppress moving map when clicking and dragging in content-area to allow touch-scrolling
+		khtml.maplib.base.helpers.eventAttach(this.infobox.content, "touchstart", khtml.maplib.base.helpers.cancelEvent, this, false);
+		khtml.maplib.base.helpers.eventAttach(this.infobox.content, "touchmove", khtml.maplib.base.helpers.cancelEvent, this, false);
+
 		//suppress moving map and dragging images when clicking and dragging on the rest of the infobox
 		khtml.maplib.base.helpers.eventAttach(this.infobox, "mousedown", function(evt){ khtml.maplib.base.helpers.stopEventPropagation(evt); khtml.maplib.base.helpers.cancelEvent(evt);}, this, false);
 		//suppress propagation to allow rightclick in contentarea
@@ -675,32 +686,47 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 				that.render();
 			});
 		}
-	
-		this.render();
 	}
 	
 	
 	/**
-	 * close the infowindow
+	 * Remove the infowindow from the map. Infowindow still exists, will still be rendered.
 	*/
-	this.close = function() {
+    this.clear=function(){
 		if(this.infobox){
 			if(this.infobox.parentNode){
 				try{
-					this.mapObj.overlayDiv.infoboxDiv.removeChild(this.infobox);
+					this.infobox.parentNode.removeChild(this.infobox);
 				}catch(e){}
 			}
         }
 		if(this.shadow){
 			if(this.shadow.parentNode){
 				try{
-					this.mapObj.overlayDiv.infoboxShadowDiv.removeChild(this.shadow);
+					this.shadow.parentNode.removeChild(this.shadow);
 				}catch(e){}
 			}
         }
 		this.opened = false;
 	}
+	
+	
+	/**
+	 * Closes the infowindow. Will not be rendered any more.
+	*/
+	this.close = function() {
+		this.mapObj.removeOverlay(this);	
+	}
 
+	
+	/**
+	 * Set the content for the infowindow.
+	 * @param {String} content Any string, may also contain HTML-tags.
+	*/
+	this.setContent = function(content) {
+		this.infobox.content.innerHTML = content;
+	}
+	
 	
 	var mapMoveSpeedX = 1;
 	var mapMoveSpeedY = 1;
@@ -711,8 +737,8 @@ khtml.maplib.overlay.InfoWindow = function(InfoWindowOptions) {
 	this._moveMap=function(){
 		var that = this;
 		// move left
-		if ((this.infobox.offsetLeft + this.infobox.offsetWidth) > (this.mapObj.size.width-10)){
-			if ((this.infobox.offsetLeft + this.infobox.offsetWidth) < this.mapObj.size.width) mapMoveSpeedX = 10 - (this.mapObj.size.width - (this.infobox.offsetLeft + this.infobox.offsetWidth));
+		if ((this.infobox.offsetLeft + parseInt(this.infobox.style.width)) > (this.mapObj.size.width-10)){
+			if ((this.infobox.offsetLeft + parseInt(this.infobox.style.width)) < this.mapObj.size.width) mapMoveSpeedX = 10 - (this.mapObj.size.width - (this.infobox.offsetLeft + parseInt(this.infobox.style.width)));
 			else if (mapMoveSpeedX < mapMoveMaxSpeed) mapMoveSpeedX++;
 			// move left down
 			if (this.infobox.offsetTop < 10){
