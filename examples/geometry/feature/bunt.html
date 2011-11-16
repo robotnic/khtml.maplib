@@ -5,7 +5,7 @@
 
 <style type="text/css">
 body{
-overflow:hidden;
+#overflow:hidden;
 }
 #map{
 position:absolute;
@@ -138,21 +138,27 @@ function recurse(f,depth){
         textdiv.style.paddingLeft=(depth*15)+"px";
         textdiv.style.cursor="pointer";
 	var text=f.geometry.type;
-	if(f.geometry.type=="FeatureCollection"){
-		text+="▼";
-	}
         textdiv.appendChild(document.createTextNode(text));
 	if(depth!=0){
 		div.appendChild(textdiv);
 	}
+        if(f.geometry.type=="FeatureCollection"){
+                var collapser=document.createElement("span");
+                var tn=document.createTextNode("▼");  //extra div machen
+                collapser.appendChild(tn);
+		textdiv.appendChild(collapser);
+        }
+
 	div.appendChild(clientdiv);
 	//console.log("hat das einene style?",f);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseover",bboxShow,f,true);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseout",bboxHide,f,true);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",select,f,true);
-	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",toggle,clientdiv,true);
+	if(collapser){
+		khtml.maplib.base.helpers.eventAttach(collapser,"mousedown",toggle,clientdiv,true);
+	}
 	if(f.path){
-	khtml.maplib.base.helpers.eventAttach(f.path,"mousedown",selectByPath,div,true);
+		khtml.maplib.base.helpers.eventAttach(f.path,"mousedown",selectByPath,div,true);
 	}
         if(f.features){
                 for(var i=0;i <f.features.length;i++){
@@ -165,6 +171,7 @@ var oldtarget=null;
 function selectByPath(evt){
 	if(oldtarget)oldtarget.style.backgroundColor="white";
 	this.style.backgroundColor="#efefef";
+	this.scrollIntoView();
 	oldtarget=this;
 	fillStyleForm(evt.target.owner);
 }
@@ -284,11 +291,7 @@ function changeStyle(evt){
 	if(prop=="className"){
 		this.className.baseVal=input.value;
 	}else{
-		if(input.value==""){
-			delete this.style[prop];
-		}else{
-			this.style[prop]=input.value;
-		}
+		this.style[prop]=input.value;
 	}
 	//map.featureCollection.render();
 	map.render();
