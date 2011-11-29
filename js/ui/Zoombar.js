@@ -62,6 +62,7 @@ khtml.maplib.ui.Zoombar = function() {
 	 * Cancels the event if it is cancelable, 
 	 * without stopping further propagation of the event.
 	*/
+	this.moving=false;
 	this._cancelEvent = function(evt) {
 		evt.cancelBubble = true;
 		if (evt.stopPropagation)
@@ -88,22 +89,30 @@ khtml.maplib.ui.Zoombar = function() {
 	*/
 	this._zoom = function(evt) {
 		if ((evt.type == "touchstart") || (evt.type == "touchmove"))
-			var y = this.themap.pageY(evt.touches[0]);
+			var y = this.map.pageY(evt.touches[0]);
 		else
-			var y = this.themap.pageY(evt);
-		this.themap.zoom(this._calcZFromY(y));
+			var y = this.map.pageY(evt) + this.dy;
+		this.map.zoom(this._calcZFromY(y));
 	}
 	
 	/**
 	 * Mousedown or Touchstart
 	*/
+	this.dy=0;
 	this._down = function(evt) {
+		if(evt.target){
+			var target=evt.target;
+		}else{
+			var target=evt.srcElement;
+		}
 		this._cancelEvent(evt);
-		
 		this.moving = true;
-		
+		if(target==this.scrollhandle){
+			this.dy=this.scrollhandle.offsetTop  - this.map.pageY(evt) +10;;
+		}else{
+			this.dy=0;
+		}
 		this._zoom(evt);
-		
 		this._stopEventPropagation(evt);
 	}
 	/**
@@ -137,9 +146,9 @@ khtml.maplib.ui.Zoombar = function() {
 	/**
 	 * called by maplib once
 	 */
-	this.init = function(themap) {
-		this.themap = themap;
-		var els = themap.mapParent.getElementsByTagName("*");
+	this.init = function(map) {
+		this.map = map;
+		var els = map.mapParent.getElementsByTagName("*");
 		for ( var i = 0; i < els.length; i++) {
 			var el = els.item(i);
 			if (el.className == "scrollhandle") {
@@ -150,13 +159,15 @@ khtml.maplib.ui.Zoombar = function() {
 			}
 		}
 		if (navigator.userAgent.indexOf("MSIE") != -1) {		// IE does not support window-Eventhandler
-			var w = this.mapObj.mapParent;
+			var w = this.map.mapParent;
 		} else {
 			var w = window;
 		}
-		khtml.maplib.base.helpers.eventAttach(this.zoombar, "mousedown", this.down, this, false);
-		khtml.maplib.base.helpers.eventAttach(this.zoombar, "mousemove", this.move, this, false);
-		khtml.maplib.base.helpers.eventAttach(w, "mouseup", this.up, this, false);
+		if(!this.zoombar)this.zoombar=this._createZoombar();
+		if(!this.scrollhandle)this.scrollhandle=this._createScrollhandle();
+		khtml.maplib.base.helpers.eventAttach(this.zoombar, "mousedown", this._down, this, false);
+		khtml.maplib.base.helpers.eventAttach(w, "mousemove", this._move, this, false);
+		khtml.maplib.base.helpers.eventAttach(w, "mouseup", this._up, this, false);
 		
 		khtml.maplib.base.helpers.eventAttach(this.zoombar, "touchstart", this._down, this, false);
 		khtml.maplib.base.helpers.eventAttach(this.zoombar, "touchmove", this._move, this, false);
@@ -166,7 +177,51 @@ khtml.maplib.ui.Zoombar = function() {
 	 * called by maplib on every map change
 	 */
 	this.render = function() {
-		var top = (22 - this.themap.zoom()) * 10;
-		this.scrollhandle.style.marginTop = top + "px";
+		var top = (21 - this.map.zoom()) * 10;
+		this.scrollhandle.style.top=top+"px"; //.marginTop = top + "px";
+		var z=Math.round(this.map.zoom());
+		this.scrollhandle.firstChild.nodeValue=z;
 	}
+
+	this._createZoombar=function(){
+		var zoombar=document.createElement("div");
+		zoombar.setAttribute("style","position:absolute;left:10px;width:30px;height:221px;");
+		var scrollbar=document.createElement("div");
+		scrollbar.setAttribute("style","position:absolute;left:7px;top:20px;height:200px;width:11px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:2px solid lightgrey;cursor:pointer");
+		zoombar.appendChild(scrollbar);
+		this.map.mapParent.appendChild(zoombar);
+		return zoombar;
+	}
+	this._createScrollhandle=function(){
+		var scrollhandle=document.createElement("div");
+		scrollhandle.setAttribute("style","position:absolute;left:4px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer");
+		scrollhandle.appendChild(document.createTextNode("T"));
+		this.zoombar.appendChild(scrollhandle);
+		return scrollhandle;
+	}
+
+/*
+		var scrollbar=document.createElement("div");
+		scrollbar.setAttribute("style","position:absolute;left:20px;top:20px;height:200px;width:12px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:2px solid lightgrey;cursor:pointer");
+		var t=document.createElement("div");
+		t.setAttribute("style","position:absolute;top:0px;left:-10px;width:10;height:100%;background-color:green; -moz-box-shadow: 1px 1px 14px #efefef; -webkit-box-shadow: 1px 1px 7px #efefef; box-shadow: 1px 1px 7px #cfcfcf; ");
+		t.appendChild(document.createElement("T"));
+		var handle=document.createElement("div");
+		handle.setAtribute("style","position:absolute;left:17px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer");
+
+*/
+
+/*
+ <div class="zoombar" style="position:absolute;left:-10px;width:30px;height:221px;overflow:hidde;">
+ <div class="scrollbar" style="position:absolute;left:20px;top:20px;height:200px;width:12px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:2px solid lightgrey;cursor:pointer">
+ <div style="position:absolute;top:0px;left:-10px;width:10;height:100%;background-color:green; -moz-box-shadow: 1px 1px 14px #efefef; -webkit-box-shadow: 1px 1px 7px #efefef; box-shadow: 1px 1px 7px #cfcfcf; "> T </div>
+ </div>
+ <div id="handle" class="scrollhandle" style="position:absolute;left:17px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer"> 0 </div>
+ </div>
+ </div>
+*/
+
+
+
+
 }
