@@ -92,7 +92,7 @@ khtml.maplib.ui.Zoombar = function() {
 			var y = this.map.pageY(evt.touches[0]);
 		else
 			var y = this.map.pageY(evt) + this.dy;
-		this.map.zoom(this._calcZFromY(y));
+		this.map.centerAndZoom(this.map.center(),this._calcZFromY(y));
 	}
 	
 	/**
@@ -187,39 +187,18 @@ khtml.maplib.ui.Zoombar = function() {
 		var zoombar=document.createElement("div");
 		zoombar.setAttribute("style","position:absolute;left:10px;width:30px;height:221px;");
 		var scrollbar=document.createElement("div");
-		scrollbar.setAttribute("style","position:absolute;left:7px;top:20px;height:200px;width:11px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:2px solid lightgrey;cursor:pointer");
+		scrollbar.setAttribute("style","position:absolute;left:7px;top:20px;height:200px;width:11px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid grey;cursor:pointer");
 		zoombar.appendChild(scrollbar);
 		this.map.mapParent.appendChild(zoombar);
 		return zoombar;
 	}
 	this._createScrollhandle=function(){
 		var scrollhandle=document.createElement("div");
-		scrollhandle.setAttribute("style","position:absolute;left:4px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer");
+		scrollhandle.setAttribute("style","position:absolute;left:3px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer;box-shadow:1px 1px 4px grey;");
 		scrollhandle.appendChild(document.createTextNode("T"));
 		this.zoombar.appendChild(scrollhandle);
 		return scrollhandle;
 	}
-
-/*
-		var scrollbar=document.createElement("div");
-		scrollbar.setAttribute("style","position:absolute;left:20px;top:20px;height:200px;width:12px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:2px solid lightgrey;cursor:pointer");
-		var t=document.createElement("div");
-		t.setAttribute("style","position:absolute;top:0px;left:-10px;width:10;height:100%;background-color:green; -moz-box-shadow: 1px 1px 14px #efefef; -webkit-box-shadow: 1px 1px 7px #efefef; box-shadow: 1px 1px 7px #cfcfcf; ");
-		t.appendChild(document.createElement("T"));
-		var handle=document.createElement("div");
-		handle.setAtribute("style","position:absolute;left:17px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer");
-
-*/
-
-/*
- <div class="zoombar" style="position:absolute;left:-10px;width:30px;height:221px;overflow:hidde;">
- <div class="scrollbar" style="position:absolute;left:20px;top:20px;height:200px;width:12px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:2px solid lightgrey;cursor:pointer">
- <div style="position:absolute;top:0px;left:-10px;width:10;height:100%;background-color:green; -moz-box-shadow: 1px 1px 14px #efefef; -webkit-box-shadow: 1px 1px 7px #efefef; box-shadow: 1px 1px 7px #cfcfcf; "> T </div>
- </div>
- <div id="handle" class="scrollhandle" style="position:absolute;left:17px;top:-10px;width:20px;height:20px;background-color:lightgrey;opacity:0.8; border:1px solid grey;-moz-border-radius: 5px; -webkit-border-radius: 5px;text-align:center;cursor:pointer"> 0 </div>
- </div>
- </div>
-*/
 
 
 
