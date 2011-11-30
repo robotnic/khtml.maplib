@@ -509,8 +509,9 @@ khtml.maplib.base.helpers.stringify=function(obj,indent,force){
                         }
                         continue;
                 }
+			console.log(o,indent);
                 if(array || o=="type" || o=="features" ||obj[o]&&obj[o].type=="Feature"||o=="geometry" || o=="coordinates" || o=="properties" || o=="bbox" || (o=="className" &&full)){
-			//console.log(o,indent);
+			console.log(o,indent);
                         if(array){
                                 string+=space+khtml.maplib.base.helpers.stringify(obj[o],newindent)+",";
                         }else{
@@ -560,6 +561,7 @@ khtml.maplib.base.helpers.Boundingbox=function(map){
 	this.div.style.position="absolute";	
 	this.div.style.strokeDasharray="4,4";	
 	this.div.style.zIndex=1;
+	this.div.style.pointerEvents="none"; //maybe only new browsers
 	map.mapParent.appendChild(this.div);
 	this.show=function(bbox){
 		this.div.style.display="";
@@ -573,8 +575,10 @@ khtml.maplib.base.helpers.Boundingbox=function(map){
 		this.div.zIndex=10;
 	}
 	this.hide=function(){
-		this.div.style.display="none";
+		that.div.style.display="none";
 	}
+	var that=this;
+	this.map.addCallbackFunction(that.hide);
 }
 
 
