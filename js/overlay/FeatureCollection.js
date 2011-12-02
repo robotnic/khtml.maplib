@@ -8,6 +8,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 	this.geometry=new Object;
 	this.geometry.type="FeatureCollection";
 	this.features=new Array();
+	this.childNodes=this.features; //dom way to access
 	this.overlayDiv=document.createElement("div");
 	this.overlayDiv.setAttribute("kazalabas","eluag");
 	this.style=new Object;
@@ -16,6 +17,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 //	this.overlaySVG=new khtml.maplib.overlay.Vector();
 	this.init=function(owner){
 		this.owner=owner;
+		this.parentNode=this.owner; //dom style accessing
 		if(owner instanceof khtml.maplib.base.Map){
 			this.map=owner;
 			if(!this.overlayDiv.parentNode){
@@ -148,6 +150,25 @@ khtml.maplib.overlay.FeatureCollection = function() {
 		var found=false;
 		for(var f in this.features){
 			if(this.features[f]==el){
+				if(this.features[f].geometry.type=="FeatureCollection"){
+					for(var i=0;i<this.features[f].features.length;i++){
+						var child=this.features[f].features[i];
+						this.features[f].removeChild(child);
+					}
+					while(this.features[f].features.length >0){
+						var f=this.features[f].features.pop();
+					}
+					
+				}else{
+					var la=map.featureCollection.vectorLayer.lineArray;
+					for(var i=0;i<la.length;i++){
+						if(la[i]==el){
+							la.splice(i,1);
+						}
+					}
+					el.clear();
+				
+				}
 				this.features.splice(f,1);	
 				found=true;
 			}
@@ -169,6 +190,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 		this.features.push(el);
 		if(!el.geometry)return;
 		el.owner=this;
+		el.parentNode=el.owner;
 		if(el.geometry.type!=="Point" && el.geometry.type!=="FeatureCollection"&& el.geometry.type!=="GroundOverlay"){
 			if(this.vectorLayer){  //if owner is initialized
 				this.vectorLayer.createPolyline(el);

@@ -119,10 +119,9 @@ khtml.maplib.base.Map = function(map) {
 	*/
 	this._hideOverlays = function() {
 		for (obj in this.overlays) {
-			try {
+			if(this.overlays[obj].clear) {
 				this.overlays[obj].clear(that);
-			} catch (e) {
-			}
+			} 
 		}
 	}
 	/**

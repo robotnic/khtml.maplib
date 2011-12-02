@@ -255,6 +255,10 @@ khtml.maplib.overlay.Vector = function(backend) {
 			}
 			//that.clear();
 		}
+		/* remove completely */
+		polyline.destroy=function(){
+			polyline.clear();
+		}
 		//find the "real" layer and push to array
 		var fc=polyline.owner;
 		while(fc && !fc.realLayer){
@@ -452,7 +456,9 @@ khtml.maplib.overlay.Vector = function(backend) {
 						path.setAttribute("mapcss_"+p,property);
 					}
 					path.style.fillRule="evenodd";
-					line.owner.vectorEl.appendChild(path);
+					if(!path.parentNode){
+						line.owner.vectorEl.appendChild(path);
+					}
 					line.svgtext=this.addText(line);
 					break;	
 				case "canvas":

@@ -38,12 +38,12 @@
  * @class
 */
 khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
-	this.nodeType="Marker";
-	this.nodeName="Marker";
+	this.nodeType="SimpleMarker";
+	this.nodeName="SimpleMarker";
 	this.geometry=new Object();
 	this.geometry.coordinates=point;
 	this.geometry.type="Point";
-	this.type="Marker";
+	this.type="SimpleMarker";
 	var div = document.createElement("div");
 	div.appendChild(el);
 	div.style.position = "absolute";
@@ -81,6 +81,7 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 
 	this.init = function(owner) {
 		this.style=this.marker.style;
+		this.owner=owner;
 		this.marker.owner=this;
 		if(owner instanceof khtml.maplib.base.Map){
                         this.mapObj=owner;
@@ -101,7 +102,7 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 			return;
 		if (isNaN(this.point.lng()))
 			return;
-		var xy = this.mapObj.latlngToXY(this.geometry.coordinates);
+		var xy = this.mapObj.latlngToXY(this.point);
 		if (xy["x"] < 0 || xy["y"] < 0) { // <---- flag  ; workaround for overflow:hidden bug
 			this.marker.style.display = "none";
 		} else {
@@ -124,13 +125,18 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 	this.clear = function() {
 		if (this.marker) {
 			if (this.marker.parentNode) {
-				try {
-					this.owner.overlayDiv.removeChild(this.marker);
-				} catch (e) {
-				}
+				this.marker.parentNode.removeChild(this.marker);
 			}
 		}
 	}
+	/**
+         * Destroy the marker. Will not be rendered any more.
+        */
+        this.destroy=function(){
+                this.mapObj.removeOverlay(this);
+        }
+
+
 	/*
 	 this.moveTo = function (point) {
 	 this.point = point;
