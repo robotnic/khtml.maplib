@@ -243,7 +243,9 @@ khtml.maplib.overlay.Vector = function(backend) {
 		polyline.repairBBox(true);
 		//render a single vector element
 		polyline.render=function(){
-			that.render(polyline);
+			if(polyline && polyline.owner){  //workaround for removeChild bug
+				that.render(polyline);
+			}
 		}
 		polyline.bbox=this.makeBounds(polyline.geometry.coordinates);
 		polyline.clear=function(){
