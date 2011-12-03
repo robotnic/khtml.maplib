@@ -39,6 +39,16 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
                 }
         }
 	/**
+	remove callback function
+	*/
+	this.removeCallbackFunction=function(func){
+		for(var i=0;i<this.callbackFunctions.length;i++){
+			if(this.callbackFunctions[i]==func){
+				this.callbackFunctions.splice(i,1);
+			}
+		}
+	}
+	/**
 	Internal used to do the callback
 	*/
         this._executeCallbackFunctions = function() {
