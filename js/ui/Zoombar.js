@@ -187,7 +187,7 @@ khtml.maplib.ui.Zoombar = function() {
 		var zoombar=document.createElement("div");
 		zoombar.setAttribute("style","position:absolute;left:10px;width:30px;height:221px;");
 		var scrollbar=document.createElement("div");
-		scrollbar.setAttribute("style","position:absolute;left:7px;top:20px;height:200px;width:11px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid grey;cursor:pointer");
+		scrollbar.setAttribute("style","position:absolute;left:7px;top:20px;height:200px;width:11px;background-color:white; overflow:hidden;-moz-border-radius: 5px; -webkit-border-radius: 5px;border:1px solid grey;cursor:pointer;box-shadow:inset 2px 2px 3px #e8e8e8;");
 		zoombar.appendChild(scrollbar);
 		this.map.mapParent.appendChild(zoombar);
 		return zoombar;
