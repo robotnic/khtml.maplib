@@ -27,6 +27,7 @@ khtml.maplib.geometry.Feature = function(geometry) {
 	this.events = new Object;
 	this.style = new Object;
 	this.className = new Object;
+	this.events=new Array();
 
 	this.text = new Object;
 	this.text.style = new Object;
@@ -89,7 +90,15 @@ khtml.maplib.geometry.Feature = function(geometry) {
 	this.cloneNode=function(){
 		return khtml.maplib.base.helpers.cloneObject(this);
 	}
-
+	this.eventAttach=function(eventType,method,context,bubble){
+		if(this.element){
+			var ev=khtml.maplib.base.helpers.eventAttach(this.element,eventType,method,context,bubble);
+		}
+		this.events.push({"eventType":eventType,"method":method,"context":context,"bubble":bubble});
+	}
+	this.eventRemove=function(){
+		console.log("not implemented");
+	}
 }
 
 

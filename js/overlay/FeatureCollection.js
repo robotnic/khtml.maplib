@@ -216,7 +216,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 			var bbox=el.bbox;
 		}
 		if(!bbox)return;
-		this.bbox=khtml.maplib.base.helpers.extendBBox(this.bbox,bbox);
+		this.bbox=khtml.maplib.base.helpers.extendBBox(bbox,this.bbox);
 		return;
 
 
