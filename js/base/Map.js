@@ -151,7 +151,7 @@ khtml.maplib.base.Map = function(map) {
 		for ( var i = 0; i < this.overlays.length; i++) {
 			var overlay = this.overlays[i];
 			if (ov == overlay) {
-				ov.clear();
+				ov.destroy();
 				this.overlays.splice(i, 1);
 				break;
 			}
