@@ -130,7 +130,7 @@ khtml.maplib.base.Map = function(map) {
 	this.removeOverlays = function() {
 		while (this.overlays.length > 0) {
 			var overlay = this.overlays.pop();
-			overlay.clear();
+			overlay.destroy();
 		}
 	}
 
