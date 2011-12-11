@@ -55,18 +55,21 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 			}else{		
 				div.style.top = options.dy;
 			}
-		} else {
+		} 
+		if (options.dx) {
 			if(typeof(options.dx)=="number"){
 				div.style.left = options.dx+"px";
 			}else{		
 				div.style.left = options.dx;
 			}
 		}
+		/*
 		if (options.dx) {
 			div.style.left = options.dx;
 		} else {
 			div.style.left = "0px";
 		}
+		*/
 	} else {
 		div.style.top = "0px";
 		div.style.left = "0px";
@@ -133,7 +136,9 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
          * Destroy the marker. Will not be rendered any more.
         */
         this.destroy=function(){
-                this.mapObj.removeOverlay(this);
+		this.clear();
+		//console.log(this.point);
+             //   this.mapObj.removeOverlay(this);
         }
 
 
@@ -149,7 +154,7 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 	this.moveable = function(enabled) {
 		this.enabled=enabled;
 		if(this.enabled){
-			this.downevent=khtml.maplib.base.helpers.eventAttach(this.marker, "mousedown", this.down, this, false);
+			this.downevent=khtml.maplib.base.helpers.eventAttach(this.marker, "mousedown", this.down, this, true);
 			this.moveevent=khtml.maplib.base.helpers.eventAttach(window, "mousemove", this.move, this, true);
 			this.upevent=khtml.maplib.base.helpers.eventAttach(window, "mouseup", this.up, this, true);
 		}else{
@@ -172,8 +177,10 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 			var y = this.mapObj.pageY(evt) + this.dy;
 			//this.marker.style.left=x+"px";
 			//this.marker.style.top=y+"px";
-			this.point.lat(this.mapObj.XYTolatlng(x, y).lat());
-			this.point.lng(this.mapObj.XYTolatlng(x, y).lng());
+			//var p=this.mapObj.XYTolatlng(x, y);
+			var p=this.mapObj.mouseToLatLng(evt);
+			this.point.lat(p.lat());
+			this.point.lng(p.lng());
 			this.render();
 			evt.stopPropagation();
 		}
