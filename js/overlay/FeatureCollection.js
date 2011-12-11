@@ -49,6 +49,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 				}else{
 					if(el.geometry.type=="FeatureCollection" || el.geometry.type=="GroundOverlay"){
 						el.init(this);
+						el.render();
 					}else{
 						this.vectorLayer.createPolyline(el);
 						this.vectorLayer.render(el);
@@ -116,7 +117,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 				this.features[i].render();
 			}
 			if(this.features[i].geometry.type=="FeatureCollection"){
-				//this.features[i].render();	
+				this.features[i].render();	//maybe not nessessary. GroundOverlay does not work without
 			}	
 			if(this.features[i].geometry.type=="GroundOverlay"){
 				this.features[i].render();	
@@ -201,6 +202,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 				el.init(this);
 				el.render();
 			}else{
+			
 			}
 		}
 		

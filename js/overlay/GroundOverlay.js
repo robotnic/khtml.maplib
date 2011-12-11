@@ -216,7 +216,7 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 		
 		var point= new khtml.maplib.LatLng(y2, x2);
 		//console.log(y2,x2);
-		var marker=new khtml.maplib.overlays.Marker(point,"http://www.din-5008-richtlinien.de/bilder/punkt.gif",{dx:-1,dy:-1});	
+		var marker=new khtml.maplib.overlay.SimpleMarker(point,"http://www.din-5008-richtlinien.de/bilder/punkt.gif",{dx:-1,dy:-1});	
 		map.addOverlay(marker);
 		return point;
 	} 
