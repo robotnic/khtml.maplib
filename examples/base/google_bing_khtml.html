@@ -17,19 +17,20 @@ width:200px;
 	border-bottom:1px solid black;
 }
 #map{
+position:absolute;
 width:33%;
 height:100%;
+left:66%;
 }
 #map_canvas{
 position:absolute;
-left:33%;
 width:33%;
 height:100%;
 top:0px;
 }
 #mapDiv{
 position:absolute;
-left:66%;
+left:33%;
 width:34%;
 height:100%;
 top:0px;
@@ -40,6 +41,7 @@ top:0px;
 <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="../../khtml_all.js"> </script> 
+<script type="text/javascript" src="../../js/base/Map.js"> </script> 
 
 <script type="text/javascript">
   function initialize() {
@@ -71,7 +73,8 @@ function init(){
 
 	//set map center and zoom
 	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
-
+	var zoombar=new khtml.maplib.ui.Zoombar();
+	map.addOverlay(zoombar);
 }
 
 
@@ -80,10 +83,8 @@ function init(){
 <body onload="GetMap();initialize();init()">
 <div id="navi">
 </div>
-<div id="map">
-
-</div>
 <div id="map_canvas" ></div>
 <div id='mapDiv' ></div> 
+<div id="map"> </div>
 </body>
 </html>
