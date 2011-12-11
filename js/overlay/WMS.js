@@ -77,7 +77,7 @@ khtml.maplib.overlay.WMS = function(options) {
 		this.img.style.position="absolute";
 		this.img.style.top=dy+"px";
 		this.img.style.left=dx+"px";
-		this.marker=new khtml.maplib.overlay.Marker(p,this.div);
+		this.marker=new khtml.maplib.overlay.SimpleMarker(p,this.div);
 		this.map.featureCollection.appendChild(this.marker);
 	}
 	this.oldZoom=0;
