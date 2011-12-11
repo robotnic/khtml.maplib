@@ -13,6 +13,7 @@
 <script type="text/javascript" src="../../../js/base/Map.js"> </script>
 <script type="text/javascript" src="../../../js/overlay/Vector.js"> </script>
 <script type="text/javascript" src="../../../js/overlay/FeatureCollection.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/GroundOverlay.js"> </script>
 <!-- Configure map -->
 <script type="text/javascript">
 var mr = new Object(khtml.maplib);
@@ -68,6 +69,10 @@ function zoomto(){
 	console.log(this);
 	if(this.bbox){
 		map.bounds(this.bbox);	
+	}else{
+		if(this.position){
+			map.centerAndZoom(this.position,16);
+		}
 	}
 }
 </script>

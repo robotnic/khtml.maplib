@@ -44,7 +44,7 @@ khtml.maplib.overlay.FeatureCollection = function() {
 			if(!this.features[i].map){
 				var el=this.features[i];		
 
-				if(el.type=="SimpleMarker"){
+				if(el.type=="SimpleMarker" || el.type=="Marker"){
 					el.init(this);
 				}else{
 					if(el.geometry.type=="FeatureCollection" || el.geometry.type=="GroundOverlay"){

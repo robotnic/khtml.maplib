@@ -595,7 +595,19 @@ khtml.maplib.parser.Kml = function(KML) {
 		var img=document.createElement("img");
 		img.setAttribute("src","http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png");
 		var point=new this.parseCoordinates(node)[0][0],img;
-		var marker=new khtml.maplib.overlay.Marker(point,img);
+		//var marker=new khtml.maplib.overlay.Marker(point,img);
+		var marker = new khtml.maplib.overlay.Marker({
+			position: point,
+			//map: map,  //todo
+			title:"static marker"
+		});
+		try{
+		var html=node.parentNode.getElementsByTagName("description").item(0).firstChild.nodeValue;
+		}catch(e){}
+		var infobox = new khtml.maplib.overlay.InfoWindow({content: html});
+		marker.attachEvent( 'click', function() {
+			infobox.open(map, this);
+		});
 		return marker;
 	}
 	
