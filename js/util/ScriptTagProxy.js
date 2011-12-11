@@ -14,5 +14,6 @@ khtml.maplib.util.scriptTagProxy=function(url,callbackMethod){
 	headID.appendChild(newScript);
 	//eh a global not good!!!
 	searchResult=callbackMethod;
+	return newScript;
 
 }

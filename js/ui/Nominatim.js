@@ -22,9 +22,20 @@ khtml.maplib.ui.Nominatim=function(){
 			return;
 		}
 		var url="http://nominatim.openstreetmap.org/search?q="+searchText+"&format=json&polygon=1&addressdetails=1&json_callback=searchResult";
-		khtml.maplib.util.scriptTagProxy(url,that.showResult);
+		if(this.scriptElement){
+			if(this.scriptElement.parentNode){
+				this.scriptElement.parentNode.removeChild(this.scriptElement);
+			}
+		}
+		this.ajaxload.style.display="";
+		this.scriptElement=khtml.maplib.util.scriptTagProxy(url,that.showResult);
+	}
+	this.focus=function(){
+		this.input.value="";
+		this.input.style.color="black";
 	}
 	this.showResult=function(r){
+		that.ajaxload.style.display="none";
 		that.div.style.display="";
 		while(that.div.firstChild){
 			that.div.removeChild(that.div.firstChild);
@@ -70,21 +81,31 @@ khtml.maplib.ui.Nominatim=function(){
 		that.showPoly(this.polygonpoints);
 	}
 	this.showPoly=function(coordinates){
-		var poly=new khtml.maplib.geometry.Feature({type:"LineString",coordinates:coordinates});
-		poly.style.fill="none";
-		poly.style.stroke="red";
-		poly.style.strokeWidth="4";
-		this.map.featureCollection.appendChild(poly);
+		if(this.poly){
+			this.map.featureCollection.removeChild(this.poly);
+		}
+		this.poly=new khtml.maplib.geometry.Feature({type:"LineString",coordinates:coordinates});
+		this.poly.style.fill="none";
+		this.poly.style.stroke="red";
+		this.poly.style.strokeWidth="4";
+		this.map.featureCollection.appendChild(this.poly);
 	}
 	this.createWindow=function(){
 		var win=document.createElement("div");
+		this.ajaxload=document.createElement("img");
+		this.ajaxload.setAttribute("src",khtml.maplib.base.helpers.ajaxload);
+		this.ajaxload.style.display="none";
 
 		this.input=document.createElement("input");
 		this.input.style.width="300px";
 		this.input.style.height="20px";
 		this.input.style.border="1px solid black";
+		this.input.style.color="lightgrey";
+		this.input.value="nominatim search";
 		win.appendChild(this.input);
+		win.appendChild(this.ajaxload);
 		khtml.maplib.base.helpers.eventAttach(this.input,"keyup",this.keyup,this,false);
+		khtml.maplib.base.helpers.eventAttach(this.input,"focus",this.focus,this,false);
 
 
 		var div=document.createElement("div");
