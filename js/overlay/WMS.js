@@ -110,6 +110,7 @@ khtml.maplib.overlay.WMS = function(options) {
 	}
 	var that=this;
 	this._imgLoaded=function(){
+		var opacity=that.options.opacity;
                 var dx=-that.map.size.width/2;
                 var dy=-that.map.size.height/2;
 
@@ -117,6 +118,7 @@ khtml.maplib.overlay.WMS = function(options) {
 		if(that.groundOverlay){
 			that.map.removeOverlay(that.groundOverlay);
 		}
+		that.tempImg.style.opacity=opacity;
 		that.groundOverlay=new khtml.maplib.overlay.GroundOverlay(that.bounds, that.tempImg, delta);
 		that.map.addOverlay(that.groundOverlay);
 	}
