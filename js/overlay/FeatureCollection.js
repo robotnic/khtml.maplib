@@ -102,6 +102,10 @@ khtml.maplib.overlay.FeatureCollection = function() {
 	}
 	this.oldStyleDisplay=null;
 	this.render=function(){
+		if(this.hidden && ! this.map.finalDraw){
+			return;
+		}
+		this.hidden=false;
 		if(!this.overlayDiv.parentNode){
 			//this.owner.overlayDiv.appendChild(this.overlayDiv);
 		}
@@ -132,6 +136,10 @@ khtml.maplib.overlay.FeatureCollection = function() {
 		this.oldStyleDisplay=null;
 
 	}	
+	this.hide=function(){
+		this.hidden=true;
+		this.map.featureCollection.style.display="none";
+	}
 	this.clear=function(){
 //		this.owner.overlayDiv.removeChild(this.overlayDiv);
 		if(this.oldStyleDisplay==null){

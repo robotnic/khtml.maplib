@@ -327,7 +327,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 			/**
 			This part should speedup moving the map. There is bug and so it's deactivated.
 			*/
-			if (1==2 && this.oldZoom == this.themap.zoom() && (this.themap.moveX != this.lastMoveX || this.themap.moveY != this.lastMoveY)) {
+			if (this.oldZoom == this.themap.zoom() && (this.themap.moveX != this.lastMoveX || this.themap.moveY != this.lastMoveY)) {
 				//move all the vectors is much faster than build the vectors completely new
 				//moving it together with all markers would be faster
 				var dx = Math.round((this.themap.moveX - this.lastMoveX)
@@ -335,17 +335,20 @@ khtml.maplib.overlay.Vector = function(backend) {
 				var dy = Math.round((this.themap.moveY - this.lastMoveY)
 						* this.themap.faktor * this.themap.sc);
 
-				if(this.owner.vectorEl.style) {
+				if(this.themap.featureCollection.vectorEl.style) {
 					try {
-						this.owner.vectorEl.style.top = dy + "px";
-						this.owner.vectorEl.style.left = dx + "px";
+						this.themap.featureCollection.style.top = dy + "px";
+						this.themap.featureCollection.style.left = dx + "px";
 					} catch (e) {
 						console.log("move not passible");		
 					}
 				}
-
 				if (!this.themap.finalDraw) {
 					return;
+				}else{
+						this.themap.featureCollection.style.display="none";
+						this.themap.featureCollection.style.top = 0 + "px";
+						this.themap.featureCollection.style.left = 0 + "px";
 				}
 				/*
 				//the oldVectorEl will be visible until the new vectorEl is completely redered. 
@@ -395,6 +398,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 				this.owner.vectorEl.style.display = "";
 				return;
 			}
+			this.themap.featureCollection.style.display="";  //after move
 			return;
 		}
 		if(typeof(a)=="number"){
@@ -430,7 +434,17 @@ khtml.maplib.overlay.Vector = function(backend) {
 					}
 					line.close="false";
 					line.path=path;
+					line.element=path;     //dom like - part of API
+					line.firstChild=path;  //dom like - part of API
 					path.owner=line;
+					path.parentNode=line;  //dom like - part of API
+					if(line.events){
+					for(var e=0;e<line.events.length;e++){
+						var ev=line.events[e];
+						khtml.maplib.base.helpers.eventAttach(path,ev.eventType,ev.method,ev.context,ev.bubble);
+					}
+					}
+					line.svgtext=this.addText(line);
 				}else{
 					var path=line.path;
 				}
@@ -461,7 +475,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 					if(!path.parentNode){
 						line.owner.vectorEl.appendChild(path);
 					}
-					line.svgtext=this.addText(line);
+					//line.svgtext=this.addText(line);
 					break;	
 				case "canvas":
 					var ret=khtml.maplib.overlay.renderer.Canvas._renderPath(line.geometry.coordinates,line,this.ctx,this.themap);

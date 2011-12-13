@@ -55,7 +55,7 @@ khtml.maplib.base.Map = function(map) {
 	*/
 	this.addOverlay = function(obj) {
 		if(null == obj || obj instanceof Array) {
-			khtml.maplib.base.Log.warn('Map.addOverlay(): Illegal argument (was "null" or "Array")');
+			console.log('Map.addOverlay(): Illegal argument (was "null" or "Array")');
 			return false;
 		}
 		this.overlays.push(obj);
@@ -119,8 +119,8 @@ khtml.maplib.base.Map = function(map) {
 	*/
 	this._hideOverlays = function() {
 		for (obj in this.overlays) {
-			if(this.overlays[obj].clear) {
-				this.overlays[obj].clear(that);
+			if(this.overlays[obj].hide) {
+				this.overlays[obj].hide(that);
 			} 
 		}
 	}
@@ -130,7 +130,10 @@ khtml.maplib.base.Map = function(map) {
 	this.removeOverlays = function() {
 		while (this.overlays.length > 0) {
 			var overlay = this.overlays.pop();
-			overlay.destroy();
+			if(overlay.destroy){
+				//overlay.destroy();
+			}
+			overlay.clear();
 		}
 	}
 
@@ -152,7 +155,7 @@ khtml.maplib.base.Map = function(map) {
 			var overlay = this.overlays[i];
 			if (ov == overlay) {
 				if(ov.destry){
-					ov.destroy();  //correct
+					//ov.destroy();  //correct
 				}
 				ov.clear();  //
 				this.overlays.splice(i, 1);
