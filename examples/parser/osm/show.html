@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<style type="text/css">
+
+#map{
+right:200px;
+width:1000px;
+height:600px;
+border:1px solid red;
+}
+
+#form{
+position:absolute;
+top:20px;
+right:20px;
+}
+
+path{
+fill:none;
+}
+path:hover{
+stroke:red;
+cursor:pointer;
+}
+
+.editline{
+stroke:yellow;
+stroke-width:9;
+opacity:0.4
+}
+path.editline:hover{
+opacity:0.6;
+stroke:yellow;
+}
+
+path2{
+fill:none;
+opacity:0.3;
+stroke:blue;
+stroke-width:5;
+font-family:Arial;
+cursor:pointer;
+}
+path2[mapcss_highway]{
+fill:none;
+opacity:0.9;
+stroke:red;
+stroke-width:12;
+font-family:Arial;
+}
+ddiv{
+border:1px solid white;
+background-image("http://grafikrunde.de/Themes/default/images/sp/dot1.png");
+cursor:pointer;
+}
+
+
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../../khtml_all.js"> </script> 
+<script type="text/javascript" src="../../../js/base/Map.js"> </script> 
+<script type="text/javascript" src="../../../js/parser/Osm.js"> </script> 
+<script type="text/javascript" src="../../../js/parser/MapCSS.js"> </script> 
+<script type="text/javascript" src="../../../js/overlay/Vector.js"> </script> 
+<script type="text/javascript" src="../../../js/overlay/SimpleMarker.js"> </script> 
+<script type="text/javascript" src="../../../js/overlay/FeatureCollection.js"> </script> 
+<script type="text/javascript" src="../../../js/ui/VectorEditor.js"> </script>
+
+<script type="text/javascript">
+var map=null;
+var osm=new khtml.maplib.parser.Osm();
+var jsoncss=null;
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	map.tiles({
+                  maxzoom:21,
+                  minzoom:1,
+                  src:function(x,y,z){
+			var nn = parseInt(x.toString(2)) + parseInt(y.toString(2)) * 2;
+			n = "";
+			for (var i = 0; i < 30; i++) {
+			    var restX = parseInt(x / 2);
+			    var restY = parseInt(y / 2);
+			    var xx = (x / 2 - restX) * 2;
+			    var yy = (y / 2 - restY) * 2;
+			    x = restX;
+			    y = restY;
+			    s = Math.round(xx + yy * 2);
+			    n = s + n;
+			    if (x == 0 && y == 0) break;
+			}
+			//console.log(n);
+			/*
+                     var url="http://ecn.t3.tiles.virtualearth.net/tiles/cmd/ObliqueHybrid?a=12023011320-7557-19-25&g=618";
+			var url="http://ecn.t3.tiles.virtualearth.net/tiles/h120230113201301003.jpeg?g=618&mkt=de-de&n=z";
+                     var url= "http://ecn.t3.tiles.virtualearth.net/tiles/cmd/ObliqueHybrid?a="+n+"-7557-19-25&g=618";
+			*/
+			var url="http://ecn.t3.tiles.virtualearth.net/tiles/h"+n+".jpeg?g=618&mkt=de-de&n=z";
+			return url;
+                  },
+                  copyright:"bing",
+			opacity:0.3
+        });
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.208473,16.373231),18);
+	loadcss();
+}
+
+function dostyle(vectors){
+	for(var i in ar){
+		dostyling(ar[i],vectors);
+	}
+}
+function dostyling(styledata,vectors){
+//	var v=khtml.maplib.base.helpers.cloneObject(vectors);
+//	var v=	eval(uneval(vectors));
+	console.log(vectors);
+	console.log(v);
+	return;
+//	map.featureCollection.appendChild(v);
+}
+function makeLayer(styledata,target,vectors){
+	for(var f in vectors.features){
+		if(vectors.features[f].geometry.type=="FeatureCollection"){
+			makeLayer(vectors.features[f]);	
+		}
+	}
+	console.log(vectors);
+}
+
+function loadcss(){
+        load("css/core_landuse.css");
+        //load("css/opencyclemap.css");
+        load("css/core_ways.css");
+        load("css/network.css");
+        load("css/core_pois.css");
+	loadmap();
+}
+
+function load(url){
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET",url,true);
+        xmlhttp.onreadystatechange=function(){
+                if(xmlhttp.readyState==4){
+//                        var parser=new khtml.maplib.parser.MapCSS();
+                        //console.log(xmlhttp.responseText);
+                        osm.mapcss(xmlhttp.responseText);
+                }
+        }
+        xmlhttp.send(null);
+}
+
+var edit=null;
+function editor(el){
+	if(!edit){
+		edit=new VectorEditor(map.featureCollection);
+	}
+	var editbutton=document.getElementById("editbutton")
+	if(editbutton.textContent=="edit"){
+		map.addOverlay(edit);
+		editbutton.textContent="stop";
+	}else{;
+		map.removeOverlay(edit);
+		editbutton.textContent="edit";
+	}
+
+        //setInterval("document.getElementById('mode').textContent=edit.mode+'; editlines:'+edit.editLines.length");
+
+}
+
+function loadmap(){
+	var bounds=map.bounds();
+	var url="/api/0.6/map?bbox="+bounds.sw().lng()+","+bounds.sw().lat()+","+bounds.ne().lng()+","+bounds.ne().lat();
+	console.log(url);
+ 
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","osmload.php?url="+url,true);
+	xmlhttp.onreadystatechange=function(){
+		var ajaxload=document.getElementById("ajaxload");
+		if(xmlhttp.readyState==4){
+				ajaxload.style.display="none";
+				osm.style(xmlhttp.responseXML);
+				//dostyle(osm.featureCollection);
+				//map.featureCollection.appendChild(osm.featureCollection);
+				//editor();
+				makeForm(map.featureCollection);
+		}
+	}
+	xmlhttp.send(null);	
+	document.getElementById("ajaxload").style.display="";
+}
+
+function makeForm(f){
+	var features=f.features;
+	for(var i=0;i<features.length;i++){
+		var feature=features[i];
+		if(feature.geometry.type=="FeatureCollection"){
+			makeForm(feature);
+		}else{
+			feature.eventAttach( "mousedown", form, feature, true);
+			if(feature.marker){
+		//		khtml.maplib.base.helpers.eventAttach(feature.marker, "mousedown", form, feature, true);
+			}
+		}
+	}
+}
+
+function form(){
+	console.log("form");
+	var target=document.getElementById("form");
+	while(target.firstChild){target.removeChild(target.firstChild)}
+	for(p in this.properties){
+		var tr=document.createElement("tr");
+		//name
+		var td=document.createElement("td");
+		var tn=document.createTextNode(p);
+		td.appendChild(tn);
+		tr.appendChild(td);
+		//value	
+		var td=document.createElement("td");
+		var input=document.createElement("input");
+		input.value=this.properties[p]
+		input.setAttribute("name",p);
+		khtml.maplib.base.helpers.eventAttach(input, "keyup", changeValue, this, true);
+		td.appendChild(input);
+		tr.appendChild(td);
+		target.appendChild(tr);
+	}
+}
+
+function changeValue(evt){
+	var p=evt.target.getAttribute("name");
+	this.properties[p]=evt.target.value;
+	this.render();
+
+}
+
+</script>
+</head>
+<body onload="init()">
+<button onclick="loadmap()">load</button><img src="images/ajaxload.gif" id="ajaxload" style="display:none;height:12px"/>
+<button id="editbutton" onmousedown="editor()">edit</button>
+<button id="editbutton" onmousedown="dostyle()">style</button>
+<div id="map"> </div>
+<table id="form">
+<tr>
+<td>Name</td><td>Value</td></tr>
+</tr>
+</table>
+</body>
+</html>
