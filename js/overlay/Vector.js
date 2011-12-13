@@ -35,7 +35,7 @@
  * @class
 */
 khtml.maplib.overlay.Vector = function(backend) {
-	this.minVectorPointsPerIteration=2000;
+	this.minVectorPointsPerIteration=500;
 	this.vectorPointsPerIteration=this.minVectorPointsPerIteration;
 	this.lineArray = new Array();
 	this.stopit = false;
@@ -77,30 +77,6 @@ khtml.maplib.overlay.Vector = function(backend) {
 			
 			this.backend = backend;
 			this.owner.init(this.themap);
-			/*
-			if(this.owner.realLayer){
-				this.owner.vectorEl = this.createVectorElement(this.themap);
-				this.owner.overlayDiv.appendChild(this.owner.vectorEl);
-			}else{
-			
-				this.owner.vectorEl =this.createVirtualVectorElement(this.owner.owner.vectorLayer.vectorEl);
-				if(this.backend=="canvas"){
-					this.ctx=this.owner.owner.vectorLayer.ctx;
-					this.owner.style=style;
-				}else if(this.backend=="vml"){
-					//nix
-					this.owner.owner.vectorLayer.vectorEl.appendChild(this.owner.vectorEl);
-				}else{
-					console.log(this.owner.owner.vectorLayer.vectorEl,this.owner.vectorEl);
-					this.owner.owner.vectorLayer.vectorEl.appendChild(this.owner.vectorEl);
-					for(var p in this.owner.style){
-						this.owner.vectorEl.style[p]=this.owner.style[p];
-					}
-					this.owner.style=this.owner.vectorEl.style;
-				}
-			}
-			this.themap.render();
-			*/
 		}
 		return this.backend;
 	}
@@ -159,7 +135,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 			}
 			}
 			var vectorEl=document.createElement("v:group");
-			//vectorEl.style.height=600;
+			//vectorEl.style.height=600;  
 			//vectorEl.style.width=1000;
 			//vectorEl = document.createElement("div");
 			vectorEl.setAttribute("debug","soso");
@@ -247,7 +223,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 				that.render(polyline);
 			}
 		}
-		polyline.bbox=this.makeBounds(polyline.geometry.coordinates);
+		polyline.bbox=this.makeBounds(polyline.geometry.coordinates);  //do I need that?
 		polyline.clear=function(){
 			//VML missing
 			if(that.backend=="svg"){
@@ -325,7 +301,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 				this.ctx.beginPath();
 			}
 			/**
-			This part should speedup moving the map. There is bug and so it's deactivated.
+			This part should speedup moving the map. 
 			*/
 			if (this.oldZoom == this.themap.zoom() && (this.themap.moveX != this.lastMoveX || this.themap.moveY != this.lastMoveY)) {
 				//move all the vectors is much faster than build the vectors completely new
@@ -339,6 +315,8 @@ khtml.maplib.overlay.Vector = function(backend) {
 					try {
 						this.themap.featureCollection.style.top = dy + "px";
 						this.themap.featureCollection.style.left = dx + "px";
+						//this.themap.featureCollection.style.webkitTransform="translate3d("+dx+"px,"+dy+"px,0)";
+						
 					} catch (e) {
 						console.log("move not passible");		
 					}
@@ -346,11 +324,19 @@ khtml.maplib.overlay.Vector = function(backend) {
 				if (!this.themap.finalDraw) {
 					return;
 				}else{
-						this.themap.featureCollection.style.display="none";
+						for(var i=0;i< this.lineArray.length;i++){
+							if(!this.lineArray[i].origDisplay){
+								this.lineArray[i].origDisplay= this.lineArray[i].element.style.display;
+							}
+							//console.log(this.lineArray[i].origDisplay);
+							this.lineArray[i].element.style.display="none";
+						}
+						//this.themap.featureCollection.style.display="none";
+						//this.themap.featureCollection.style.webkitTransform="translate3d(0,0,0)";
 						this.themap.featureCollection.style.top = 0 + "px";
 						this.themap.featureCollection.style.left = 0 + "px";
 				}
-				/*
+				/* This should prevent flicker after move
 				//the oldVectorEl will be visible until the new vectorEl is completely redered. 
 				this.oldVectorEl = this.owner.vectorEl;
 				//this.owner.vectorEl = this.createVectorElement(this.themap);
@@ -387,10 +373,13 @@ khtml.maplib.overlay.Vector = function(backend) {
 				this.ctx.fill();
 				this.ctx.stroke();
 			}
+	
+			//values for benchmark test
 			this.timestamp=new Date().getTime();
 			this.renderIterationTime=this.timestamp - this.starttimestamp;
 			this.totalPoints=this.totalPointsCounter;
 			this.totalLines=this.totalLinesCounter;
+
 			//rendering is finished
 			if (this.oldVectorEl && this.oldVectorEl.parentNode) {
 				//use action was move without zoom	
@@ -407,6 +396,11 @@ khtml.maplib.overlay.Vector = function(backend) {
 			var line=a;  //a single vector. mainly used for editing a vector. Rendering only one line is faster than rendering everything (on SVG).
 		}
 		line.repairBBox(); //here maybe optimization is possible. 
+
+
+		/*==========================
+		rendering starts here
+		===========================*/
 
 		//console.log(line,line.bounds.sw().lat(),line.bounds.sw().lng(),line.bounds.ne().lat(),line.bounds.ne().lng());
 		//check if line bounds are inside map bounds
@@ -439,10 +433,10 @@ khtml.maplib.overlay.Vector = function(backend) {
 					path.owner=line;
 					path.parentNode=line;  //dom like - part of API
 					if(line.events){
-					for(var e=0;e<line.events.length;e++){
-						var ev=line.events[e];
-						khtml.maplib.base.helpers.eventAttach(path,ev.eventType,ev.method,ev.context,ev.bubble);
-					}
+						for(var e=0;e<line.events.length;e++){
+							var ev=line.events[e];
+							khtml.maplib.base.helpers.eventAttach(path,ev.eventType,ev.method,ev.context,ev.bubble);
+						}
 					}
 					line.svgtext=this.addText(line);
 				}else{
@@ -450,6 +444,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 				}
 				break;
 			case "vml":
+				//implementation not finished
 				var shape = document.createElement("v:shape");
 				shape.style.top = "0px";
 				shape.style.left = "0px";
@@ -466,6 +461,7 @@ khtml.maplib.overlay.Vector = function(backend) {
 					var ret=khtml.maplib.overlay.renderer.SVG._calculatePath(line.geometry.coordinates,line.geometry.type,this.themap);
 					if(ret.d!=""){
 						path.setAttribute("d",ret.d);
+						path.style.display="";//line.origDisplay;
 					}
 					for(var p in line.properties){
 						var property=line.properties[p];
@@ -560,7 +556,6 @@ khtml.maplib.overlay.Vector = function(backend) {
 
 		/**
 		Here is the point where the function is recalled recursive.
-		
 		*/
 			this.timestamp=new Date().getTime();
 			this.iterationTime=this.timestamp - this.oldtimestamp;
