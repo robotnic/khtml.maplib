@@ -65,36 +65,21 @@ khtml.maplib.overlay.WMS = function(options) {
 			this.map=this.owner.map;
 		}else{
 			this.map=owner;
-		}
-		this.img=document.createElement("img");
-		this.div=document.createElement("div");
-		this.div.style.opacity=0.6;
-		var p=this.map.bounds().getCenter();
-		var delta={dx:-this.map.size.width/2,dy:-this.map.size.height/2};
-		var dx=-this.map.size.width/2;
-		var dy=-this.map.size.height/2;
-		this.div.appendChild(this.img);
-		this.img.style.position="absolute";
-		this.img.style.top=dy+"px";
-		this.img.style.left=dx+"px";
-		this.marker=new khtml.maplib.overlay.SimpleMarker(p,this.div);
-		this.map.featureCollection.appendChild(this.marker);
+		}	
+
 	}
-	this.oldZoom=0;
-	this.clear=function(){
-		that.marker.style.display="none";
-		that.map.featureCollection.removeChild(that.marker);
-	}
+
 	this.render=function(){
-		if(!map.finalDraw){
-			if(this.oldZoom!=this.map.zoom()){
-				this.marker.style.display="none";
-			}
-			this.oldZoom=this.map.zoom()	
-			return;
-		}
+                if(!map.finalDraw){
+                        if(this.oldZoom!=this.map.zoom()){
+                                //this.marker.style.display="none";
+                        }
+                        this.oldZoom=this.map.zoom()
+                        return;
+                }
+		this.bounds=this.map.bounds();
 		var p=this.map.bounds().getCenter();
-		this.marker.geometry.coordinates=p;
+		//this.marker.geometry.coordinates=p;
 		var s=this.map.bounds().sw().lat();
 		var n=this.map.bounds().ne().lat();
 		var w=this.map.bounds().sw().lng();
@@ -115,14 +100,24 @@ khtml.maplib.overlay.WMS = function(options) {
 			var format="image/png";
 		}
 		var url=this.options.url+"?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.0&FORMAT="+format+"&SRS=EPSG%3A4326&TILED=false&LAYERS="+layers+"&BBOX="+w+","+s+","+e+","+n+"&WIDTH="+width+"&HEIGHT="+height;
-		this.img.setAttribute("src",url);	
-		this.img.style.display="none";
-		khtml.maplib.base.helpers.eventAttach(this.img, "load", this._imgLoaded, this.marker, false);		
+		//this.img.setAttribute("src",url);	
+		//this.img.style.display="none";
+		this.tempImg=document.createElement("img");
+		this.tempImg.setAttribute("src",url);	
+		//this.tempImg.style.visibility="hidden";
+		//this.div.appendChild(this.tempImg);
+		khtml.maplib.base.helpers.eventAttach(this.tempImg, "load", this._imgLoaded, this.marker, false);		
 	}
 	var that=this;
 	this._imgLoaded=function(){
-		this.render();
-		this.marker.style.display="";
-		that.img.style.display="";
+                var dx=-that.map.size.width/2;
+                var dy=-that.map.size.height/2;
+
+		var delta={dx:dx,dy:dy};
+		if(that.groundOverlay){
+			that.map.removeOverlay(that.groundOverlay);
+		}
+		that.groundOverlay=new khtml.maplib.overlay.GroundOverlay(that.bounds, that.tempImg, delta);
+		that.map.addOverlay(that.groundOverlay);
 	}
 }

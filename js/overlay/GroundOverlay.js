@@ -37,6 +37,7 @@
 khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {	
 	this.geometry=new Object;
 	this.geometry.type="GroundOverlay";
+	this.options=options;
 	this.type="Feature";
 	// ---------------------------------------------------------------
 	// Private - should not be used from the outside
@@ -235,6 +236,7 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 	*/
 	this.clear = function() {
 //		this._removeChildRenderElementFromParent(this);
+		this.renderElement.parentNode.removeChild(this.renderElement);
 	}
 	/** Moveable extension */
 
