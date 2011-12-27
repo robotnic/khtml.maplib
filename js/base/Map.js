@@ -269,6 +269,8 @@ khtml.maplib.base.Map = function(map) {
 		} else {
 			evt.returnValue = false; // The IE way
 		}
+		this.moving=this.center();
+		this.downEvent=evt;
 		this.moveAnimationBlocked = true;
 		if (evt.touches.length == 1) {
 			this.startMoveX = this.moveX - this.pageX(evt.touches[0]) / this.faktor
@@ -322,6 +324,7 @@ khtml.maplib.base.Map = function(map) {
 		}
 
 		//	this.mousedownTime=null;
+		this.moveEvent=evt;
 		if (evt.touches.length == 1) {
 			if (this.moveok) {
 				this.lastMoveX = this.moveX;
@@ -420,8 +423,8 @@ khtml.maplib.base.Map = function(map) {
 					this.animateMove(speedX, speedY);
 						*/
 
-		var now = new Date(evt.timeStamp);
-		var timeDelta = now - this.lastMoveTime;
+					var now = new Date(evt.timeStamp);
+					var timeDelta = now - this.lastMoveTime;
                                         //speed in pixel per second
                                         var speedX = (this.lastMoveX - this.moveX) / timeDelta *4;
                                         var speedY = (this.lastMoveY - this.moveY) / timeDelta *4;
@@ -437,12 +440,7 @@ khtml.maplib.base.Map = function(map) {
                                                 speedY = -maxSpeed;
 
                                         var faktor=Math.pow(2,this.zoom());
-                                        if (Math.abs(speedX) > this.wheelSpeedConfig["animateMinSpeed"]/faktor
-                                                        || Math.abs(speedY) > this.wheelSpeedConfig["animateMinSpeed"]/faktor) {
-                                                this._animateMove(speedX, speedY,faktor);
-                                        } else {
-                                                //this.renderOverlays();
-                                        }
+					this._animateMove(speedX, speedY,faktor);
                                 }
 			}
 		}
@@ -451,7 +449,7 @@ khtml.maplib.base.Map = function(map) {
 		// sonst springt die Karte beim Auslassen eines Fingers
 		if (evt.touches.length == 1) {
 			this.startMoveX = this.moveX - evt.touches[0].pageX / this.faktor / this.sc;
-            this.startMoveY = this.moveY - evt.touches[0].pageY / this.faktor / this.sc;
+			this.startMoveY = this.moveY - evt.touches[0].pageY / this.faktor / this.sc;
 		}
 	}
 
@@ -530,7 +528,7 @@ khtml.maplib.base.Map = function(map) {
 		} else {
 			window.event.returnValue = false; // The IE way
 		}
-
+		this.downEvent=evt;
 		this.lastMouseX = this.pageX(evt);
 		this.lastMouseY = this.pageY(evt);
 		this.moveAnimationBlocked = true;
@@ -562,6 +560,7 @@ khtml.maplib.base.Map = function(map) {
 			// ewi: cross-cursor
 			khtml.maplib.base.helpers.setCursor(this.mapParent, "crosshair");
 		} else {
+			this.moving=this.center();
 			this.startMoveX = this.moveX - (this.pageX(evt)) / this.faktor
 					/ this.sc;
 			this.startMoveY = this.moveY - (this.pageY(evt)) / this.faktor
@@ -579,6 +578,7 @@ khtml.maplib.base.Map = function(map) {
 		} else {
 			window.event.returnValue = false; // The IE way
 		}
+		this.moveEvent=evt;
 		//this.mousedownTime2=0; //if it's moved it's not a doubleclick
 		this.lastMouseX = this.pageX(evt);
 		this.lastMouseY = this.pageY(evt);
@@ -668,12 +668,7 @@ khtml.maplib.base.Map = function(map) {
 						speedY = -maxSpeed;
 
 					var faktor=Math.pow(2,this.zoom());
-					if (Math.abs(speedX) > this.wheelSpeedConfig["animateMinSpeed"]/faktor
-							|| Math.abs(speedY) > this.wheelSpeedConfig["animateMinSpeed"]/faktor) {
-						this._animateMove(speedX, speedY,faktor);
-					} else {
-						//this.renderOverlays();
-					}
+					this._animateMove(speedX, speedY,faktor);
 				}
 			}
 		} else {
@@ -771,7 +766,12 @@ khtml.maplib.base.Map = function(map) {
 
 		//var w=document.getElementById("map").getElementsByTagName("img").item(0).offsetWidth;
 		//console.log(delta,delta2);
-		var zoom = this.oldZoom + timedelta2 / 3000 * this.speed * direction;
+		if(evt.shiftKey){
+			var shiftSlowdown=0.1;
+		}else{
+			var shiftSlowdown=1;
+		}
+		var zoom = this.oldZoom + timedelta2 / 3000 * this.speed * direction*shiftSlowdown;
 		if (zoom > this.position.maxZoom)
 			zoom = this.position.maxZoom;
 		if (zoom < this.position.minZoom)
@@ -1017,8 +1017,11 @@ khtml.maplib.base.Map = function(map) {
 	this._animateMove = function(speedX, speedY,faktor) {
 		clearTimeout(this.animateMoveTimeout);
 		//console.log("speed",speedX*faktor,speedY*faktor);
-		if (Math.abs(speedX) < this.wheelSpeedConfig["animateMinSpeed"]/faktor
-                                                        && Math.abs(speedY) < this.wheelSpeedConfig["animateMinSpeed"]/faktor)return;
+		if (Math.abs(speedX) < this.wheelSpeedConfig["animateMinSpeed"]/faktor && Math.abs(speedY) < this.wheelSpeedConfig["animateMinSpeed"]/faktor){
+			this.moving=false;
+			this.setCenter2(this.position.center, this.position.zoom);
+			return;
+		}
 		var framesPerSecond=50;
 		
 		/*
@@ -1662,13 +1665,12 @@ khtml.maplib.base.Map = function(map) {
 		if (!zoom) {
 			var zoom = this._getZoom();
 		}
-		//if (!this.css3d) {
 		if (this.layerDrawLastFrame) {
 			//khtml.maplib.base.Log.debug('this.layer: clearTimeout(this.layerDrawLastFrame)');
 			window.clearTimeout(this.layerDrawLastFrame);
 			this.layerDrawLastFrame = null;
 		}
-		if (this.layerTimer.isTimeRunning() || this.finalDraw == false) {
+		if (this.layerTimer.isTimeRunning() || this.finalDraw == false ) {
 		//if (this.blocked || this.finalDraw == false) {
 			//the last frames must be drawn to have good result
 			var that = this;
@@ -1848,6 +1850,7 @@ khtml.maplib.base.Map = function(map) {
 			var duration = (new Date() - startTime);
 			if (duration > 10 && !this.finalDraw) {  //canvas does css on finaldraw
 				this.doTheOverlayes = false;
+				//this._hideOverlays();
 			} else {
 				this.doTheOverlayes = true;
 			}
@@ -2754,16 +2757,18 @@ khtml.maplib.base.Map = function(map) {
 	this.overlays = new Array();
 
 	//base vector layer
+	/*
 	if(khtml.maplib.overlay.FeatureCollection){
 		/**
 		Spezial overlay for geoJson
-		*/
+	
 		this.backend="svg";
 		this.featureCollection=new khtml.maplib.overlay.FeatureCollection();
 		this.featureCollection.realLayer=true;
 		this.featureCollection.map=this;
 		this.addOverlay(this.featureCollection);
 	}
+	*/
 
 
 	//distance tool
