@@ -1665,6 +1665,12 @@ khtml.maplib.base.Map = function(map) {
 		if (!zoom) {
 			var zoom = this._getZoom();
 		}
+                if (this.wheelSpeedConfig["digizoom"]) {
+                        var intZoom = Math.floor(zoom);
+                } else {
+                        var intZoom = Math.round(zoom);
+                }
+
 		if (this.layerDrawLastFrame) {
 			//khtml.maplib.base.Log.debug('this.layer: clearTimeout(this.layerDrawLastFrame)');
 			window.clearTimeout(this.layerDrawLastFrame);
@@ -1679,6 +1685,9 @@ khtml.maplib.base.Map = function(map) {
 				that.layer(map, lat, lng, moveX, moveY, zoom);
 			};
 			//khtml.maplib.base.Log.debug('this.layer: setTimeout(tempFunction) => that.layer(..), final draw');
+			this.visibleZoom=parseInt(this.visibleZoom);	
+			//if(!that.finalDraw || intZoom !=this.visibleZoom){
+			this.visibleZoom=parseInt(this.visibleZoom);	
 			if(!that.finalDraw){
 			this.layerDrawLastFrame = window.setTimeout(tempFunction, 100);
 			}
