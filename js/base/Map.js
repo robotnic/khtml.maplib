@@ -2041,6 +2041,9 @@ khtml.maplib.base.Map = function(map) {
 					var img = document.createElement("img");
 					img.style.visibility = "hidden";
 					img.style.position = "absolute";
+					img.style.padding = "0px";
+					img.style.margin = "0px";
+					img.style.borderWidth = "0px";
 					img.style.left = i * this.tileW + "px";
 					//console.log(i,i*this.tileW);
 					img.style.top = j * this.tileH + "px";
@@ -2659,8 +2662,8 @@ khtml.maplib.base.Map = function(map) {
 		//logo.style.zIndex=10;
 		logo.style.border="0px solid black";
 		logo.style.position="absolute";
-		var top=this.size.height+this.size.deltaTop -24;
-		var left=this.size.deltaLeft +0;
+		var top=this.size.height -24;
+		var left=5;
 		logo.style.top=top+"px";
 		logo.style.left=left+"px";
 		logo.style.width="24px";
@@ -2780,12 +2783,13 @@ khtml.maplib.base.Map = function(map) {
 	this.clone.appendChild(this.map);
 	//this.getSize();
 
-	this._setMapPosition();
 
 	//div for markers
 	this.overlayDiv = document.createElement("div");
 	this.overlayDiv.style.position = "absolute";
 	this.clone.appendChild(this.overlayDiv);
+
+	this._setMapPosition();
 
 	//create base layer
 	this.overlays = new Array();
