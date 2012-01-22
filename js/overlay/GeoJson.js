@@ -24,12 +24,17 @@ khtml.maplib.overlay.GeoJson = function() {
 	This function is called at the end of this class.
 	*/		
 	
-
 	this.init=function(map){
 		this.map=map;
+		if(this.root)this.root.parentNode.removeChild(this.root);
+		if(this.element){	
+			this.element.parentNode.removeChild(this.element);
+			delete this.element;
+		}
 		this.root=document.createElement("div");
 		this.root.style.position="absolute";
 		this.root.setAttribute("GeoJson","root");  //to be visual in debugger tree view
+		this.root.setAttribute("id","root");  //to be visual in debugger tree view
 		this.map.overlayDiv.appendChild(this.root);
 		this.load({"type":"FeatureCollection"});
 	}
@@ -69,7 +74,6 @@ khtml.maplib.overlay.GeoJson = function() {
 		/*
 		Fast Rendering decisson. Do full rendering or do fast move and scale.
 		*/
-
 		if(!force && (!this.map.finalDraw  || this.map.moving )){ // && this.backend=="canvas"){
 				if(this.element.finished){
 					this.visibleElement=this.element;
@@ -93,6 +97,7 @@ khtml.maplib.overlay.GeoJson = function() {
 		if(!this.element){
 			//returns the rendering target
 			this.element=this.renderElement();
+
 		}
 
 		/*
@@ -119,6 +124,8 @@ khtml.maplib.overlay.GeoJson = function() {
 			this.element.style.display="none";
 			this.element.finished=false;
 			this.element.topright=null;  //sorry tricky
+
+			this.element.setAttribute("viewBox","0 0 "+this.map.size.width+" "+this.map.size.height);
 		}
 
 		this.element.style.top="0px";
@@ -130,8 +137,7 @@ khtml.maplib.overlay.GeoJson = function() {
 //		this.root.style.top=this.deltaY+"px";
 //		this.root.style.left=this.deltaX+"px";
 		this.lastzoom=this.map.zoom();
-		this.clear();
-		//this.root.style.display="";
+		this.clear();  //canvas only
 		var base=this.featureCollection;
 	
 		//now the funny part starts	
@@ -170,8 +176,9 @@ khtml.maplib.overlay.GeoJson = function() {
 	Is intendet do rebuild all bbox, css things. Da full render call.
 	*/
 	this.draw=function(base){
-		this.init(this.map);
-		this.render(base);
+		this.recurseLinksDirty=true //this.featureCollection);
+		//this.init(this.map);
+		this.render(true);
 	}
 	/**
 	Not in use anymore
@@ -222,7 +229,6 @@ khtml.maplib.overlay.GeoJson = function() {
 		/**
 		Slow processes will be killed. The Sceduler need timing
 		*/
-
 		if(!time){
 			var time=new Date();
 			delta=0;
@@ -265,7 +271,6 @@ khtml.maplib.overlay.GeoJson = function() {
 		}
 		//finaly do the payload
 		feature.render();	
-			
 	}
 	/**
 	Internally used
@@ -314,7 +319,6 @@ khtml.maplib.overlay.GeoJson = function() {
 	*/
 
 	this.recurseLink=function(base,feature,depth){
-
 		if(!base){
 			//initialize if function is called without parmeters
 			this.removeLinks();
