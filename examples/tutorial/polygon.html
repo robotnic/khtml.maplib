@@ -1,0 +1,39 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+width:500px;
+height:400px;
+}
+</style>
+<script type="text/javascript" src="http://maplib.khtml.org/khtml.maplib/khtml_all.js">
+</script>
+<script type="text/javascript">
+
+function init(){
+	var map=khtml.maplib.Map(document.getElementById("map"));
+	var center=khtml.maplib.LatLng(48.2,15.6);
+	map.centerAndZoom(center,10);
+
+	var polygon={
+		type:"Feature",
+		geometry:{
+			type:"Polygon",
+			coordinates:[[[15.55,48.10],[15.65,48.18],[15.40,48.2]]]
+		},
+		style:{
+			fill:"yellow",
+			stroke:"black",
+			opacity:0.4
+		}
+	};
+	var p=map.featureCollection.appendChild(polygon);
+	console.log(p);
+}
+
+</script>
+</head>
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>
