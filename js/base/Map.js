@@ -2651,7 +2651,7 @@ khtml.maplib.base.Map = function(map) {
 	this._copyright=function(){
 		if(this.copyrightdiv==null){
 			this.copyrightdiv=document.createElement("div");
-			this.mapParent.appendChild(this.copyrightdiv);
+			this.overlayDiv.appendChild(this.copyrightdiv);
 		}
 		while(this.copyrightdiv.firstChild){this.copyrightdiv.removeChild(this.copyrightdiv.firstChild)}
 		var logo=document.createElement("img");
@@ -2662,8 +2662,8 @@ khtml.maplib.base.Map = function(map) {
 		//logo.style.zIndex=10;
 		logo.style.border="0px solid black";
 		logo.style.position="absolute";
-		var top=this.size.height -24;
-		var left=5;
+		var top=this.size.height -26;
+		var left=3;
 		logo.style.top=top+"px";
 		logo.style.left=left+"px";
 		logo.style.width="24px";
