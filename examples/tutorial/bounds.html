@@ -1,0 +1,26 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+width:500px;
+height:400px;
+}
+</style>
+<script type="text/javascript" src="http://maplib.khtml.org/khtml.maplib/khtml_all.js">
+</script>
+<script type="text/javascript">
+
+function init(){
+	var map=new khtml.maplib.Map(document.getElementById("map"));
+	var p1=new khtml.maplib.LatLng(48.2,15.6);
+	var p2=new khtml.maplib.LatLng(48.38,15.76);
+	var bounds=new khtml.maplib.geometry.Bounds(p1,p2);
+	map.bounds(bounds);
+}
+
+</script>
+</head>
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>
