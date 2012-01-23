@@ -359,6 +359,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 					}
 					else{
 						var el = document.createElement('img');
+						el.style.backgroundColor="transparent";
 						el.setAttribute('src', dragcross_image);				// data-URI
 					}
 					this.dragcross.style.width = "16px";
@@ -493,6 +494,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 					}
 					else{
 						var el = document.createElement('img');
+						el.style.backgroundColor="transparent";
 						el.setAttribute('src', dragcross_image);				// data-URI
 					}
 					this.dragcross.style.width = "16px";
@@ -1013,6 +1015,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 			// object is a URL
 			if (typeof(MarkerOptions.icon.url) == "string") {
 				var el = document.createElement('img');
+				el.style.backgroundColor="transparent";
 				el.setAttribute('src', MarkerOptions.icon.url);
 				if (MarkerOptions.icon.origin) {
 					if (MarkerOptions.icon.origin.x)	el.style.left = MarkerOptions.icon.origin.x;
@@ -1125,6 +1128,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 					// image-URL
 					else if(typeof(MarkerOptions.shadow.url) == "string") {
 						var el = document.createElement('img');
+						el.style.backgroundColor="transparent";
 						el.setAttribute('src', MarkerOptions.shadow.url);
 						el.style.position = 'absolute';
 						if (MarkerOptions.shadow.origin.x)
@@ -1159,6 +1163,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 			}
 			else{
 				var el = document.createElement('img');
+				el.style.backgroundColor="transparent";
 				el.setAttribute('src', standardmarker_shadow);						// data-URI
 			}
 			el.style.position = 'absolute';
@@ -1182,6 +1187,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 			}
 			else{
 				var el = document.createElement('img');
+				el.style.backgroundColor="transparent";
 				el.setAttribute('src', standardmarker_image);					// data-URI
 			}
 			el.style.border = 0;
