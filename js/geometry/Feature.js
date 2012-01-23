@@ -14,8 +14,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 		return new khtml.maplib.geometry.FeatureCollection(feature,parentNode);	
 	}
 	if(feature.type=="Point"){
-		console.log("Point not implemented");
-		return;
+//		return;
 	}
 	this.type="Feature";
 	this.events=new Array();
@@ -57,7 +56,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 		this.parentNode=parentNode;
 		this.documentElement=parentNode.documentElement;
 		if(!this.bbox){
-		this.bbox=this.makeBounds();
+			this.bbox=this.makeBounds();
 		}
 	}
 
@@ -161,7 +160,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 
 
 	/**
-	============== Now do the real things - stupid non existing javascript threads...================
+	============== Now do the real things ================
 	**/
 
 
@@ -294,7 +293,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 		if(!this.element){
 			this.element=document.createElementNS("http://www.w3.org/2000/svg","path");
 			this.element.feature=feature;
-			this.parentNode.element.appendChild(this.element);  //todo should be parentnode
+			this.parentNode.element.appendChild(this.element);  
 			for(var e=0;e<feature.events.length;e++){
 				var ev=feature.events[e];
 				khtml.maplib.base.helpers.eventAttach(this.element,ev.eventType,ev.method,ev.context,ev.bubble);
@@ -334,7 +333,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 		if(!depth)depth=0;
 		if(!num)num=0;
 		if(type=="Polygon" && depth >0 && num >0){
-			context.globalCompositeOperation="source-out";  //sorry not working
+		//	context.globalCompositeOperation="source-out";  //sorry not working
 		 }else{
 			context.globalCompositeOperation="destination-over";
 		}
