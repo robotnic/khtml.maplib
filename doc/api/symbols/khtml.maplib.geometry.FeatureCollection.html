@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - khtml.maplib.parser.Osm</title>
+		<title>JsDoc Reference - khtml.maplib.geometry.FeatureCollection</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -268,7 +268,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class khtml.maplib.parser.Osm
+				Class khtml.maplib.geometry.FeatureCollection
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -279,13 +279,13 @@ ul.inheritsList
 				
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/js_parser_Osm.js.html">Osm.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/js_geometry_FeatureCollection.js.html">FeatureCollection.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class khtml.maplib.parser.Osm.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class khtml.maplib.geometry.FeatureCollection.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -298,9 +298,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.parser.Osm.html#constructor">khtml.maplib.parser.Osm</a></b>()
+								<b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#constructor">khtml.maplib.geometry.FeatureCollection</a></b>(optional, optional)
 							</div>
-							<div class="description">This class understands the OSM-XML Format</div>
+							<div class="description">This class provides a DOM like interface for appendChild, insertBefore,.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -314,7 +314,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class khtml.maplib.parser.Osm.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class khtml.maplib.geometry.FeatureCollection.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -327,7 +327,16 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#add">add</a></b>(dom, fc, zindex)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#appendChild">appendChild</a></b>(newFeature)
+								</div>
+								<div class="description">API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#init">init</a></b>(parentNode)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -336,7 +345,34 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#data">data</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#insertBefore">insertBefore</a></b>(newFeature, refFeature)
+								</div>
+								<div class="description">API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#makeBounds">makeBounds</a></b>()
+								</div>
+								<div class="description">repaire bounding box (slow)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#removeChild">removeChild</a></b>(f)
+								</div>
+								<div class="description">API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#render">render</a></b>()
 								</div>
 								<div class="description"></div>
 							</td>
@@ -345,72 +381,18 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#lineStyle">lineStyle</a></b>(line, zindex)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#replaceChild">replaceChild</a></b>(newChild, oldChild)
 								</div>
-								<div class="description"></div>
+								<div class="description">API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#mapcss">mapcss</a></b>(css)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html#toJSON">toJSON</a></b>()
 								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#-removeComments">removeComments</a></b>(str)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#style">style</a></b>(dom)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#-test">test</a></b>(data)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#-translateToSVG">translateToSVG</a></b>(data)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#-trim">trim</a></b>(zeichenkette)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.parser.Osm.html#zindex">zindex</a></b>(data)
-								</div>
-								<div class="description"></div>
+								<div class="description">Serialize to JSON</div>
 							</td>
 						</tr>
 					
@@ -431,11 +413,11 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>khtml.maplib.parser.Osm</b>()
+						<b>khtml.maplib.geometry.FeatureCollection</b>(optional, optional)
 				</div>
 				
 				<div class="description">
-					This class understands the OSM-XML Format
+					This class provides a DOM like interface for appendChild, insertBefore,...
 					
 				</div>
 				
@@ -443,18 +425,28 @@ ul.inheritsList
 				
 				
 					
-					
-					
-					
-					
-					
-					
 						<dl class="detailList">
-						<dt class="heading">See:</dt>
+						<dt class="heading">Parameters:</dt>
 						
-							<dd>Example: <a href="../../../examples/parser/osm/start.html">osm with php proxy</a></dd>
+							<dt>
+								 <b>optional</b>
+								
+							</dt>
+								<dd>feature - an object that repesents the new featureCollection</dd>
+						
+							<dt>
+								 <b>optional</b>
+								
+							</dt>
+								<dd>parentNOde- an existing featureCollection</dd>
 						
 						</dl>
+					
+					
+					
+					
+					
+					
 					
 
 			</div>
@@ -469,15 +461,15 @@ ul.inheritsList
 					Method Detail
 				</div>
 				
-					<a name="add"> </a>
+					<a name="appendChild"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>add</b>(dom, fc, zindex)
+					<b>appendChild</b>(newFeature)
 					
 					</div>
 					<div class="description">
-						
+						API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html
 						
 						
 					</div>
@@ -489,19 +481,7 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>dom</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>fc</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>zindex</b>
+									<b>newFeature</b>
 									
 								</dt>
 								<dd></dd>
@@ -517,11 +497,11 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="data"> </a>
+					<a name="init"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>data</b>()
+					<b>init</b>(parentNode)
 					
 					</div>
 					<div class="description">
@@ -533,6 +513,17 @@ ul.inheritsList
 					
 					
 						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>parentNode</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
 						
 						
 						
@@ -542,15 +533,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="lineStyle"> </a>
+					<a name="insertBefore"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>lineStyle</b>(line, zindex)
+					<b>insertBefore</b>(newFeature, refFeature)
 					
 					</div>
 					<div class="description">
-						
+						API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html
 						
 						
 					</div>
@@ -562,13 +553,13 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>line</b>
+									<b>newFeature</b>
 									
 								</dt>
 								<dd></dd>
 							
 								<dt>
-									<b>zindex</b>
+									<b>refFeature</b>
 									
 								</dt>
 								<dd></dd>
@@ -584,32 +575,21 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="mapcss"> </a>
+					<a name="makeBounds"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>mapcss</b>(css)
+					<b>makeBounds</b>()
 					
 					</div>
 					<div class="description">
-						
+						repaire bounding box (slow)
 						
 						
 					</div>
 					
 					
 					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>css</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
 						
 						
 						
@@ -620,51 +600,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="-removeComments"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>removeComments</b>(str)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>str</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="style"> </a>
+					<a name="removeChild"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>style</b>(dom)
+					<b>removeChild</b>(f)
 					
 					</div>
 					<div class="description">
-						
+						API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html
 						
 						
 					</div>
@@ -676,7 +620,7 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>dom</b>
+									<b>f</b>
 									
 								</dt>
 								<dd></dd>
@@ -692,119 +636,11 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="-test"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>test</b>(data)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>data</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-translateToSVG"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>translateToSVG</b>(data)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>data</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="-trim"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>trim</b>(zeichenkette)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>zeichenkette</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="zindex"> </a>
+					<a name="render"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>zindex</b>(data)
+					<b>render</b>()
 					
 					</div>
 					<div class="description">
@@ -816,16 +652,72 @@ ul.inheritsList
 					
 					
 						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="replaceChild"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>replaceChild</b>(newChild, oldChild)
+					
+					</div>
+					<div class="description">
+						API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html
+						
+						
+					</div>
+					
+					
+					
+						
 							<dl class="detailList">
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>data</b>
+									<b>newChild</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>oldChild</b>
 									
 								</dt>
 								<dd></dd>
 							
 							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="toJSON"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>toJSON</b>()
+					
+					</div>
+					<div class="description">
+						Serialize to JSON
+						
+						
+					</div>
+					
+					
+					
 						
 						
 						
