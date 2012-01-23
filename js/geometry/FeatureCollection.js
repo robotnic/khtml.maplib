@@ -45,7 +45,7 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 	}
 
 	this.init=function(parentNode){
-		if(this.backend=="svg"){
+		if(this.documentElement.backend=="svg"){
 			if(!this.element){
 				this.element=document.createElementNS("http://www.w3.org/2000/svg","g");
 				this.style=this.element.style;
@@ -56,13 +56,19 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 		this.parentNode=parentNode
 		this.documentElement=this.parentNode.documentElement;
 
-		if(!feature)feature=this;
-		if(feature.features){
+		if(feature && feature.features){
 			for(var i=0;i<feature.features.length;i++){
 				var f=feature.features[i];
 				//if(!f.geometry || f.geometry.type!="PPoint"){
-					this.appendChild(feature.features[i]);
+					this.appendChild(f);
 				//}
+			}
+		}
+		if(this.features){
+			for(var i=0;i<this.features.length;i++){
+				if(!this.features[i].element){
+					this.features[i].init(this);
+				}
 			}
 		}
 
@@ -82,7 +88,6 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 			}
 		}else{
 		    exists=true;
-			console.log("zzz",newFeature);
 		    for(var i=0;i<newFeature.parentNode.features.length;i++){
                         if(newFeature.parentNode.features[i]==newFeature){
 				if(this==newFeature.parentNode && i==newFeature.parentNode.features.length -1){
@@ -90,7 +95,7 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 					return newFeature;
 				}
 				newFeature.parentNode.features.splice(i,1);
-				if(newFeature.element){
+				if(newFeature.element && this.element){
 					this.element.appendChild(newFeature.element);
 				}
 				break;
@@ -249,6 +254,7 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 		}
 		return this.bbox;	
 	}
+
 }
 
 
