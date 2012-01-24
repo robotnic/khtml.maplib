@@ -1,0 +1,154 @@
+<html>
+<head>
+<style type="text/css">
+body{
+font-family:Arial;
+overflow:hidden;
+}
+#map{
+position:absolute;
+top:100px;
+left:350px;
+right:20px;
+bottom:20px;
+}
+#tree{
+position:absolute;
+top:100px;
+}
+
+.head{
+background-color:lightblue;
+border:1px solid #efefef;
+box-shadow:0px 0px 5px lightgrey;
+padding:4px;
+font-weight:bold;
+border-radius:10px;
+}
+.folder{
+margin-left:10px;
+margin-right:5px;
+border-left:1px solid #efefef;
+border-bottom:1px solid #efefef;
+border-right:1px solid #efefef;
+margin-bottom:10px;
+padding:6px;
+font-size:12px;
+box-shadow:0px 0px 5px lightgrey;
+}
+.placemark{
+margin-left:30px;
+cursor:pointer;
+}
+.placemark:hover{
+background-color:yellow;
+}
+
+</style>
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/GeoJson.js"> </script>
+<script type="text/javascript" src="../../../js/geometry/Feature.js"> </script>
+<script type="text/javascript" src="../../../js/geometry/FeatureCollection.js"> </script>
+<script type="text/javascript" src="../../../js/parser/Kml.js"> </script>
+<script type="text/javascript">
+
+var map=null;
+var kml=null;
+function init(){
+	map=new khtml.maplib.base.Map(document.getElementById("map"));
+
+        map.tiles({
+ 
+                  maxzoom:16,
+                  minzoom:1,
+                  src:function(x,y,z){
+//                     return "http://a.tah.openstreetmap.org/Tiles/tile/"+z+"/"+x+"/"+y+".png";
+		     return "http://mt0.google.com/vt/lyrs=m@169301078&hl=en&x="+x+"&y="+y+"&z="+z+"&s=Galil";
+                  },
+                  copyright:"osm"
+        });
+
+
+	var center=new khtml.maplib.geometry.LatLng(48.2,16.5);
+	map.centerAndZoom(center,2);
+	var keyboard=new khtml.maplib.ui.KeyBoard();
+	map.addOverlay(keyboard);
+	var zoombar=new khtml.maplib.ui.Zoombar();
+	map.addOverlay(zoombar);
+
+	kml=new khtml.maplib.parser.Kml(map.featureCollection)
+	load("SamplesInMaps.kml");
+//	load("us_states.kml");
+}
+function load(url){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET",url,true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			var json=kml.parse(xmlhttp.responseXML);
+			console.log(json);
+			//map.featureCollection.appendChild(json);
+			map.featureCollection.style.fill="red";
+			map.featureCollection.style.stroke="black";
+
+			renderTree(kml.folders);
+		}
+	}
+	xmlhttp.send(null);
+}
+
+function renderTree(folders){
+	console.log(folders);
+	var target=document.getElementById("tree");
+	for(var i=0;i<folders.length;i++){
+		var div=document.createElement("div");
+		var checkbox=document.createElement("input");
+		var text=document.createTextNode(folders[i].name);
+		checkbox.setAttribute("type","checkbox");
+		var headdiv=document.createElement("div");
+		headdiv.appendChild(checkbox);
+		headdiv.appendChild(text);
+		headdiv.className="head";
+		div.className="folder";
+		target.appendChild(headdiv);
+		target.appendChild(div);
+		renderPlaceMarks(folders[i],div);
+		var feature=folders[i].feature;
+		khtml.maplib.base.helpers.eventAttach(headdiv, "mousedown", show, feature, false);
+
+	}
+}
+function show(evt){
+	if(this.bbox){
+		map.bounds(this.bbox);
+	}
+}
+function renderPlaceMarks(folder,div){
+	for(var i=0;i<folder.placeMarks.length;i++){
+		var placeMark=folder.placeMarks[i];
+		var name=placeMark.name;
+		if(placeMark.name){
+			var div2=document.createElement("div");
+			div2.className="placemark";
+			var text=document.createTextNode(placeMark.name);
+			var checkbox=document.createElement("input");
+			checkbox.setAttribute("type","checkbox");
+			div2.appendChild(checkbox);
+			div2.appendChild(text);
+			div.appendChild(div2);
+			khtml.maplib.base.helpers.eventAttach(div2, "mousedown", show, placeMark.feature, false);
+		}
+	}
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<h1>kml example</h1>
+<div id="tree">
+</div>
+<div id="map">
+</div>
+</body>
+</html>
