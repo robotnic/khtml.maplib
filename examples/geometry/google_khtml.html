@@ -145,6 +145,10 @@ function init(){
 	//set map center and zoom
 	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
 
+	var zoombar=new khtml.maplib.ui.Zoombar();
+	map.addOverlay(zoombar);	
+
+
 }
 
 function makeLinesKhtml(coords){
