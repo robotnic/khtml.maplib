@@ -46,10 +46,12 @@ background-color:yellow;
 
 </style>
 <script type="text/javascript" src="../../../khtml_all.js"> </script>
+<!--
 <script type="text/javascript" src="../../../js/overlay/GeoJson.js"> </script>
 <script type="text/javascript" src="../../../js/geometry/Feature.js"> </script>
 <script type="text/javascript" src="../../../js/geometry/FeatureCollection.js"> </script>
 <script type="text/javascript" src="../../../js/parser/Kml.js"> </script>
+-->
 <script type="text/javascript">
 
 var map=null;
@@ -86,7 +88,6 @@ function load(url){
 	xmlhttp.onreadystatechange=function(){
 		if(xmlhttp.readyState==4){
 			var json=kml.parse(xmlhttp.responseXML);
-			console.log(json);
 			//map.featureCollection.appendChild(json);
 			map.featureCollection.style.fill="red";
 			map.featureCollection.style.stroke="black";
@@ -98,11 +99,11 @@ function load(url){
 }
 
 function renderTree(folders){
-	console.log(folders);
 	var target=document.getElementById("tree");
 	for(var i=0;i<folders.length;i++){
 		var div=document.createElement("div");
 		var checkbox=document.createElement("input");
+		checkbox.checked="checked";
 		var text=document.createTextNode(folders[i].name);
 		checkbox.setAttribute("type","checkbox");
 		var headdiv=document.createElement("div");
@@ -115,7 +116,22 @@ function renderTree(folders){
 		renderPlaceMarks(folders[i],div);
 		var feature=folders[i].feature;
 		khtml.maplib.base.helpers.eventAttach(headdiv, "mousedown", show, feature, false);
+		khtml.maplib.base.helpers.eventAttach(checkbox, "click", check, feature, false);
 
+	}
+}
+function check(evt){
+	if(evt.target){
+		var target=evt.target;
+	}else{
+		var target=evt.srcElement;
+	}
+	if(target.checked){
+		this.style.display="";
+		this.display="";
+	}else{
+		this.style.display="none";
+		this.display="none";
 	}
 }
 function show(evt){
@@ -133,10 +149,12 @@ function renderPlaceMarks(folder,div){
 			var text=document.createTextNode(placeMark.name);
 			var checkbox=document.createElement("input");
 			checkbox.setAttribute("type","checkbox");
+			checkbox.checked="checked";
 			div2.appendChild(checkbox);
 			div2.appendChild(text);
 			div.appendChild(div2);
 			khtml.maplib.base.helpers.eventAttach(div2, "mousedown", show, placeMark.feature, false);
+			khtml.maplib.base.helpers.eventAttach(checkbox, "click", check, placeMark.feature, false);
 		}
 	}
 }

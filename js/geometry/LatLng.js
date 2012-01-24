@@ -67,10 +67,11 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 		if (typeof(lat) == "number") {
 			this.latitude = lat;
 			this._executeCallbackFunctions();
-		}
-		if (typeof(lat) == "string") {
-			this.latitude = parseFloat(lat);
-			this._executeCallbackFunctions();
+		}else{
+			if (typeof(lat) == "string") {
+				this.latitude = parseFloat(lat);
+				this._executeCallbackFunctions();
+			}
 		}
 		return this.latitude;
 	}
@@ -81,10 +82,11 @@ khtml.maplib.geometry.LatLng = function(lat, lng) {
 		if (typeof(lng) == "number") {
 			this.longitude = lng;
 			this._executeCallbackFunctions();
-		}
-		if (typeof(lng) == "string") {
-			this.longitude = parseFloat(lng);
-			this._executeCallbackFunctions();
+		}else{
+			if (typeof(lng) == "string") {
+				this.longitude = parseFloat(lng);
+				this._executeCallbackFunctions();
+			}
 		}
 		return this.longitude;
 	}

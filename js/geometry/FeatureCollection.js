@@ -1,6 +1,11 @@
 
 /**
-This will be moved to the geometry directory
+ * This class provides a DOM like interface for appendChild, insertBefore,...
+
+ * @param optional feature - an object that repesents the new featureCollection
+ * @param optional parentNOde- an existing featureCollection 
+ * @class
+
 */
 
 khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
@@ -26,8 +31,8 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 	}
 	if(!this.features){
 		this.features=new Array();
-		this.childNodes=this.features;
 	}
+	this.childNodes=this.features;
 	if(this.documentElement && this.documentElement.backend=="svg"){
 		if(feature.style){
 			for(var s in feature.style){
@@ -179,6 +184,7 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 	API Sytax stolen from: DOM 2 Core http://www.w3.org/TR/DOM-Level-2-Core/core.html
 	*/
 	this.removeChild=function(f){
+		if(!f)return;
 		if(f.mmarker){
 			f.mmarker.destroy();	
 		}

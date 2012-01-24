@@ -1,20 +1,23 @@
 
 /**
-This class renders a single feature like Polygon, LineString,...
-Ducktyping in use.
+ * This class renders a single feature like Polygon, LineString,...
+ * Ducktyping in use.
 
-The initializition process is a bit complicated.
-Maybe there the feature should be cloned completely.
+ * The initializition process is a bit complicated.
+ * Maybe there the feature should be cloned completely.
+
+ * @param feature - an object that repesents the feature
+ * @param optional - the featureCollection 
+ * @class
 */
+
+
 
 
 khtml.maplib.geometry.Feature=function(feature,parentNode){
 	var that=this;
 	if(feature.type=="FeatureCollection"){
 		return new khtml.maplib.geometry.FeatureCollection(feature,parentNode);	
-	}
-	if(feature.type=="Point"){
-//		return;
 	}
 	this.type="Feature";
 	this.events=new Array();
@@ -318,10 +321,11 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 //		if(feature.className && feature.className.baseVal){
 			this.element.className.baseVal=feature.className.baseVal;
 //		}	
-		if(typeof(this.element.display)!="undefined"){
-		this.element.style.display=this.element.display;
+		if(typeof(this.display)!="undefined"){
+			this.element.style.display=this.display;
+		}else{
+			this.element.style.display="";
 		}
-		this.element.style.display="";
 	}
 
 	/**

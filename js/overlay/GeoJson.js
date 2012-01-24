@@ -270,7 +270,9 @@ khtml.maplib.overlay.GeoJson = function() {
 			that.cleanup();
 		}
 		//finaly do the payload
-		feature.render();	
+		if(feature){
+			feature.render();	
+		}
 	}
 	/**
 	Internally used
@@ -384,9 +386,11 @@ khtml.maplib.overlay.GeoJson = function() {
 	For write only interface, clear blackboard
 	*/
 	this.clear=function(){
+		/*
 		if(this.backend=="canvas"){
 			//this.context.clearRect(0,0,this.map.size.width,this.map.size.height);
 		}
+		*/	
 	}
 	/**
 	Do the base rendering elements dependent on backend. 

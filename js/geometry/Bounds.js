@@ -74,7 +74,10 @@ khtml.maplib.geometry.Bounds = function(p1, p2) {
 	 *
 	 * @returns {khtml.maplib.LatLng}
 	*/
-	this.sw = function() {
+	this.sw = function(sw) {
+		if(sw){
+			this.southwest=sw;
+		}
 		return this.southwest;
 	}
 	
@@ -98,7 +101,10 @@ khtml.maplib.geometry.Bounds = function(p1, p2) {
 	 *
 	 * @returns {khtml.maplib.LatLng}
 	*/
-	this.ne = function() {
+	this.ne = function(ne) {
+		if(ne){
+			this.northeast=ne;
+		}
 		return this.northeast;
 	}
 	
