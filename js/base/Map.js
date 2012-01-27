@@ -1011,6 +1011,7 @@ khtml.maplib.base.Map = function(map) {
 	 * Map continues moving after mouse up
 	*/
 	this._animateMove = function(speedX, speedY,faktor) {
+    if(this.internetExplorer)return;
 		clearTimeout(this.animateMoveTimeout);
 		//console.log("speed",speedX*faktor,speedY*faktor);
 		if (Math.abs(speedX) < this.wheelSpeedConfig["animateMinSpeed"]/faktor && Math.abs(speedY) < this.wheelSpeedConfig["animateMinSpeed"]/faktor){
@@ -1330,7 +1331,7 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	this._getCenter = function() {
-		if (this.moveX != 0 || this.moveY != 0) {
+		if ((this.moveX && this.moveX != 0)|| (this.moveY && this.moveY != 0)){
 			var center = new khtml.maplib.LatLng(this.movedLat, this.movedLng);
 		} else {
 			if (!this.position.center) {
@@ -1505,7 +1506,7 @@ khtml.maplib.base.Map = function(map) {
 		if(lat >90) lat =lat -180;
 		if(lat <-90) lat =lat +180;
 		var intZoom = this._getIntZoom();
-		tileTest = getTileNumber(lat, lng, intZoom);
+		var tileTest = getTileNumber(lat, lng, intZoom);
 		var worldCenter = this._getCenter();
 
 		var tileCenter = getTileNumber(worldCenter.lat(), worldCenter.lng(),
@@ -2416,11 +2417,21 @@ khtml.maplib.base.Map = function(map) {
 		var el = this.mapParent;
 
 		var size1= el.getBoundingClientRect();
+    if(size1.height){
+      var height=size1.height;
+    }else{
+      var height=size1.bottom - size1.top;
+    }
+    if(size1.width){
+      var width=size1.width;
+    }else{
+      var width=size1.right - size1.left;
+    }
 		var size = {
 			top : size1.top + document.body.scrollTop,
 			left : size1.left + document.body.scrollLeft,
-			width : size1.width,
-			height : size1.height,
+			width : width,
+			height : height,
 			deltaTop : size1.top + document.body.scrollTop,
 			deltaLeft : size1.left + document.body.scrollLeft,
 			deltaBottom : size1.bottom,

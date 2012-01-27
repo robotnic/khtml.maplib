@@ -28,6 +28,12 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 				this.parentNode.element.appendChild(this.element);
 			}
 		}
+    if(this.documentElement.backend=="vml"){
+      this.element=document.createElement("v:group");
+ 			if(this.parentNode.element){
+         parentNode.element.appendChild(this.element);
+      }  
+    }
 	}
 	if(!this.features){
 		this.features=new Array();
@@ -45,6 +51,7 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 			this.className.baseVal=feature.className.baseVal;
 		}
 	}
+  
 	if(feature){
 		this.properties=feature.properties;
 	}
@@ -58,6 +65,15 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 			}
 			parentNode.element.appendChild(this.element);
 		}
+    if(this.documentElement.backend=="vml"){
+      if(!this.element){
+        this.element=document.createElement("v:group");
+      }
+      var de=this.documentElement;
+      console.log(de.backend);
+ 			parentNode.element.appendChild(this.element);
+      
+    }
 		this.parentNode=parentNode
 		this.documentElement=this.parentNode.documentElement;
 

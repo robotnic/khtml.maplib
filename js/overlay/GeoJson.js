@@ -13,7 +13,17 @@ API Syntax documentElement vs. ownerElement
 
 
 khtml.maplib.overlay.GeoJson = function() {
-	this.backend="svg";
+  this.backend="svg";
+ 	if (navigator.userAgent.indexOf("MSIE") != -1) {
+		if (ieVersion() < 9) {
+			this.backend = "vml";
+		}
+		//ie9 with compatibility or quirx mode
+		if(document.documentMode <9){
+			this.backend = "vml";
+		}
+	}
+
 	this.count=0;
 	this.deltaX=0;
 	this.deltaY=0;
@@ -50,6 +60,9 @@ khtml.maplib.overlay.GeoJson = function() {
 				this.context=this.element.getContext('2d');
 				this.canvasStyler=new khtml.maplib.overlay.renderer.Styler();
 			}
+      if(this.backend=="vml"){
+ 				this.canvasStyler=new khtml.maplib.overlay.renderer.Styler();
+      }
 		}
 		//this.documentElement=this.element;
 		this.featureCollection=this.recurseInit(featureCollection);
@@ -74,7 +87,7 @@ khtml.maplib.overlay.GeoJson = function() {
 		/*
 		Fast Rendering decisson. Do full rendering or do fast move and scale.
 		*/
-		if(!force && (!this.map.finalDraw  || this.map.moving )){ // && this.backend=="canvas"){
+		if(!force && this.backend!='vml' && (!this.map.finalDraw  || this.map.moving )){ // && this.backend=="canvas"){
 				if(this.element.finished){
 					this.visibleElement=this.element;
 				}else{
@@ -106,7 +119,6 @@ khtml.maplib.overlay.GeoJson = function() {
 		This is the only way to intercept (kill) rendering if there is something.
 		If rendering is complete, the render element will be cloned.
 		*/
-
 		if(this.element.finished){
 			if(this.oldelement){
 				//throw away the old, we have a new
@@ -410,7 +422,7 @@ khtml.maplib.overlay.GeoJson = function() {
 				return element;
 				break;
 			case "canvas":
-				var canvas=document.createElement("canvas");
+				var canvas=document.createvectorEl("canvas");
 				canvas.style.height=this.map.size.height+"px";
 				canvas.style.width=this.map.size.width+"px";
 				canvas.setAttribute("height",this.map.size.height);
@@ -423,11 +435,43 @@ khtml.maplib.overlay.GeoJson = function() {
 				return canvas;
 				break;
 			case "vml":
+        if(document.namespaces){
+          if (document.namespaces['v'] == null) {
+            document.namespaces.add('v', 'urn:schemas-microsoft-com:vml', "#default#VML");
+            var stl = document.createStyleSheet();
+            stl.addRule("v\\:group", "behavior: url(#default#VML);");
+            stl.addRule("v\\:polyline", "behavior: url(#default#VML);");
+            stl.addRule("v\\:stroke", "behavior: url(#default#VML);");
+            stl.addRule("v\\:fill", "behavior: url(#default#VML);");
+            stl.addRule("v\\:shape", "behavior: url(#default#VML);display:inline-block");
+            stl.addRule("v\\:path", "behavior: url(#default#VML);");
+          }
+        }
+        var vectorEl=document.createElement("v:vml");
+        vectorEl.style.position="absolute";
+        vectorEl.style.height=this.map.size.height+"px";
+				vectorEl.style.width=this.map.size.width+"px";
+				vectorEl.style.position="absolute";
+				vectorEl.style.top="0px";
+				vectorEl.style.left="0px";
+        vectorEl.setAttribute("coordsize",this.map.size.width+" "+this.map.size.height);
+
+ 				this.root.appendChild(vectorEl);
+
+        return vectorEl;
 				//not implemented
 				break;
 			default:
 				console.log("not implemented");
 		}
 	}
+  
+  function ieVersion() {
+    var version = 999; // we assume a sane browser
+    if (navigator.appVersion.indexOf("MSIE") != -1)
+      // bah, IE again, lets downgrade version number
+      version = parseFloat(navigator.appVersion.split("MSIE")[1]);
+    return version;
+  }
 }
 

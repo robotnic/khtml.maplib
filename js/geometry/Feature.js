@@ -181,6 +181,9 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
                         switch(that.documentElement.backend){
                                 case "svg":that.renderSVG(that);
                                         break;
+                                case "vml":
+                                        that.renderVML(that);
+                                        break;
                                 case "canvas":
                                         that.renderCanvas(that);
                                         break;
@@ -243,14 +246,8 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 			var width=feature.documentElement.element.topright.x - deltaLeft;
 			var height=feature.documentElement.element.bottomleft.y - deltaTop;
 
-			//Does not work yet
 			var fx=width / feature.documentElement.map.size.width;
 			var fy=height / feature.documentElement.map.size.height;
-			/*
-			if(old && old!=deltaTop){
-			console.log(deltaTop,deltaLeft,fx,fy);
-			}
-			*/
 			old=deltaTop;
 
 		}
@@ -327,6 +324,123 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 			this.element.style.display="";
 		}
 	}
+  
+  /**
+  VML Backend  
+  */  
+  
+  
+  this.doVMLPath=function(feature,coordinates,close){
+		//if map is moving there is a delta needed. For zoom not implemented (speed)
+    /* IE is dead - I don't support zombies.
+		var deltaTop=0;
+		var deltaLeft=0;
+    
+		var fx=1;
+		var fy=1;
+		if(feature.documentElement.element.finished){
+		if(feature.documentElement.element && feature.documentElement.element.topright ){
+			deltaTop=feature.documentElement.element.topright.y
+			deltaLeft=feature.documentElement.element.bottomleft.x;
+			var width=feature.documentElement.element.topright.x - deltaLeft;
+			var height=feature.documentElement.element.bottomleft.y - deltaTop;
+
+			var fx=width / feature.documentElement.map.size.width;
+			var fy=height / feature.documentElement.map.size.height;
+			old=deltaTop;
+
+		}
+		}
+    */
+    
+		var d="";
+		for(var i=0;i<coordinates.length;i++){
+			if(coordinates[i] instanceof khtml.maplib.geometry.LatLng){
+				var xy=this.documentElement.map.latlngToXY(coordinates[i]);
+				//var xy={"x":(xy1.x -deltaLeft),"y":(xy1.y -deltaTop)};
+				//xy.x=Math.round(xy.x/fx);
+				//xy.y=Math.round(xy.y/fy);
+				if(i==0){
+					d=" "+xy.x+","+xy.y;
+          }else{
+					d+=" "+xy.x+","+xy.y;
+				}
+				if(close && i==coordinates.length -1){
+					var xy=this.documentElement.map.latlngToXY(coordinates[0]);
+          d+=" "+xy.x+","+xy.y;
+				}
+			}else{
+				d+=this.doVMLPath(feature,coordinates[i],close);
+			}
+		}	
+		return d;
+
+	}
+  
+  
+  
+  this.renderVML=function(feature){
+    if(feature.geometry.type=="Point")return;
+		var close=false;
+		if(feature.geometry.type=="LinearRing" || feature.geometry.type=="Polygon" || feature.geometry.type=="MultiPolygon"){
+			close=true;
+		}
+		var d=this.doVMLPath(feature,feature.geometry.coordinates,close);
+    
+    if(!this.element){
+      this.element = document.createElement("v:polyline");
+      this.fillEl = document.createElement("v:fill");
+      this.element.appendChild(this.fillEl);
+      this.strokeEl = document.createElement("v:stroke");
+      this.element.appendChild(this.strokeEl);
+      this.element.style.position="absolute";
+			this.element.feature=feature;
+			this.documentElement.element.appendChild(this.element);  
+      /*
+			for(var e=0;e<feature.events.length;e++){
+				var ev=feature.events[e];
+				khtml.maplib.base.helpers.eventAttach(this.element,ev.eventType,ev.method,ev.context,ev.bubble);
+			}
+      */
+		}
+    //if(close)this.element.filled=true;
+		//this.element.setAttribute("points",d +" x e");
+    //this.element.points.value=d +" x e";
+
+        this.element.points.value=d +" x e";
+        //console.log("2222",this.element.points.value);
+
+    
+
+
+  
+		var style=this.documentElement.canvasStyler.makeCanvasStyle(feature);
+    this.element.setAttribute("fillcolor",style.fillRGB);
+		this.element.setAttribute("strokecolor",style.strokeRGB);
+    this.element.setAttribute("strokeweight", style.lineWidth + "px");
+    //console.log(style.fillOpacity);
+
+    if (document.documentMode==8) {
+      this.element.fillcolor=style.fillRGB;
+      this.element.strokecolor=style.strokeRGB;
+      this.element.stokeweight=style.lineWidth;
+      this.fillEl.opacity=style.fillOpacity;
+      this.strokeEl.opacity=style.strokeOpacity;
+    }else{
+      this.element.setAttribute("fillcolor",style.fillRGB);
+      this.element.setAttribute("strokecolor",style.strokeRGB);
+      this.element.setAttribute("strokeweight", style.lineWidth + "px");
+      this.fillEl.setAttribute("opacity",style.fillOpacity);
+      this.strokeEl.setAttribute("opacity",style.strokeOpacity);
+    }
+    var ied=this;
+
+
+
+  }
+  
+  
+  
 
 	/**
 	Canvas Backend
