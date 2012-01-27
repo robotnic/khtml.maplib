@@ -457,7 +457,7 @@ khtml.maplib.base.Map = function(map) {
 	this.pageX = function(evt) {
 		try {
 			if (evt.pageX === undefined) {
-				var px = evt.clientX + document.body.scrollLeft;
+				var px = evt.clientX + document.documentElement.scrollLeft;
 			} else {
 				var px = evt.pageX;
 			}
@@ -470,7 +470,8 @@ khtml.maplib.base.Map = function(map) {
 	this.pageY = function(evt) {
 		try {
 			if (evt.pageY === undefined) {
-				var py = evt.clientY + document.body.scrollTop;
+				var py = evt.clientY + document.documentElement.scrollTop;
+				console.log(document.documentElement.scrollTop);
 			} else {
 				var py = evt.pageY;
 			}
@@ -2427,13 +2428,14 @@ khtml.maplib.base.Map = function(map) {
     }else{
       var width=size1.right - size1.left;
     }
+	//scrollTop seems to be useless;
 		var size = {
-			top : size1.top + document.body.scrollTop,
-			left : size1.left + document.body.scrollLeft,
+			top : size1.top - document.body.scrollTop,
+			left : size1.left - document.body.scrollLeft,
 			width : width,
 			height : height,
-			deltaTop : size1.top + document.body.scrollTop,
-			deltaLeft : size1.left + document.body.scrollLeft,
+			deltaTop : size1.top - document.body.scrollTop,
+			deltaLeft : size1.left - document.body.scrollLeft,
 			deltaBottom : size1.bottom,
 			deltaRight : size1.right
 		};
