@@ -433,7 +433,6 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
       this.fillEl.setAttribute("opacity",style.fillOpacity);
       this.strokeEl.setAttribute("opacity",style.strokeOpacity);
     }
-    var ied=this;
 
 
 
