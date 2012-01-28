@@ -184,6 +184,7 @@ opacity:0.6;
 <script type="text/javascript" src="../../../khtml_all.js"> </script>
 <script type="text/javascript" src="../../../js/base/Helpers.js"> </script>
 <script type="text/javascript" src="../../../js/overlay/GeoJson.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/Marker.js"> </script>
 <script type="text/javascript" src="../../../js/geometry/Feature.js"> </script>
 <script type="text/javascript" src="../../../js/geometry/FeatureCollection.js"> </script>
 <script type="text/javascript" src="../../../js/overlay/GeoJson.js"> </script>
@@ -254,7 +255,6 @@ function loadjson(json){
  //       map.addOverlay(ov);
 //	map.featureCollection=ov.featureCollection;
 	map.featureCollection.appendChild(json);
-	console.log(map.featureCollection);
        /* 
 	var navi=recurse(ov.featureCollection);
 	var naviDiv=document.getElementById("navi")
@@ -307,7 +307,6 @@ function recurse(f,depth){
         }
 
 	div.appendChild(clientdiv);
-	//console.log("hat das einene style?",f);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseover",bboxShow,f,true);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseout",bboxHide,f,true);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",select,f,true);
@@ -415,7 +414,6 @@ function select(evt){
 }
 
 function selectByFeature(contextNode){
-	console.log("eh da",contextNode);
 //	if(oldtarget)oldtarget.style.backgroundColor="white";
 	//contextNode.element.style.backgroundColor="#efefef";
 	if(!contextNode.style){
@@ -441,18 +439,15 @@ function stylePropName(p){
 }
 
 function fillStyleForm(feature){
-	console.log("====",feature.type);
 	for(var p =0;p<properties.length;p++){
 		var prop=properties[p];
 		//prop=stylePropName(prop);
-		//console.log(p,prop);
 		//this.style.fill="blue";
 		var style=feature.style[prop];
 		if(typeof(style) == "undefined"){
 			prop=stylePropName(prop);
 			var style=feature.style[prop];
 		}
-		//console.log(prop,style);
 		if(inputs[prop]){
 			if(prop=="className"){
 				if(feature.className.baseVal !=undefined){
@@ -464,7 +459,6 @@ function fillStyleForm(feature){
 				if(typeof(style) != "undefined"){
 					if(inputs[prop].className=="color"){
 						if(style==""){
-							console.log("hide this style",style);
 							inputs[prop].value="";
 							inputs[prop].style.backgroundColor="white";
 						}else{
@@ -489,7 +483,6 @@ function fillStyleForm(feature){
 }
 
 function changeStyle(evt){
-	console.log("---",this);
 	if(evt.target){
 		var input=evt.target;
 	}else{
@@ -497,13 +490,10 @@ function changeStyle(evt){
 	}
 	var prop=input.getAttribute("name");
 	if(prop=="className"){
-		console.log("classname",input.value);
 		this.className.baseVal=input.value;
 		if(input.value==""){
 			this.className.baseVal=null;
-			console.log("geh weg!!!");
 		}
-		console.log(this.className);
 	}else{
 		this.style[prop]=input.value;
 	}
@@ -624,7 +614,6 @@ function jsonupdate(el){
 	try{
 		selectedFeature=selectedFeature.parentNode.replaceChild(JSON.parse(jsonstring),selectedFeature);
 	}catch(e){
-		console.log(e);
 		error=e.message;
 	}
 //		selectedFeature=selectedFeature.parentNode.replaceChild(JSON.parse(jsonstring),selectedFeature);

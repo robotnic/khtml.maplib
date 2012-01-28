@@ -216,12 +216,15 @@ khtml.maplib.overlay.GeoJson = function() {
 		}
 	}
 	*/
+
+
 	/**
 	Tricki very much
 	recursion to allow interception.
 
 	Purpose:
 	To anable a responsive userinteferce, there must not be uninteruptable processes.
+	If you don't understand this, please, please, please don't change anything
 	*/
 	this.recurse=function(feature,time){
 		var that=this;

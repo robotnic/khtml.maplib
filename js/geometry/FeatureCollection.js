@@ -65,15 +65,14 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 			}
 			parentNode.element.appendChild(this.element);
 		}
-    if(this.documentElement.backend=="vml"){
-      if(!this.element){
-        this.element=document.createElement("v:group");
-      }
-      var de=this.documentElement;
-      console.log(de.backend);
- 			parentNode.element.appendChild(this.element);
-      
-    }
+		    if(this.documentElement.backend=="vml"){
+			if(!this.element){
+				this.element=document.createElement("v:group");
+			}
+			var de=this.documentElement;
+			parentNode.element.appendChild(this.element);
+		      
+		    }
 		this.parentNode=parentNode
 		this.documentElement=this.parentNode.documentElement;
 
@@ -108,10 +107,10 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 				newFeature=new khtml.maplib.geometry.Feature(newFeature,this);
 			}
 		}else{
-		    exists=true;
 		    for(var i=0;i<newFeature.parentNode.features.length;i++){
                         if(newFeature.parentNode.features[i]==newFeature){
 				if(this==newFeature.parentNode && i==newFeature.parentNode.features.length -1){
+				    exists=true;
 					//already at last position
 					return newFeature;
 				}
@@ -130,9 +129,9 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 			this.documentElement.recurseLinksDirty=true;
 		}
 		newFeature.parentNode=this;
-		if(!exists){
+		//if(!exists){
 			newFeature.init(this);
-		}
+		//}
 		//init childnode
 		/*
 		if(newFeature.features){
@@ -201,9 +200,6 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 	*/
 	this.removeChild=function(f){
 		if(!f)return;
-		if(f.mmarker){
-			f.mmarker.destroy();	
-		}
 		for(var i=0;i<this.features.length;i++){
 			if(this.features[i]==f){
 				if(this.features[i].preceding){
@@ -212,11 +208,7 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 				if(this.features[i].following){
 					this.features[i].following.preceding=this.features[i].preceding;
 				}
-				/*
-				try{
-				this.removeChild(this.features[i]);
-				}catch(e){}
-				*/
+				this._removeMarkers(this.features[i]);
 
 				try{
 				this.element.removeChild(this.features[i].element);
@@ -227,10 +219,30 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 				break;
 			}
 		}
+		if(this.features.length >0){
+			this.firstChild=this.features[0];
+			this.lastChild=this.features[this.features.length -1];
+		}else{
+			this.firstChild=null;
+			this.lastChild=null;
+		}
+	
 		if(this.documentElement.backend=="canvas"){
 			this.documentElement.render(true);
 		}
 		
+	}
+
+	this._removeMarkers=function(feature){
+		if(feature.mmarker){
+			feature.mmarker.destroy();
+			return;
+		}
+		if(feature.type=="FeatureCollection"){
+			for(var i=0;i<feature.features.length;i++){
+				this._removeMarkers(feature.features[i]);
+			}
+		}
 	}
 
 	/**
@@ -243,6 +255,7 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 	}
 	/* not in use */
 	this.render=function(){
+//		this.documentElement.render();  //maybe a faster way could be done
 //		console.log(this.element.parentNode.parentNode.parentNode);
 		/*
 		for(var i=0;i<this.features.length;i++){

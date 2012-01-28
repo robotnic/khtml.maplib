@@ -202,7 +202,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 
 
         /**
-        khtml.maplib provides 2 marker interface. No idea how to do the interface.
+        khtml.maplib provides 2 marker interface. 
         The simple interface takes a DOM element.
         The other is the Ewald GSoC interface (google API)
         */
@@ -217,7 +217,8 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
                         title:feature.title,
                         icon:feature.marker.icon,
                         shadow:feature.marker.shadow,
-                        draggable:feature.marker.draggable
+                        draggable:feature.draggable,
+                        raiseOnDrag:feature.raiseOnDrag
                 });
                 //todo - not working
                 if(feature.marker.infobox){

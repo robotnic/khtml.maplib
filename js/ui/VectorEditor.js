@@ -9,21 +9,18 @@ function VectorEditor(featureCollection){
 	this.init=function(map){
 		this.map=map;
 		this.mapdiv=this.map.mapParent;
-		//create a layer for edit helpers
-		this.editlayer=new khtml.maplib.geometry.Feature({type:"FeatureCollection"});       
-		map.featureCollection.appendChild(this.editlayer);
+
+		this.editlayer=map.featureCollection.appendChild({type:"FeatureCollection"});
 		this.downEvent=khtml.maplib.base.helpers.eventAttach(this.mapdiv, "mousedown", this.down, this, false);
-		this.moveEvent=khtml.maplib.base.helpers.eventAttach(this.mapdiv, "mousemove", this.move, this, true);
+		this.moveEvent=khtml.maplib.base.helpers.eventAttach(this.mapdiv, "mousemove", this.move, this, false);
 		this.upEvent=khtml.maplib.base.helpers.eventAttach(this.mapdiv, "mouseup", this.up, this, true);
 		this.keyEvent=khtml.maplib.base.helpers.eventAttach(window,"keydown",this.keydown,this,true);
-
 	}
 	this.render=function(){
 
 
 	}
 	this.keydown=function(evt){
-		console.log(evt.keyCode);
 		if(evt.keyCode==27){
 			this.mode="none";
 			this.stopedit();
@@ -31,7 +28,7 @@ function VectorEditor(featureCollection){
 		if(evt.keyCode==46){
 			this.stopedit();
 			this.mode="none";
-			this.line.owner.removeChild(this.line);
+			this.line.parentNode.removeChild(this.line);
 		}
 	}
 
@@ -39,45 +36,38 @@ function VectorEditor(featureCollection){
 		switch(this.mode){
 
 			case "none":
-				if(evt.target.owner){
-					this.line=evt.target.owner;
+				if(evt.target.feature){
+					this.line=evt.target.feature;
 					this.mode="edit";
-					console.log(this.line.geometry.coordinates);
-					this.startedit(this.line.geometry.coordinates);
+					this.startedit(this.line.geometry.coordinates,this.line.geometry.type);
 				}else{
 					this.line=this.createLine(evt);
 					this.mode="append";
-					console.log("append started",this.line);
 					this.addPoint();
 				}
 				break;
 			case "edit":
-				if(evt.target.owner){
-					if(evt.target.className.baseVal=="editline"){
-						console.log("aktiver pfad");
+				if(evt.target.feature){
+					if(evt.target.feature && evt.target.feature.editline){
 						this.insertPoint(evt);
+					}else if(evt.target.feature.mmarker){
+
 					}else{
-						console.log("nicht aktiver pfad");
 						this.stopedit();
-						this.line=evt.target.owner;
-						this.startedit(this.line.geometry.coordinates);
+						this.line=evt.target.feature;
+						
+						this.startedit(this.line.geometry.coordinates,this.line.geometry.type);
 					}
 				}else{
-					console.log("daneben");
-					if(evt.target.marker){
-						console.log("marker getroffen");
-					}else{
-						this.stopedit();
-						this.mode="none";
-					}
+					this.stopedit();
+					this.mode="none";
+				
 				}
 				break;
 			case "append":
 				if(this.stopAppend(evt)){
-					console.log("---stop---");	
 					this.mode="none";
 				}else{	
-					console.log("asdf");
 					this.addPoint();
 				}
 				break;
@@ -89,7 +79,7 @@ function VectorEditor(featureCollection){
 	this.up=function(evt){
 
 	}
-
+/*
 	this.lineOnCursor=function(evt){
 		if(this.mode=="append"){
 			var p=this.map.mouseToLatLng(evt);
@@ -102,6 +92,7 @@ function VectorEditor(featureCollection){
 			}
 		}
 	}
+*/
 
 	this.addPoint=function(evt){
 		var p2=map.mouseToLatLng(evt);
@@ -115,39 +106,39 @@ function VectorEditor(featureCollection){
 			}
 			this.line.render();
 		}
-		console.log("doMarker");
 		this.doMarker(p2,true);
 		
 	}
 
 	
 	this.draw=function(){
-		that.line.repairBBox(true);
+		//that.line.repairBBox(true);
 		that.line.render();
 	}
 	this.insertPoint=function(evt){
-		//if(!evt.ctrlKey)return;
 		var p=that.map.mouseToLatLng(evt);
-		var editline=evt.target.owner;
+		var editline=evt.target.feature;
 		var editindex=editline.editindex;
 		that.line.geometry.coordinates.splice(editindex+1,0,p);
 
-//		editline.style.stroke="yellow";
 		editline.geometry.coordinates[0]=p;
 		editline.render();
 		p.addCallbackFunction(editline.render);
 		that.doMarker(p,true);
-		var addedLine=that.makeLine(that.line.geometry.coordinates[editindex ],p,editindex );
-		addedLine.style.stroke="yellow";
+
+		var addedLine=that.makeLine(that.line.geometry.coordinates[editindex],p,editindex );
 		
 	}
 	this.showNum=function(){
-		//console.log(this.editindex);
 	}
 	this.makeLine=function(p1,p2,i){
-		var editline=new khtml.maplib.geometry.Feature({type:"LineString",coordinates:[p1,p2]});       
-		this.editlayer.appendChild(editline);
-		editline.className.baseVal="editline";
+		var editline=this.editlayer.appendChild({type:"LineString",coordinates:[p1,p2]});
+		editline.style.stroke="yellow";
+		editline.style.strokeWidth="5px";
+		editline.style.opacity=0.5;
+		editline.style.cursor="crosshair";
+		editline.editline=true;
+
 		p1.addCallbackFunction(editline.render);
 		p2.addCallbackFunction(editline.render);
 		//this.pathDownEvent=khtml.maplib.base.helpers.eventAttach(editline.element, "mousedown", this.insertPoint, editline, false);
@@ -163,12 +154,9 @@ function VectorEditor(featureCollection){
 	this.oldX=null;
 	this.oldY=null;
 	this.stopAppend=function(evt){
-		console.log("ier",this);
 		var ret=false;
 		var ding=evt.target.marker;
-		console.log(ding);
 		if(evt.target.marker && evt.target.marker==that.lastMarker && that.mode=="append"){
-			 console.log("999");
 			if(this.oldX && Math.abs(this.oldX - evt.clientX) < 2);
 			if(this.oldY && Math.abs(this.oldY - evt.clientY) < 2);
 			that.stopedit();
@@ -199,7 +187,7 @@ function VectorEditor(featureCollection){
 			div.style.border="1px solid black";
 			div.style.opacity=0.8;
 			div.style.cursor="crosshair";
-
+			/*
 			var marker=new khtml.maplib.overlay.SimpleMarker(p,div,{dx:-3,dy:-3});
 			this.editMarkers.push(marker);
 			marker.moveable(true);
@@ -207,40 +195,37 @@ function VectorEditor(featureCollection){
 			if(moving){
 				marker.moving=true;
 			}
-			this.map.addOverlay(marker);
+			*/
+			var marker={type:"Feature",geometry:{type:"Point",coordinates:p},marker:{icon:{url:div,"size": {"width": 8, "height": 8},"anchor":{x:-4,y:-4}}},draggable:true,raiseOnDrag:false};
+			//this.map.addOverlay(marker);
+			div.feature=this.editlayer.appendChild(marker);
 			p.addCallbackFunction(this.draw);
-			var editline=this.editline;
-			//this.markerDownEvent=khtml.maplib.base.helpers.eventAttach(marker.el, "mousedown", this.stopit, marker, false);
+	//		var editline=this.editline;
 			this.lastMarker=marker;
 	}
 
 
-	this.startedit=function(coords){
+	this.startedit=function(coords,type){
 		if(!coords[0].lat){   //not a LatLng object
 			for(var i=0;i<coords.length;i++){
-				this.startedit(coords[i]);
+				this.startedit(coords[i],type);
 			}
 		}else{
 			for(var i=1;i<coords.length;i++){
-				console.log("a line");
 				this.makeLine(coords[i-1],coords[i],i);
+			}
+			if(type=="Polygon" || type=="LinearRing" || type=="MultiPolygon"){
+				this.makeLine(coords[coords.length -1],coords[0],coords.length);
 			}
 			for(var i=0;i<coords.length;i++){
 				this.doMarker(coords[i]);
 			}
 		}
+		this.editlayer.documentElement.render();
 	}
 	this.stopedit=function(mode){
-		console.log("try stop");
-		while(this.editMarkers.length>0){
-			var marker=this.editMarkers.pop();
-			marker.point.removeCallbackFunction(this.draw);
-			marker.destroy();
-		}
-		
-		while(this.editLines.length >0){
-			var line=this.editLines.pop();
-			this.editlayer.removeChild(line);
+		while(this.editlayer.lastChild){
+			this.editlayer.removeChild(this.editlayer.lastChild);
 		}
 	}
 	this.destroy=function(){
@@ -249,12 +234,6 @@ function VectorEditor(featureCollection){
 		khtml.maplib.base.helpers.eventRemove(this.moveEvent);
 		khtml.maplib.base.helpers.eventRemove(this.upEvent);
 		khtml.maplib.base.helpers.eventRemove(this.keyEvent);
-		/*
-                this.downEvent=khtml.maplib.base.helpers.eventAttach(this.mapdiv, "mousedown", this.down, this, false);
-                this.moveEvent=khtml.maplib.base.helpers.eventAttach(this.mapdiv, "mousemove", this.move, this, true);
-                this.upEvent=khtml.maplib.base.helpers.eventAttach(this.mapdiv, "mouseup", this.up, this, true);
-                this.keyEvent=khtml.maplib.base.helpers.eventAttach(window,"keydown",this.keydown,this,false);
-		*/
 	}		
 
 }
