@@ -1,0 +1,35 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+width:600px;
+height:500px;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"></script>
+<script type="text/javascript">
+var map=null;
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.3),10);
+
+
+	var redLayer=map.featureCollection.appendChild({type:"FeatureCollection"});
+	var blueLayer=map.featureCollection.appendChild({type:"FeatureCollection"});
+	blueLayer.style.fill="blue";
+	blueLayer.style.opacity="0.4";
+	redLayer.style.fill="red";
+	map.featureCollection.style.stroke="black";
+
+	redLayer.appendChild({type:"Polygon",coordinates:[[[16.23,48.2],[16.24,48.14],[16.32,48.22]]]});
+	var feature=redLayer.appendChild({type:"Polygon",coordinates:[[[16.33,48.2],[16.39,48.14],[16.42,48.22]]]});
+	feature.style.strokeWidth=5;
+	blueLayer.appendChild({type:"Polygon",coordinates:[[[16.36,48.3],[16.44,48.24],[16.42,48.30]]]});
+}
+</script>
+</head>
+<body onload="init()">
+<div id="map">
+</div>
+</body>
+</html>
