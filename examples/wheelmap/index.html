@@ -1,0 +1,192 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+position:absolute;
+top:30px;
+left:400px;
+width:600px;
+height:500px;
+}
+#sidebar{
+position:absolute;
+top:30px;
+left:4px;
+width:380px;
+}
+#amenities li{
+float:left;
+min-width:50%;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"></script>
+<script type="text/javascript" src="../../js/geometry/Feature.js"></script>
+<script type="text/javascript" src="../../js/geometry/FeatureCollection.js"></script>
+<script type="text/javascript" >
+
+var map=null;
+var json=null;
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.3),16);
+	load();
+	map.addCallbackFunction(loadit);
+}
+var xmlhttp=new XMLHttpRequest();
+
+var timeout=null;
+function loadit(){
+	if(timeout){
+		clearTimeout(timeout);
+	}
+	timeout=setTimeout("load()",0.4);
+}
+
+function load(){
+	document.getElementById("ajaxload").style.display="";
+	var bounds=map.bounds();
+	var sw=bounds.sw();
+	var ne=bounds.ne();
+	var url="proxy.php?"+"limit=400&zoom="+(map.zoom())+"&bbox="+(sw.lng())+","+(sw.lat())+","+(ne.lng())+","+ne.lat();
+	xmlhttp.open("GET",url,true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			json=JSON.parse(xmlhttp.responseText);
+			visibility();
+			document.getElementById("ajaxload").style.display="none";
+		}
+	}
+	xmlhttp.send(null);
+}
+var fc=null;
+
+
+var wheelchair=new Object();
+var category=new Object();
+
+function render(json){
+	for(var i=0;i<json.features.length;i++){
+		var cat="category-"+json.features[i].properties.category;
+		var chair="wheelchair_"+json.features[i].properties.wheelchair;
+		if(category[cat] && wheelchair[chair]){
+			var url=json.features[i].properties.marker;
+		}else{
+			var url="blank.gif";
+		}
+		json.features[i].marker={icon:{url:url,"size": {"width": 32, "height": 37},"anchor":{x:16,y:37}}}; 
+	}
+	if(fc){
+		map.featureCollection.removeChild(fc);
+	}
+	fc=map.featureCollection.appendChild(json);
+}
+
+
+function change(evt){
+	setTimeout("visibility()",5);
+}
+function visibility(){
+	//render
+	var checkboxes=document.getElementById("sidebar").getElementsByTagName("input");
+	for(var i=0;i<checkboxes.length;i++){
+		var checkbox=checkboxes[i];
+		var rel=checkbox.getAttribute("rel");
+		var id=checkbox.getAttribute("id");
+		var value=checkbox.checked;
+		if(rel=="category"){
+			category[id]=value;
+		}
+		if(rel=="wheelchair"){
+			wheelchair[id]=value;
+		}
+	}
+	render(json);
+}
+
+</script>
+</head>
+<body onload="init()"> 
+<div id="ajaxload" style="display:none">
+<img  src="ajaxload.gif" /> loading...
+</div>
+<div id='sidebar' onmouseup="change(event)">
+<h4>Wheelchair accessible?</h4>
+<ul class='clearfix' id='options'>
+<li class='state yes'>
+<input checked="checked" class="filter" id="wheelchair_yes" name="wheelchair_yes" rel="wheelchair" type="checkbox" value="yes" />
+<label for="wheelchair_yes"><em>Yes:</em> Entrance without steps, all rooms without steps, accessible toilet</label>
+</li>
+<li class='state limited'>
+<input checked="checked" class="filter" id="wheelchair_limited" name="wheelchair_limited" rel="wheelchair" type="checkbox" value="limited" />
+<label for="wheelchair_limited"><em>Limited:</em> Entry has a step (max. height 7cm), most rooms are stepless, toilet not accessible</label>
+</li>
+<li class='state no'>
+<input checked="checked" class="filter" id="wheelchair_no" name="wheelchair_no" rel="wheelchair" type="checkbox" value="no" />
+<label for="wheelchair_no"><em>No:</em> Entry has high or several steps, rooms not accessible</label>
+</li>
+<li class='state unknown'>
+<input checked="checked" class="filter" id="wheelchair_unknown" name="wheelchair_unknown" rel="wheelchair" type="checkbox" value="unknown" />
+<label for="wheelchair_unknown"><em>Unknown:</em> Help and mark places! <a href="http://blog.wheelmap.org/mitmachen">How?</a></label>
+</li>
+</ul>
+
+<div class='minimize'>
+&nbsp;
+</div>
+<h4>Choose category</h4>
+<ul id='amenities'>
+<li class='accommodation'>
+<input checked="checked" class="filter" id="category-accommodation" name="category-accommodation" rel="category" type="checkbox" value="accommodation" />
+<label for="category-accommodation">Accomodation</label>
+</li>
+<li class='money_post'>
+<input checked="checked" class="filter" id="category-money_post" name="category-money_post" rel="category" type="checkbox" value="money_post" />
+<label for="category-money_post">Bank Post</label>
+</li>
+<li class='education'>
+<input checked="checked" class="filter" id="category-education" name="category-education" rel="category" type="checkbox" value="education" />
+<label for="category-education">Education</label>
+</li>
+<li class='food'>
+<input checked="checked" class="filter" id="category-food" name="category-food" rel="category" type="checkbox" value="food" />
+<label for="category-food">Food</label>
+</li>
+<li class='government'>
+<input checked="checked" class="filter" id="category-government" name="category-government" rel="category" type="checkbox" value="government" />
+<label for="category-government">Government</label>
+</li>
+<li class='health'>
+<input checked="checked" class="filter" id="category-health" name="category-health" rel="category" type="checkbox" value="health" />
+<label for="category-health">Health</label>
+</li>
+<li class='leisure'>
+<input checked="checked" class="filter" id="category-leisure" name="category-leisure" rel="category" type="checkbox" value="leisure" />
+<label for="category-leisure">Leisure</label>
+</li>
+<li class='misc'>
+<input checked="checked" class="filter" id="category-misc" name="category-misc" rel="category" type="checkbox" value="misc" />
+<label for="category-misc">Misc</label>
+</li>
+<li class='public_transfer'>
+<input checked="checked" class="filter" id="category-public_transfer" name="category-public_transfer" rel="category" type="checkbox" value="public_transfer" />
+<label for="category-public_transfer">Public transfer</label>
+</li>
+<li class='shopping'>
+<input checked="checked" class="filter" id="category-shopping" name="category-shopping" rel="category" type="checkbox" value="shopping" />
+<label for="category-shopping">Shopping</label>
+</li>
+<li class='sport'>
+<input checked="checked" class="filter" id="category-sport" name="category-sport" rel="category" type="checkbox" value="sport" />
+<label for="category-sport">Sport</label>
+</li>
+<li class='tourism'>
+<input checked="checked" class="filter" id="category-tourism" name="category-tourism" rel="category" type="checkbox" value="tourism" />
+<label for="category-tourism">Tourism</label>
+</li>
+</ul>
+
+</a></div>
+<div id="map">
+</div>
+</body>
+</html>
