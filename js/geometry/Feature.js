@@ -328,6 +328,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
   
   /**
   VML Backend  
+There is not opimization on VML rendering. It's not tested very well and I think there are some bugs.
   */  
   
   
@@ -451,7 +452,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 		if(!depth)depth=0;
 		if(!num)num=0;
 		if(type=="Polygon" && depth >0 && num >0){
-		//	context.globalCompositeOperation="source-out";  //sorry not working
+		//	context.globalCompositeOperation="source-out";  //sorry not working - please feel free to repair
 		 }else{
 			context.globalCompositeOperation="destination-over";
 		}
@@ -511,6 +512,7 @@ khtml.maplib.geometry.Feature=function(feature,parentNode){
 	*/
 
         function reduce(origObj,depth){
+		//this array should go to an other place. It's also not complete.
                 var good=["type","features","coordinates","style","className","baseVal","geometry","fill","stroke","strokeWidth","opacity","fillOpacity","strokeOpacity","dashArray","marker"];
                 if(origObj instanceof khtml.maplib.geometry.LatLng){
                         return [origObj.lng(),origObj.lat()];
