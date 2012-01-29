@@ -1,0 +1,61 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+width:600px;
+height:500px;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"></script>
+<script type="text/javascript" src="../../js/geometry/FeatureCollection.js"></script>
+<script type="text/javascript">
+var map=null;
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.3),10);
+
+	var json={type:"FeatureCollection",
+			style:{stroke:"black"},
+			features:[
+				{type:"FeatureCollection",
+					style:{fill:"red"},
+					features:[
+						{type:"Feature",
+							geometry:{
+								type:"Polygon",
+								coordinates:[[[16.23,48.2],[16.24,48.14],[16.32,48.22]]]
+							}
+						},
+						{type:"Feature",
+							style:{strokeWidth:4},
+							geometry:{
+								type:"Polygon",
+								coordinates:[[[16.33,48.2],[16.39,48.14],[16.42,48.22]]] 
+							}
+						},
+					]
+				},
+				{type:"FeatureCollection",
+					style:{fill:"blue",opacity:0.4},
+					features:[
+						 {type:"Feature",
+							geometry:{
+								type:"Polygon",
+								coordinates:[[[16.36,48.3],[16.44,48.24],[16.42,48.30]]]
+							}
+						}
+					]
+				}
+			]
+		}
+
+	map.featureCollection.appendChild(json);
+
+}
+</script>
+</head>
+<body onload="init()">
+<div id="map">
+</div>
+</body>
+</html>
