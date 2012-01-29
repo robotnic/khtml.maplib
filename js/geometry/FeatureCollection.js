@@ -21,31 +21,33 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 		}
 		this.map=this.parentNode.map;
 		//this.backend=this.parentNode.backend;
-		if(this.parentNode.context)this.context=this.parentNode.context;
+		if(this.parentNode.context){
+			this.context=this.parentNode.context;
+		}
 		if(this.documentElement.backend=="svg"){
 			this.element=document.createElementNS("http://www.w3.org/2000/svg","g");
 			if(this.parentNode.element){
 				this.parentNode.element.appendChild(this.element);
 			}
 		}
-    if(this.documentElement.backend=="vml"){
-      this.element=document.createElement("v:group");
- 			if(this.parentNode.element){
-         parentNode.element.appendChild(this.element);
-      }  
-    }
+		if(this.documentElement.backend=="vml"){
+			this.element=document.createElement("v:group");
+			if(this.parentNode.element){
+				parentNode.element.appendChild(this.element);
+			}  
+		}
 	}
 	if(!this.features){
 		this.features=new Array();
 	}
 	this.childNodes=this.features;
 	if(this.documentElement && this.documentElement.backend=="svg"){
+		this.style=this.element.style;
 		if(feature.style){
 			for(var s in feature.style){
 				this.style[s]=feature.style[s];
 			}
 		}
-		this.style=this.element.style;
 		this.className=this.element.className;
 		if(feature.className){
 			this.className.baseVal=feature.className.baseVal;
@@ -61,7 +63,6 @@ khtml.maplib.geometry.FeatureCollection=function(feature,parentNode){
 			if(!this.element){
 				this.element=document.createElementNS("http://www.w3.org/2000/svg","g");
 				this.style=this.element.style;
-				this.style.fill="green"
 			}
 			parentNode.element.appendChild(this.element);
 		}
