@@ -202,7 +202,7 @@ khtml.maplib.ui.Zoombar = function() {
 
 
 	this.clear=function(){
-		this.map.overlayDiv.appendChild(this.zoombar);
+		this.map.overlayDiv.removeChild(this.zoombar);
 	}
 
 }
