@@ -201,6 +201,8 @@ khtml.maplib.ui.Zoombar = function() {
 	}
 
 
-
+	this.clear=function(){
+		this.map.overlayDiv.appendChild(this.zoombar);
+	}
 
 }
