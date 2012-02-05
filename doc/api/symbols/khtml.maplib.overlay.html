@@ -402,7 +402,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.clear">clear</a></b>()
 								</div>
-								<div class="description">For write only interface, clear blackboard</div>
+								<div class="description">remove polyline</div>
 							</td>
 						</tr>
 					
@@ -463,10 +463,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.init">init</a></b>(map)
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.init">init</a></b>(owner, fcWithVectorElement)
 								</div>
-								<div class="description">Constructor:
-	This function is called at the end of this class.</div>
+								<div class="description">Initialize the vector, create svg-element, canvas,.</div>
 							</td>
 						</tr>
 					
@@ -556,18 +555,18 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.render">render</a></b>(force)
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.render">render</a></b>(a)
 								</div>
-								<div class="description">Start the rendering Engine.</div>
+								<div class="description">Render the Path.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.renderbackend">renderbackend</a></b>(backend)
+								<div class="fixedFont">khtml.maplib.overlay.<b><a href="../symbols/khtml.maplib.overlay.html#.renderbackend">renderbackend</a></b>(render)
 								</div>
-								<div class="description">Switch backend on the fly.</div>
+								<div class="description">Switch render backend.</div>
 							</td>
 						</tr>
 					
@@ -825,10 +824,10 @@ Markers, Images, Placemarks, Icons, POI's, ...
 					
 					</div>
 					<div class="description">
-						For write only interface, clear blackboard
+						remove polyline
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_overlay_GeoJson.js.html">GeoJson.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
 						
 						
 					</div>
@@ -1069,15 +1068,16 @@ API Syntax documentElement vs. ownerElement
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">khtml.maplib.overlay.</span><b>init</b>(map)
+					<span class="light">khtml.maplib.overlay.</span><b>init</b>(owner, fcWithVectorElement)
 					
 					</div>
 					<div class="description">
-						Constructor:
-	This function is called at the end of this class.
+						Initialize the vector, create svg-element, canvas,...
+	For speed, vectors are draw to the same vector element even if they are in differend FeatureCollection.
+	For SVG every FeatureCollection has a "g" Element. This is used mainly for styling.
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_overlay_GeoJson.js.html">GeoJson.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
 						
 						
 					</div>
@@ -1089,7 +1089,13 @@ API Syntax documentElement vs. ownerElement
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>map</b>
+									<b>owner</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>fcWithVectorElement</b>
 									
 								</dt>
 								<dd></dd>
@@ -1281,6 +1287,7 @@ API Syntax documentElement vs. ownerElement
 
 	Purpose:
 	To anable a responsive userinteferce, there must not be uninteruptable processes.
+	If you don't understand this, please, please, please don't change anything
 						
 							<br />
 							<i>Defined in: </i> <a href="../symbols/src/js_overlay_GeoJson.js.html">GeoJson.js</a>.
@@ -1493,14 +1500,17 @@ API Syntax documentElement vs. ownerElement
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">khtml.maplib.overlay.</span><b>render</b>(force)
+					<span class="light">khtml.maplib.overlay.</span><b>render</b>(a)
 					
 					</div>
 					<div class="description">
-						Start the rendering Engine.
+						Render the Path.
+	This Method is call recursive to allow stop of rendering.
+	This stop is needed for repsonsive ui - otherwise the browser may freece.
+	The render method is called for all overlays by the main map object
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_overlay_GeoJson.js.html">GeoJson.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
 						
 						
 					</div>
@@ -1512,7 +1522,7 @@ API Syntax documentElement vs. ownerElement
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>force</b>
+									<b>a</b>
 									
 								</dt>
 								<dd></dd>
@@ -1532,14 +1542,15 @@ API Syntax documentElement vs. ownerElement
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">khtml.maplib.overlay.</span><b>renderbackend</b>(backend)
+					<span class="light">khtml.maplib.overlay.</span><b>renderbackend</b>(render)
 					
 					</div>
 					<div class="description">
-						Switch backend on the fly.
+						Switch render backend.
+Previous rendered content (the old overlay) is discarded!
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_overlay_GeoJson.js.html">GeoJson.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_Vector.js.html">Vector.js</a>.
 						
 						
 					</div>
@@ -1551,10 +1562,10 @@ API Syntax documentElement vs. ownerElement
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>backend</b>
+									<span class="light fixedFont">{String}</span> <b>render</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>svg, canvas or vml</dd>
 							
 							</dl>
 						
@@ -1647,7 +1658,7 @@ API Syntax documentElement vs. ownerElement
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Jan 27 2012 20:58:55 GMT+0100 (MEZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sun Feb 05 2012 11:42:23 GMT+0100 (MEZ)
 		</div>
 	</body>
 </html>
