@@ -3937,11 +3937,11 @@ function init(){
 	var center=new khtml.maplib.geometry.LatLng(48.2,15.6);  //latitude, longitude
 	map.centerAndZoom(center,12); //12 = zoomlevel
 
-	var feature=khtml.maplib.parser.Gpx(xmlstring);  //gpx string or dom, className
+	var geometry=khtml.maplib.parser.Gpx(xmlstring);  //gpx string or dom, className
+	var feature=map.featureCollection.appendChild(geometry);
 	feature.style.stroke="red";
 	feature.style.strokeWidth="3";
 	feature.style.fill="none";
-	map.featureCollection.appendChild(feature);
 	var bounds=feature.bbox;
 	map.bounds(bounds);
 }

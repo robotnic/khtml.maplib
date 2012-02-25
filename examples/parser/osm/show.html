@@ -176,10 +176,12 @@ function editor(el){
 function loadmap(){
 	var bounds=map.bounds();
 	var url="/api/0.6/map?bbox="+bounds.sw().lng()+","+bounds.sw().lat()+","+bounds.ne().lng()+","+bounds.ne().lat();
+	var url="http://www.overpass-api.de/api/xapi?map?bbox="+bounds.sw().lng()+","+bounds.sw().lat()+","+bounds.ne().lng()+","+bounds.ne().lat();
 	console.log(url);
  
 	var xmlhttp=new XMLHttpRequest();
-	xmlhttp.open("GET","osmload.php?url="+url,true);
+	//xmlhttp.open("GET","osmload.php?url="+url,true);
+	xmlhttp.open("GET",url,true);
 	xmlhttp.onreadystatechange=function(){
 		var ajaxload=document.getElementById("ajaxload");
 		if(xmlhttp.readyState==4){

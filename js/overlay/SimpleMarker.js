@@ -124,6 +124,9 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 		}
 		return this.point;
 	}
+	this.hide=function(){
+		this.marker.style.display="none";
+	}
 
 	this.clear = function() {
 		if (this.marker) {

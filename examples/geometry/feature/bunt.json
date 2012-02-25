@@ -23,8 +23,7 @@
                },
                "className":{
                   "baseVal":"line"
-               },
-               "bbox":[0,10,50,60]
+               }
             },
             {
                "type":"Feature",
@@ -46,8 +45,7 @@
                      },
                      "className":{
                         "baseVal":"line2"
-                     },
-                     "bbox":[40,20,70,60]
+                     }
                   },
                   {
                      "type":"Feature",
@@ -59,10 +57,8 @@
                      },
                      "className":{
                         "baseVal":"line3"
-                     },
-                     "bbox":[-43,12,54,23]
-                  }],
-               "bbox":[-43,12,70,60]
+                     }
+                  }]
             },
             {
                "type":"Feature",
@@ -90,8 +86,7 @@
                            },
                            "className":{
                               "baseVal":"line4"
-                           },
-                           "bbox":[-23,-3,45,40]
+                           }
                         },
                         {
                            "type":"Feature",
@@ -112,10 +107,8 @@
                            },
                            "className":{
                               "baseVal":"line5"
-                           },
-                           "bbox":[110,50,140,60]
-                        }],
-                     "bbox":[-23,-3,140,60]
+                           }
+                        }]
                   },
                   {
                      "type":"Feature",
@@ -135,8 +128,7 @@
                            },
                            "className":{
                               "baseVal":"line6"
-                           },
-                           "bbox":[7,50,40,70]
+                           }
                         },
                         {
                            "type":"Feature",
@@ -148,12 +140,8 @@
                            },
                            "className":{
                               "baseVal":"line7"
-                           },
-                           "bbox":[50,20,70,40]
-                        }],
-                     "bbox":[7,20,70,70]
-                  }],
-               "bbox":[-23,-3,140,70]
-            }],
-         "bbox":[-43,10,70,60]
+                           }
+                        }]
+                  }]
+            }]
       }

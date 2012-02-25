@@ -10,6 +10,9 @@ html,body{
 	height:100%;
 }
 #map{
+position:absolute;
+top:100px;
+left:100px;
 width:400px;
 height:300px;
 }
@@ -34,6 +37,7 @@ function init(){
 	
 	// define position
 	var point = new mr.LatLng(50.875311, 0.351563);
+//	var point = new mr.LatLng(48.2071941,16.3452065);
 	// define icon
 	var image = new mr.overlay.MarkerImage(
 	  'img/image.png',
@@ -67,7 +71,8 @@ function init(){
 	
 	
 	// static marker on Mt. Uluru/Australia
-	var myLatlng = new mr.LatLng(-25.363882,131.044922);
+//	var myLatlng = new mr.LatLng(-25.363882,131.044922);
+	var myLatlng = new mr.LatLng(48.2071941,16.3452065);
 	var marker2 = new mr.overlay.Marker({
         position: myLatlng, 
         map: map,

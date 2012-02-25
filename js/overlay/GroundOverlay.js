@@ -53,6 +53,8 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 		innerDiv.style.position = "absolute";
 		innerDiv.style.top = "0px";
 		innerDiv.style.left = "0px";
+		innerDiv.style.margin = "0px";
+		innerDiv.style.padding = "0px";
 		
 		// style innerDiv - use options
 		if (this.options) {
@@ -166,10 +168,12 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 	 * Set/get bounds of groundoverlay
 	 */
 	this.bounds = function(bounds) {
+		/*
 		if (bounds) {
 			//this.bbox = bounds;  //so geht das natuerlich nicht
 			//console.log("bounding box is read only");
 		}
+		*/
 
 		if (this.rotation) {
 			// should return the bounds after rotation

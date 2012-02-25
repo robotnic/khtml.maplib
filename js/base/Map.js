@@ -1677,7 +1677,9 @@ khtml.maplib.base.Map = function(map) {
 			//the last frames must be drawn to have good result
 			var that = this;
 			var tempFunction = function() {
-				that.finalDraw = true;
+				if(intZoom == that.visibleZoom){
+					that.finalDraw = true;
+				}
 				that.layer(map, lat, lng, moveX, moveY, zoom);
 			};
 			//khtml.maplib.base.Log.debug('this.layer: setTimeout(tempFunction) => that.layer(..), final draw');
@@ -1759,7 +1761,7 @@ khtml.maplib.base.Map = function(map) {
 		//Calculate the next displayed layer
 		this.loadingZoomLevel = intZoom;
 		if (this.visibleZoom < intZoom) {
-			if (Math.abs(this.visibleZoom - intZoom) < 40) {  //value should be 4 but its hanging :-(
+			if (Math.abs(this.visibleZoom - intZoom) < 4) {  //value should be 4 but its hanging :-(
 				this.loadingZoomLevel = parseInt(this.visibleZoom) + 1;
 			}
 

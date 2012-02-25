@@ -15,6 +15,7 @@ height:400px;
 <script type="text/javascript" src="../../../khtml_all.js"> </script> 
 <script type="text/javascript" src="../../../js/ui/Keyboard.js"> </script>
 <script type="text/javascript" src="../../../js/ui/Zoombar.js"> </script>
+<script type="text/javascript" src="../../../js/base/Map.js"> </script>
 <script type="text/javascript">
 var map=null;
 function init(){
@@ -27,6 +28,15 @@ function init(){
 	map.addOverlay(keyboard);
 	var zoombar=new khtml.maplib.ui.Zoombar();
 	map.addOverlay(zoombar);
+	setInterval("debug()",5000);
+}
+
+function debug(){
+	document.getElementById("debug").textContent=map.intZoom+":"+map.visibleZoom;
+	if(map.intZoom==map.visibleZoom){
+			map.layers[map.intZoom]["layerDiv"].style.visibility = "";
+//			map.redraw();
+	}
 }
 
 
@@ -36,5 +46,6 @@ function init(){
 <h1>Base Map</h1>
 cursor, page up/down, pos1, end, +, -
 <div id="map"  tabIndex="1"> </div>
+<div id="debug"> </div>
 </body>
 </html>

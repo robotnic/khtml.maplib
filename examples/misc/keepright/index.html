@@ -14,6 +14,7 @@ border:!px solid black;
 </style>
 <title>keepright</title>
 <script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/base/Map.js"> </script>
 
 <script type="text/javascript">
 var xmlhttp=new XMLHttpRequest();
@@ -24,7 +25,7 @@ var openMarker=null;
 
 function init(){
 	map=khtml.maplib.Map(document.getElementById("map"));
-	map.centerAndZoom(new khtml.maplib.LatLng(48.209473908172887,16.370225501046987),15)
+	map.centerAndZoom(new khtml.maplib.LatLng(48.209473908172887,16.370225501046987),17)
 	//daten nachladen beim verschieben der Karte
 	map.addCallbackFunction(movemap);
 

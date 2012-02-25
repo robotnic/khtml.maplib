@@ -11,7 +11,6 @@ khtml.maplib.parser.Kml=function(targetLayer){
 	this.folders=new Array();
 	this.parse=function (dom){
 		var doc=dom.getElementsByTagName("Document").item(0);
-		console.log(doc);
 		for(var i=0;i<doc.childNodes.length;i++){
 			var child=doc.childNodes[i];
 			if(child.nodeType!=1)continue;

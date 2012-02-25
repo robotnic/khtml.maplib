@@ -7,6 +7,7 @@ height:400px;
 }
 </style>
 <script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/Vector.js"> </script>
 <script type="text/javascript">
 var map=null;
 var line=null;
@@ -23,6 +24,7 @@ function init(){
 function trace(){
 	var pos=this.center();
 	line.geometry.coordinates.push(pos);	
+//	line.repairBBox();
 }
 </script>
 </head>
