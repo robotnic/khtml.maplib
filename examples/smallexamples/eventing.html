@@ -1,0 +1,71 @@
+<html>
+<head>
+<style type="text/css">
+body{
+margin:0px;
+font-family:Arial,Verdana;
+font-size:12px;
+margin:0;
+}
+#map{
+width:300px;
+height:183px;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+</head>
+<body>
+
+<h1>sharing points</h1>
+<div id="map">
+
+</div>
+<script type="text/javascript">
+map=khtml.maplib.Map(document.getElementById("map"));
+map.centerAndZoom(new khtml.maplib.LatLng(0,0),4);
+
+var p=new khtml.maplib.LatLng(0,0);
+var p1=new khtml.maplib.LatLng(-2,-4);
+var p2=new khtml.maplib.LatLng(4,2);
+var p3=new khtml.maplib.LatLng(-7,3);
+doline([p,p1,p2]);
+doline([p,p2,p3]);
+doline([p,p3,p1]);
+doMarker(p);
+doMarker(p1);
+doMarker(p2);
+doMarker(p3);
+
+function doMarker(p){
+        map.featureCollection.appendChild({type:"Point",coordinates:p,draggable:true});
+}
+
+function doline(points){
+	//var json={type:"Feature",geometry:{type:"Polygon",coordinates:[p1,p2,p3]}};
+	var json={type:"Polygon",coordinates:points};
+	var l=new khtml.maplib.geometry.Feature(json);
+	for(var i=0;i<points.length;i++){
+		points[i].addCallbackFunction(l.render);
+		points[i].addCallbackFunction(recorder);
+	}
+	map.featureCollection.appendChild(l);
+	l.style.stroke="black";
+	l.style.fill="gray";
+	l.style.opacity=0.2;
+}
+
+function recorder(evt){
+	if(this instanceof khtml.maplib.base.Map){
+		console.log("_+");
+	}
+	if(this instanceof khtml.maplib.geometry.LatLng){
+		console.log("*");
+	}
+
+
+}
+
+map.addCallbackFunction(recorder);
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<style type="text/css">
+body{
+margin:0px;
+font-family:Arial,Verdana;
+font-size:12px;
+margin:0;
+}
+
+#map{
+width:200px;
+height:160px;
+padding:5px;
+border:1px solid #efefef;
+background-color:white;
+-moz-box-shadow: 1px 1px 14px #dfdfdf;
+-webkit-box-shadow: 1px 1px 14px #dfdfdf;
+box-shadow: 1px 1px 14px #dfdfdf;
+
+}
+#buttons{
+position:absolute;
+top:90px;
+left:310px;
+}
+#buttons button{
+border:1px solid grey;
+width:60px;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+<script type="text/javascript">
+
+
+var mr=new Object(khtml.maplib);
+var map=null; //global map object
+
+var fhstp=new mr.LatLng(48.21379182397267,15.63226605436995);
+
+function init(){
+	map=new mr.Map(document.getElementById("map"));
+	var center=new mr.LatLng(48.2,15.6);
+	map.centerAndZoom(center,12); //12 = zoomlevel
+	animations();
+}
+
+function animations(){
+	document.getElementById("map").style.top="140px";
+	document.getElementById("map").style.left="10px";
+	document.getElementById("map").style.width="240px";
+	map.redraw();
+	//zoomAni();
+	//setTimeout("zoomAni()",4000);
+	//setTimeout("zoomAni()",8000);
+	//setTimeout("zoomAni()",12000);
+	//start();
+}
+
+function start(){
+	setTimeout("resize()",5000);
+	setTimeout("move()",10000);
+	setTimeout("animations()",16000);
+}
+
+function stop(){
+
+}
+
+function zoomAni(){
+	for(var i=10; i <=180; i++){
+		var z=i/10;
+		var cmd="map.centerAndZoom(fhstp,"+z+")";
+		setTimeout(cmd,(i -10)*20);
+	}
+}
+
+function resize(){
+	for(var i=00; i <= 40;i++){
+		var cmd="resizeIt("+i+")";
+		setTimeout(cmd,i*20);	
+	}
+}
+
+function resizeIt(i){
+	document.getElementById("map").style.width=(250-i*3)+"px";
+	map.redraw();
+}
+
+function move(){
+	for(var i=00; i < 100;i++){
+		var cmd="moveIt("+i+")";
+		setTimeout(cmd,i*20);	
+	}
+}
+
+function moveIt(i){
+	document.getElementById("map").style.top=(140+i*3)+"px";
+	document.getElementById("map").style.left=(10+i*3)+"px";
+	map.redraw();
+}
+var speedx=0;
+var speedy=0;
+
+function explore(){
+	var mapdiv=document.getElementById("map");
+	mapdiv.style.position="absolute";
+	mapdiv.style.top="60px";
+	mapdiv.style.left="60px";
+	mapdiv.style.width="100px";
+	mapdiv.style.height="100px";
+	for(var i=0;i<1000;i++){	
+		var cmd="exploreMove()";
+		setTimeout(cmd,i*50);
+	}
+}
+
+var maptop=60;
+var mapleft=60;
+
+function exploreMove(){
+		speedx+=(Math.random() -0.5)*0.5;
+		speedy+=(Math.random() -0.5)*0.5;
+	var mapdiv=document.getElementById("map");
+	maptop-=Math.floor(speedy);
+	mapleft-=Math.floor(speedx);
+	if(maptop<60){console.log("-");maptop=60;speedy=0;};
+	if(mapleft<60){mapleft=60;speedx=0};
+	if(mapleft>260){mapleft=260;speedx=0};
+	if(maptop>160){maptop=160;speedy=0;}
+//	console.log(speedx,speedy);
+	map.moveXY(Math.floor(speedx),Math.floor(speedy));
+	mapdiv.style.top=maptop +"px";
+	mapdiv.style.left=mapleft+"px";
+}
+
+function toggle(name){
+	switch(name){
+		case "zoom":
+			zoomAni();
+			break;
+		case "move":
+			move();
+			break;
+		case "resize":
+			resize();
+			break;
+		case "explore":
+			explore();
+			break;
+
+	}
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<h1>Frame based Animations</h1>
+<div id="map"> </div>
+<div id="buttons">
+<button onclick="toggle('zoom')">zoom</button><br/>
+<button onclick="toggle('move')">move</button><br/>
+<button onclick="toggle('resize')">resize</button><br/>
+<button onclick="toggle('explore')">explore</button><br/>
+
+</div> 
+</body>
+</html>
