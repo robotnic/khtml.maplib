@@ -23,21 +23,25 @@ java -jar ./tools/closure-compiler/compiler.jar \
 --js js/base/Map.js \
 --js js/geometry/Bounds.js \
 --js js/geometry/LatLng.js \
---js js/overlay/Vector.js \
---js js/overlay/Marker.js \
---js js/overlay/renderer/Canvas.js \
---js js/overlay/renderer/SVG.js \
---js js/overlay/renderer/VML.js \
---js js/overlay/renderer/Styler.js \
---js js/overlay/FeatureCollection.js \
 --js js/geometry/Feature.js \
---js js/parser/MapCSS.js \
---js js/parser/Osm.js \
+--js js/geometry/FeatureCollection.js \
+--js js/overlay/Marker.js \
+--js js/overlay/InfoWindow.js \
+--js js/overlay/SimpleMarker.js \
 --js js/overlay/WMS.js \
 --js js/overlay/GroundOverlay.js \
---js js/parser/Gpx.js --js js/parser/Kml.js \
---js js/ui/Keyboard.js --js js/ui/Zoombar.js \
+--js js/overlay/renderer/Styler.js \
+--js js/overlay/GeoJson.js \
+--js js/parser/MapCSS.js \
+--js js/parser/Osm.js \
+--js js/parser/Gpx.js \
+--js js/parser/Kml.js \
+--js js/ui/Keyboard.js \
+--js js/ui/Zoombar.js \
 --js js/util/Http.js \
+--js js/util/Urlparam.js \
+--js js/util/ScriptTagProxy.js \
+--js js/ui/Nominatim.js \
 --js_output_file=$TEMP_ALL
 
 cat $LICENSE_FILE > khtml_min.js

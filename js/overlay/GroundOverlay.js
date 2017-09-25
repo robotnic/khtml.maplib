@@ -37,6 +37,7 @@
 khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {	
 	this.geometry=new Object;
 	this.geometry.type="GroundOverlay";
+	this.options=options;
 	this.type="Feature";
 	// ---------------------------------------------------------------
 	// Private - should not be used from the outside
@@ -52,6 +53,8 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 		innerDiv.style.position = "absolute";
 		innerDiv.style.top = "0px";
 		innerDiv.style.left = "0px";
+		innerDiv.style.margin = "0px";
+		innerDiv.style.padding = "0px";
 		
 		// style innerDiv - use options
 		if (this.options) {
@@ -165,10 +168,12 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 	 * Set/get bounds of groundoverlay
 	 */
 	this.bounds = function(bounds) {
+		/*
 		if (bounds) {
 			//this.bbox = bounds;  //so geht das natuerlich nicht
 			//console.log("bounding box is read only");
 		}
+		*/
 
 		if (this.rotation) {
 			// should return the bounds after rotation
@@ -216,7 +221,7 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 		
 		var point= new khtml.maplib.LatLng(y2, x2);
 		//console.log(y2,x2);
-		var marker=new khtml.maplib.overlays.Marker(point,"http://www.din-5008-richtlinien.de/bilder/punkt.gif",{dx:-1,dy:-1});	
+		var marker=new khtml.maplib.overlay.SimpleMarker(point,"http://www.din-5008-richtlinien.de/bilder/punkt.gif",{dx:-1,dy:-1});	
 		map.addOverlay(marker);
 		return point;
 	} 
@@ -235,6 +240,7 @@ khtml.maplib.overlay.GroundOverlay = function(bounds, el, options) {
 	*/
 	this.clear = function() {
 //		this._removeChildRenderElementFromParent(this);
+		this.renderElement.parentNode.removeChild(this.renderElement);
 	}
 	/** Moveable extension */
 

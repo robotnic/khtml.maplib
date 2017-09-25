@@ -45,6 +45,24 @@
         </Point>
       </Placemark>
       <Placemark>
+        <name>Simple placemark Groundoverlay corner</name>
+        <description>Attached to the ground. Intelligently places itself at the height of the
+          underlying terrain.</description>
+        <Point>
+          <coordinates>15.35832653742206,37.46543388598137 </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Simple placemark Groundoverlay corner</name>
+        <description>Attached to the ground. Intelligently places itself at the height of the
+          underlying terrain.</description>
+        <Point>
+          <coordinates>14.60128369746704,37.91904192681665 </coordinates>
+        </Point>
+      </Placemark>
+
+
+      <Placemark>
         <name>Descriptive HTML</name>
         <description><![CDATA[Click on the blue link!<br/><br/>
 Placemark descriptions can be enriched by using many standard HTML tags.<br/>

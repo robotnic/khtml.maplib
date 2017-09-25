@@ -1,0 +1,25 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+width:500px;
+height:400px;
+}
+</style>
+<script type="text/javascript" src="http://maplib.khtml.org/khtml.maplib/khtml_all.js">
+</script>
+<script type="text/javascript">
+
+function init(){
+	var map=khtml.maplib.Map(document.getElementById("map"));
+	var center=khtml.maplib.LatLng(48.2,15.6);
+	map.centerAndZoom(center,15);
+}
+
+</script>
+</head>
+<h1>khtml.maplib - this is a "slippy" map</h1> Use mouse to move the map und mouse wheel for zooming.
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>

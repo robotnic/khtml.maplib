@@ -14,8 +14,6 @@ fill:none;
 </style>
 <script type="text/javascript" src="../../../khtml_all.js"> </script>
 <script type="text/javascript" src="../../../js/parser/Gpx.js"> </script>
-<script type="text/javascript" src="../../../js/overlay/Vector.js"> </script>
-<script type="text/javascript" src="../../../js/geometry/Feature.js"> </script>
 <script type="text/javascript">
 
 var map=null;
@@ -38,11 +36,11 @@ function init(){
 }
 
 function render(gpx){
-	var feature=khtml.maplib.parser.Gpx(gpx);  //gpx string or dom, className
+	var geometry=khtml.maplib.parser.Gpx(gpx);  //gpx string or dom, className
+	var feature=map.featureCollection.appendChild(geometry);
 	feature.style.stroke="red";
 	feature.style.strokeWidth="3";
 	feature.style.fill="none";
-	map.featureCollection.appendChild(feature);
 	var bounds=feature.bbox;
 	map.bounds(bounds);
 }

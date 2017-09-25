@@ -201,11 +201,15 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Feature.html">khtml.maplib.geometry.Feature</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html">khtml.maplib.geometry.FeatureCollection</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.LatLng.html">khtml.maplib.geometry.LatLng</a></li>
 	
@@ -217,9 +221,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -227,19 +241,21 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.parser.Gpx.html">khtml.maplib.parser.Gpx</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.parser.Kml.html">khtml.maplib.parser.Kml</a></li>
-	
 	<li><a href="../symbols/khtml.maplib.parser.MapCSS.html">khtml.maplib.parser.MapCSS</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.parser.Osm.html">khtml.maplib.parser.Osm</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.html">khtml.maplib.util</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -327,6 +343,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.WMS.html#doMarker">doMarker</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.overlay.WMS.html#init">init</a></b>(owner)
 								</div>
 								<div class="description"></div>
@@ -370,8 +395,12 @@ Only WGS84 (EPSG:4326) is supported.
 WMS URL's are required to include '&SRS=EPGSG:4326'.
 
 WMS Specification: http://www.opengeospatial.org/standards/wms
-
-Example:
+					
+				</div>
+				
+				
+				
+				<pre class="code">
 	<pre>
 	var wms = new khtml.maplib.overlay.WMS(
 		{
@@ -382,9 +411,7 @@ Example:
 		}
 	);
 	map.addOverlay(wms);
-	</pre>
-					
-				</div>
+	</pre></pre>
 				
 				
 				
@@ -406,6 +433,20 @@ Example:
 					
 					
 					
+					
+						<dl class="detailList">
+						<dt class="heading">See:</dt>
+						
+							<dd>Examples:
+<a href="../../../examples/overlay/wms/wms1.html">wms1</a>,
+<a href="../../../examples/overlay/wms/wms2.html">wms2</a>,
+<a href="../../../examples/overlay/wms/wms3.html">wms3</a>,
+<a href="../../../examples/overlay/wms/wms4.html">wms4</a>,
+<a href="../../../examples/overlay/wms/wms5.html">wms5</a>,
+<a href="../../../examples/overlay/wms/wms6.html">wms6</a>,
+<a href="../../../examples/overlay/wms/wms7.html">wms7</a>,</dd>
+						
+						</dl>
 					
 
 			</div>
@@ -429,6 +470,9 @@ Example:
 					</div>
 					<div class="description">
 						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_WMS2.js.html">WMS2.js</a>.
 						
 						
 					</div>
@@ -455,6 +499,37 @@ Example:
 					<div class="description">
 						
 						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_WMS2.js.html">WMS2.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="doMarker"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>doMarker</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_WMS2.js.html">WMS2.js</a>.
+						
 						
 					</div>
 					
@@ -479,6 +554,9 @@ Example:
 					</div>
 					<div class="description">
 						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_WMS2.js.html">WMS2.js</a>.
 						
 						
 					</div>
@@ -516,6 +594,9 @@ Example:
 					<div class="description">
 						
 						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/js_overlay_WMS2.js.html">WMS2.js</a>.
+						
 						
 					</div>
 					
@@ -543,7 +624,7 @@ Example:
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Jul 20 2011 00:37:08 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Jan 27 2012 20:59:44 GMT+0100 (MEZ)
 		</div>
 	</body>
 </html>

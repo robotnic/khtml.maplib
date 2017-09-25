@@ -56,8 +56,7 @@ khtml.maplib.parser.Gpx=function(gpx) {
 			}
 			multiPointArray.push(pointArray);
 		}
-			var line=new khtml.maplib.geometry.Feature({type:"MultiLineString",coordinates: multiPointArray});
-		return line;
+		return {type:"MultiLineString",coordinates: multiPointArray};
 	}
 	this.setDom = function(xml) {
 		if(typeof(xml)=="string"){

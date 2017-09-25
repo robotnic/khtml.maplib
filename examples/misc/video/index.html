@@ -1,0 +1,57 @@
+<html>
+<head>
+<!-- bitte Kommentieren -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<title>GPS Map</title>
+<link rel="apple-touch-icon" href="images/favicon.png">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no,maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<!-- end Komment -->
+<style type="text/css">
+body{
+margin:0px;
+}
+#map{
+width:100%;
+height:100%;
+}
+
+</style>
+<script type="text/javascript" src="http://maplib.khtml.org/maplib/newest/khtml_all.js"> </script>
+
+<script type="text/javascript">
+var map=null;
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	var center=new khtml.maplib.LatLng(14.1,100.6);
+	map.centerAndZoom(center,6);
+	var html='<iframe width="360" height="240" src="http://www.youtube.com/embed/rPKjGlv1M6o" frameborder="0" allowfullscreen></iframe>';
+	marker(center,html);
+	var html='<iframe width="360" height="240" src="http://www.youtube.com/embed/JoDSX80yzXI" frameborder="0" allowfullscreen></iframe>';
+	var p2=new khtml.maplib.LatLng(13.948,105.93);
+	marker(p2,html);
+}
+		
+function marker(p,html){
+	var marker = new khtml.maplib.overlay.Marker({
+		position: p,
+		map: map,
+		title:"static marker",
+		
+
+	});
+	var infobox = new khtml.maplib.overlay.InfoWindow({content: html});
+
+	marker.attachEvent( 'click', function() {
+		infobox.open(map, this);
+	});
+}
+
+</script>
+</head>
+<body onload="init()">
+<div id="map">
+
+</div>
+</body>
+</html>

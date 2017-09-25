@@ -144,9 +144,11 @@ khtml.maplib.base.helpers.extendBBox=function(bbox,neu){
 	if(bbox instanceof khtml.maplib.geometry.Bounds){
 		//shon da
 	}else{
-		var ne=new khtml.maplib.geometry.LatLng(-90,-180);
+		var ne=new khtml.maplib.geometry.LatLng(-80,-170);
 		var sw=new khtml.maplib.geometry.LatLng(90,180);
 		bbox=new khtml.maplib.geometry.Bounds(sw,ne);
+		bbox.sw(sw);
+		bbox.ne(ne);
 	}
 	if(!neu){
 		return bbox;
@@ -160,6 +162,7 @@ khtml.maplib.base.helpers.extendBBox=function(bbox,neu){
 		bbox=khtml.maplib.base.helpers.extendBBoxByPoint(bbox,neu.sw());
 		bbox=khtml.maplib.base.helpers.extendBBoxByPoint(bbox,neu.ne());
 	}
+//	bbox=neu;
 	return bbox;
 }
 
@@ -168,11 +171,10 @@ khtml.maplib.base.helpers.extendBBoxByPoint=function(bbox,neu){
 	var north=bbox.ne().lat();
 	var south=bbox.sw().lat();
 	var east=bbox.ne().lng();
-
-	if(neu.lat() >north) north=neu.lat();	
-	if(neu.lat() <south) south=neu.lat();	
-	if(neu.lng() <west) west=neu.lng();	
-	if(neu.lng() >east) east=neu.lng();	
+	if(neu.lat() > north) north=neu.lat();	
+	if(neu.lat() < south) south=neu.lat();	
+	if(neu.lng() < west) west=neu.lng();	
+	if(neu.lng() > east) east=neu.lng();	
 	var sw=new khtml.maplib.geometry.LatLng(south,west);
 	var ne=new khtml.maplib.geometry.LatLng(north,east);
 	var bounds=new khtml.maplib.geometry.Bounds(sw,ne);
@@ -369,6 +371,9 @@ khtml.maplib.base.helpers.isParentNodeEmpty = function(element) {
 }
 
 khtml.maplib.base.helpers.parseLine = function(pointArray) {
+		if(pointArray instanceof khtml.maplib.geometry.LatLng){
+			return pointArray;
+		}
                 if (pointArray) {
                         if (typeof (pointArray) == "string") {
 				pointArray=khtml.maplib.base.helpers.parseLineString;	
@@ -383,7 +388,7 @@ khtml.maplib.base.helpers.parseLine = function(pointArray) {
 					}
 				}
 				if(typeof(pointArray[0])=="number"&&typeof(pointArray[0])=="number" && pointArray.length==2){
-					pointArray=new khtml.maplib.LatLng(pointArray[0],pointArray[1]);
+					pointArray=new khtml.maplib.LatLng(pointArray[1],pointArray[0]);
 				}else{
 					for(var p in pointArray){
 						var point=pointArray[p];
@@ -509,8 +514,9 @@ khtml.maplib.base.helpers.stringify=function(obj,indent,force){
                         }
                         continue;
                 }
+			console.log(o,indent);
                 if(array || o=="type" || o=="features" ||obj[o]&&obj[o].type=="Feature"||o=="geometry" || o=="coordinates" || o=="properties" || o=="bbox" || (o=="className" &&full)){
-			//console.log(o,indent);
+			console.log(o,indent);
                         if(array){
                                 string+=space+khtml.maplib.base.helpers.stringify(obj[o],newindent)+",";
                         }else{
@@ -556,10 +562,11 @@ khtml.maplib.base.helpers.rotate=function(el,angle){
 khtml.maplib.base.helpers.Boundingbox=function(map){
 	this.map=map;
 	this.div=document.createElement("div");
-	this.div.style.border="1px solid black";
+	this.div.style.border="1px dotted blue";
 	this.div.style.position="absolute";	
 	this.div.style.strokeDasharray="4,4";	
 	this.div.style.zIndex=1;
+	this.div.style.pointerEvents="none"; //maybe only new browsers
 	map.mapParent.appendChild(this.div);
 	this.show=function(bbox){
 		this.div.style.display="";
@@ -573,11 +580,15 @@ khtml.maplib.base.helpers.Boundingbox=function(map){
 		this.div.zIndex=10;
 	}
 	this.hide=function(){
-		this.div.style.display="none";
+		that.div.style.display="none";
 	}
+	var that=this;
+	this.map.addCallbackFunction(that.hide);
 }
 
+khtml.maplib.base.helpers.ajaxload="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA%3D%3D";
 
+khtml.maplib.base.helpers.close="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAA5ElEQVR42tRTQYoEIQwsl/2Bl3gQoY9eBKEf5kvyG8G7h4Z+S38gIu5lp5lZ2R7YPm1BDhZJSFWiGmPgDj5wE7cbfD4/mBkAHprUj9yTTyn9OsGIMSLG+Fxwxc8SiAi9d4QQHskjhIDeO4jorQcq5wwiQmsN3nt479FaAxEh5zxJmyZIKalSClprL1FKQUpJXZr4DBH52xqZeRhjICKw1sJaCxGBMQbMPN41GFpriAicc6i1otYK5xxEBFrraQuThGVZAADbtp2amXms6woAOI7j0gO17/t5MN+HNfEvBf//M30NAKe7aRqUOIlfAAAAAElFTkSuQmCC";
 /**
  * @function
  * @param {Object} el DOM-element to apply the browser-specific css-styles on
@@ -632,3 +643,50 @@ khtml.maplib.base.helpers.setCursor = function( object, string) {
 		}
 	}
 };
+
+khtml.maplib.base.helpers.reduceToJSON=function(origObj,depth){
+                var good=["type","features","coordinates","style","className","baseVal","geometry","fill","stroke","strokeWidth","opacity","fillOpacity","strokeOpacity","dashArray","marker","icon","shadow","url","draggable","size","origin","anchor","width","height","x","y"];
+                if(origObj instanceof khtml.maplib.geometry.LatLng){
+                        return [origObj.lng(),origObj.lat()];
+                }
+                if(!depth)depth=0;
+                if(depth >15)return;
+                var retObj=new Object;
+                if(typeof(origObj)=="string" || typeof(origObj)=="number"){
+                        return origObj;
+                }
+                if(origObj instanceof Array){
+                        var ar=new Array();
+                        for(var i=0;i<origObj.length;i++){
+                                ar[i]=khtml.maplib.base.helpers.reduceToJSON(origObj[i],depth+1);
+                        }
+                        return ar;
+                }
+                if(origObj instanceof CSSStyleDeclaration){
+                        var styleProperty=new Object;
+                        for(var i=0;i<origObj.length;i++){
+                                var name=origObj[i];
+                                var value=origObj[origObj[i]];
+                                styleProperty[name]=value;
+                                //var styleProperty={origObj[i]:origObj[origObj[i]]};
+                        }
+                        return styleProperty;
+                }
+                for(var o in origObj){
+                        var skip=true;
+                        for(var i=0;i<good.length;i++){
+                                if(good[i]==o ){
+                                        skip=false;
+                                        break;
+                                }
+                        }
+                        if(skip)continue;
+                        if(typeof(origObj[o])=="string"){
+                                retObj[o]=origObj[o];
+                        }else{
+                                retObj[o]=khtml.maplib.base.helpers.reduceToJSON(origObj[o],depth+1);
+                        }
+                }
+                return retObj;
+}
+

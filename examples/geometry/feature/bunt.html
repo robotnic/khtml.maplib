@@ -5,7 +5,7 @@
 
 <style type="text/css">
 body{
-overflow:hidden;
+#overflow:hidden;
 }
 #map{
 position:absolute;
@@ -13,15 +13,19 @@ top:40px;
 left:300px;
 width:800px;
 height:600px;
+overflow:hidden;
 }
 #navi{
 position:absolute;
-top:40px;
+top:20%;
 left:20px;
-height:45%;
+height:30%;
 overflow:auto;
 border:1px solid black;
 width:250px;
+}
+.menuitem:hover{
+background-color:yellow;
 }
 #styles{
 position:absolute;
@@ -46,9 +50,6 @@ input{
 border:1px solid lightgrey;
 }
 
-.line:hover{
-stroke:red;
-}
 .line2{
 stroke:black;
 stroke-width:4;
@@ -71,6 +72,24 @@ stroke-width:2;
 fill:yellow;
 }
 
+path{
+stroke:red;
+stroke-width:4;
+}
+path:hover{
+stroke:black;
+}
+
+path.editline{
+stroke:yellow;
+stroke-width:9;
+opacity:0.3
+}
+path.editline:hover{
+opacity:0.6;
+}
+
+
 </style>
 <script type="text/javascript" src="../../../khtml_all.js"> </script>
 <script type="text/javascript" src="../../../js/base/Helpers.js"> </script>
@@ -82,10 +101,12 @@ fill:yellow;
 <script type="text/javascript" src="../../../js/overlay/renderer/SVG.js"> </script>
 <script type="text/javascript" src="../../../js/geometry/Feature.js"> </script>
 <script type="text/javascript" src="../../../js/ui/Benchmark.js"> </script>
+<script type="text/javascript" src="../../../js/ui/VectorEditor.js"> </script>
 <script type="text/javascript" src="json2.js"> </script>
 <script type="text/javascript">
 
 var map=null;
+var edit=null;
 
 function init(){
 	map=new khtml.maplib.Map(document.getElementById("map"));
@@ -95,6 +116,15 @@ function init(){
 	createForm(properties);
 	load();
 	setTimeout("startBenchmark()",2000);
+
+
+}
+
+function editor(){
+        edit=new VectorEditor(map.featureCollection);
+        map.addOverlay(edit);
+        setInterval("document.getElementById('mode').textContent=edit.mode+'; editlines:'+edit.editLines.length");
+
 }
 
 function startBenchmark(){
@@ -136,23 +166,33 @@ function recurse(f,depth){
         var clientdiv=document.createElement("div");
 	//clientdiv.style.border="1px solid green";
         textdiv.style.paddingLeft=(depth*15)+"px";
+	textdiv.className="menuitem";
         textdiv.style.cursor="pointer";
 	var text=f.geometry.type;
-	if(f.geometry.type=="FeatureCollection"){
-		text+="▼";
-	}
         textdiv.appendChild(document.createTextNode(text));
 	if(depth!=0){
 		div.appendChild(textdiv);
 	}
+        if(f.geometry.type=="FeatureCollection"){
+                var collapser=document.createElement("span");
+                var tn=document.createTextNode("▼");  //extra div machen
+                collapser.appendChild(tn);
+		textdiv.appendChild(collapser);
+        }
+
 	div.appendChild(clientdiv);
 	//console.log("hat das einene style?",f);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseover",bboxShow,f,true);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseout",bboxHide,f,true);
 	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",select,f,true);
-	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",toggle,clientdiv,true);
-	if(f.path){
-	khtml.maplib.base.helpers.eventAttach(f.path,"mousedown",selectByPath,div,true);
+	if(collapser){
+		khtml.maplib.base.helpers.eventAttach(collapser,"mousedown",toggle,clientdiv,true);
+	}
+		//khtml.maplib.base.helpers.eventAttach(f.element,"mousedown",selectByPath,div,true);
+	if(f.geometry.type!="FeatureCollection"){
+		f.eventAttach("mousedown",selectByPath,div,true);
+		f.eventAttach("mouseover",bboxShow,f,true);
+		f.eventAttach("mouseout",bboxHide,f,true);
 	}
         if(f.features){
                 for(var i=0;i <f.features.length;i++){
@@ -162,9 +202,10 @@ function recurse(f,depth){
         return div;
 }
 var oldtarget=null;
-function selectByPath(evt){
+function selectByPath(evt){	
 	if(oldtarget)oldtarget.style.backgroundColor="white";
 	this.style.backgroundColor="#efefef";
+	this.scrollIntoView();
 	oldtarget=this;
 	fillStyleForm(evt.target.owner);
 }
@@ -249,21 +290,36 @@ function select(evt){
 	fillStyleForm(this);
 }
 
+function stylePropName(p){
+	var pos=p.indexOf("-");
+	if(pos!=-1){
+		var prop1=p.substring(0,pos);
+		var prop2=p.substring(pos+2,p.length);
+		var upper=p[pos+1].toUpperCase();
+		p=prop1+upper+prop2;
+	}
+	return p;
+}
+
 function fillStyleForm(feature){
 	for(var p =0;p<properties.length;p++){
 		var prop=properties[p];
+		//prop=stylePropName(prop);
+		//console.log(p,prop);
 		//this.style.fill="blue";
 		var style=feature.style[prop];
+		if(typeof(style) == "undefined"){
+			prop=stylePropName(prop);
+			var style=feature.style[prop];
+		}
+		//console.log(prop,style);
 		if(inputs[prop]){
 			if(prop=="className"){
 				inputs[prop].value=feature.className.baseVal;
 			}else{
-				//if(style!=undefined){
+				if(typeof(style) != "undefined"){
 					inputs[prop].value=style;
-				//}else{
-					//delete inputs[prop];
-					//inputs[prop].value="";
-				//}
+				}
 			}
 			if(eventlist[prop]){
 				khtml.maplib.base.helpers.eventRemove(eventlist[prop]);
@@ -284,11 +340,7 @@ function changeStyle(evt){
 	if(prop=="className"){
 		this.className.baseVal=input.value;
 	}else{
-		if(input.value==""){
-			delete this.style[prop];
-		}else{
-			this.style[prop]=input.value;
-		}
+		this.style[prop]=input.value;
 	}
 	//map.featureCollection.render();
 	map.render();
@@ -339,6 +391,8 @@ function setBackend(){
 <input type="radio" name="backend" value="canvas"/>canvas
 <input type="radio" name="backend" value="vml"/>vml
 </div> 
+<button onmousedown="editor()">edit</button>
+<div id="mode">mode</div>
 <div id="navi">
 </div>
 <div id="styles">

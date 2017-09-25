@@ -1,0 +1,449 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style type="text/css">
+body{
+font-family:Arial;
+font-size:12px;
+}
+#list{
+position:absolute;
+top:40px;
+left:5px;
+width:300px;
+bottom:25px;
+overflow:auto;
+}
+#bigbot{
+position:absolute;
+bottom:5px;
+left:5px;
+}
+
+#map{
+position:absolute;
+top:40px;
+left:325px;
+right:5px;
+bottom:5px;
+}
+
+.item{
+border:1px solid white;
+font-size:11px;
+cursor:pointer;
+margin-bottom:4px;
+padding:2px;
+}
+.selected_item{
+border:1px solid white;
+font-size:11px;
+cursor:pointer;
+margin-bottom:4px;
+background-color:lightgrey;
+}
+
+
+
+
+.item:hover{
+border:1px solid lightgrey;
+background-color:yellow;
+}
+.user{
+font-weight:bold;
+}
+.bot{
+color:red;
+}
+.big{
+color:gray;
+}
+.hidebot .bot{
+display:none;
+}
+.hidebig .big{
+display:none;
+}
+
+div.create{
+width:4px;
+height:4px;
+background-color:green;
+border:1px solid black;
+}
+div.modify{
+width:4px;
+height:4px;
+background-color:yellow;
+border:1px solid black;
+}
+div.delete{
+width:4px;
+height:4px;
+background-color:red;
+border:1px solid black;
+}
+
+path.create{
+fill:none;
+stroke:green;
+strokeWidth:4;
+}
+
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+<script type="text/javascript">
+
+var map=null;
+var xmlhttp=new XMLHttpRequest();
+var boundsPolygon=null;
+
+
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	var lat=0;
+	var lng=0;
+	var zoom=1;
+	if(localStorage.lat){
+		lat=localStorage.lat;
+	}
+	if(localStorage.lng){
+		lng=localStorage.lng;
+	}
+	if(localStorage.zoom){
+		zoom=localStorage.zoom;
+	}
+	map.centerAndZoom(new khtml.maplib.LatLng(lat,lng),zoom);
+
+        var zoombar=new khtml.maplib.ui.Zoombar();
+        map.addOverlay(zoombar);
+
+        var keyboard=new khtml.maplib.ui.KeyBoard();
+        map.addOverlay(keyboard);
+
+        var search=new khtml.maplib.ui.Nominatim();
+        map.addOverlay(search);
+	document.getElementById("map").focus();
+
+
+	if(localStorage.big=="false"){
+		document.getElementById("showbig").checked=false;
+	}else{
+		document.getElementById("showbig").checked=true;
+	}
+	if(localStorage.bot=="false"){
+		document.getElementById("showbot").checked=false;
+	}else{
+		document.getElementById("showbot").checked=true;
+	}
+	filter();  //bot big
+}
+
+var origBounds=null;
+function load(){
+	origBounds=map.bounds();
+	var north=map.bounds().ne().lat();
+	var east=map.bounds().ne().lng();
+	var south=map.bounds().sw().lat();
+	var west=map.bounds().sw().lng();
+	var url="proxynocache.php?url=/api/0.6/changesets?bbox="+west+","+south+","+east+","+north;	
+	xmlhttp.open("GET",url,true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			render(xmlhttp.responseXML);
+			document.getElementById("ajaxload").style.display="none";
+		}
+	}
+	document.getElementById("ajaxload").style.display="";
+	xmlhttp.send(null);	
+}
+
+function render(dom){
+	clearList();
+	for(var i=0;i<dom.documentElement.childNodes.length;i++){
+		var changeset=dom.documentElement.childNodes.item(i);
+		if(changeset.nodeType!=1)continue;
+
+		addToList(changeset);
+	}
+}
+var oldday=null;
+function clearList(){
+	oldday=null;
+	var target=document.getElementById("list");
+	while(target.firstChild){
+		target.removeChild(target.firstChild);	
+	}
+}
+function f(num){
+	if(num<10){
+		return "0"+num;
+	}
+	return num;
+}
+function addToList(changeset){
+	var bot="";
+	var big=bigOrNot(changeset);
+	var div=document.createElement("div");
+	div.className="item";
+	var userDiv=document.createElement("div");
+	userDiv.className="user";
+	var dateDiv=document.createElement("div");
+	dateDiv.className="title";
+	var commentDiv=document.createElement("div");
+	commentDiv.className="description";
+
+	//----
+	var username=changeset.getAttribute("user");
+	var date=new Date(changeset.getAttribute("created_at"));
+	var day=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+	if(oldday!=day){
+		var h4=document.createElement("h3");
+		h4.appendChild(document.createTextNode(day));
+		document.getElementById("list").appendChild(h4);
+	}
+	oldday=day;
+	var time=f(date.getHours())+":"+f(date.getMinutes())+":"+f(date.getSeconds());
+	var tags=changeset.getElementsByTagName("tag");
+	for(var i=0;i<tags.length;i++){
+		if(tags[i].getAttribute("k")=="comment"){
+			var comment=tags[i].getAttribute("v");
+		}
+		if(tags[i].getAttribute("k")=="bot"){
+			var bot=tags[i].getAttribute("v");
+		}
+	}
+	userDiv.appendChild(document.createTextNode(time+" "+username));
+	dateDiv.appendChild(document.createTextNode(time));
+	commentDiv.appendChild(document.createTextNode(comment));
+	if(big){
+		div.className=div.className+" big";
+	}
+	if(bot=="yes"){
+		div.className=div.className+" bot";
+	}
+	div.appendChild(userDiv);
+	div.appendChild(commentDiv);
+//	div.appendChild(dateDiv);
+	div.changeset=changeset;
+        khtml.maplib.base.helpers.eventAttach(div, "mousedown", loadChangeset, div, false);
+        khtml.maplib.base.helpers.eventAttach(div, "mouseover", showbounds, div, false);
+        khtml.maplib.base.helpers.eventAttach(div, "mouseout", hidebounds, div, false);
+
+	document.getElementById("list").appendChild(div);
+}
+
+function showbounds(){
+	var west=this.changeset.getAttribute("min_lon");
+	var east=this.changeset.getAttribute("max_lon");
+	var north=this.changeset.getAttribute("max_lat");
+	var south=this.changeset.getAttribute("min_lat");
+	boundsPolygon=map.featureCollection.appendChild({type:"Polygon",coordinates:[[west,south],[east,south],[east,north],[west,north]]});
+	boundsPolygon.style.stroke="red";
+	boundsPolygon.style.strokeWidth="3";
+	boundsPolygon.style.fill="none";
+}
+
+
+
+function hidebounds(){
+	if(boundsPolygon){
+		map.featureCollection.removeChild(boundsPolygon);
+	}
+}
+
+function bigOrNot(changeset){
+	var bigcount=0;
+	var west=changeset.getAttribute("min_lon");
+	var east=changeset.getAttribute("max_lon");
+	var north=changeset.getAttribute("max_lat");
+	var south=changeset.getAttribute("min_lat");
+	if(map.bounds().sw().lng() < west){
+		bigcount++;
+	}
+	if(map.bounds().sw().lat() < south){
+		bigcount++;
+	}
+	if(map.bounds().ne().lat() > north){
+		bigcount++;
+	}
+	if(map.bounds().ne().lng() > east){
+		bigcount++;
+	}
+	if(bigcount>2){
+		return false;
+	}else{
+		return true;
+	}
+}
+
+function gotoBounds(changeset){
+	var west=changeset.getAttribute("min_lon");
+	var east=changeset.getAttribute("max_lon");
+	var north=changeset.getAttribute("max_lat");
+	var south=changeset.getAttribute("min_lat");
+	var sw=new khtml.maplib.geometry.LatLng(south,west);
+	var ne=new khtml.maplib.geometry.LatLng(north,east);
+	var bounds=new khtml.maplib.geometry.Bounds(sw,ne);
+	map.bounds(bounds);
+}
+
+function loadChangeset(){
+	if(this.className=="selected_item"){
+		this.className="item";
+		map.bounds(origBounds);
+		return;
+	}else{
+		this.className="selected_item";
+	}
+	var id=this.changeset.getAttribute("id");
+	gotoBounds(this.changeset);
+	var url="proxynocache.php?url=/api/0.6/changeset/"+id+"/download";
+	xmlhttp.open("GET",url,true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			document.getElementById("ajaxload").style.display="none";
+			showChangeset(xmlhttp.responseXML);
+		}
+	}
+	document.getElementById("ajaxload").style.display="";
+	xmlhttp.send(null);
+}
+
+function showChangeset(dom){
+	for(var i=0;i<dom.documentElement.childNodes.length;i++){
+		var item=dom.documentElement.childNodes.item(i);
+		if(item.nodeType!=1)continue;
+		toMap(item);
+	}
+}
+
+function toMap(item){
+	var type=item.tagName;
+	for(var i=0;i<item.childNodes.length;i++){
+		
+		if(item.childNodes[i].tagName=="node"){
+			showNode(item.childNodes[i],type);
+		}
+		if(item.childNodes[i].tagName=="way"){
+			loadWay(item.childNodes[i],type);
+		}
+	}
+
+}
+
+function showNode(node,type){
+	var lat=node.getAttribute("lat");
+	var lng=node.getAttribute("lon");
+	var div=document.createElement("div");
+	div.className=type;
+	var marker={type:"Feature",geometry:{type:"Point",coordinates:[lng,lat]},marker:{icon:{url:div,"size": {"width": 6, "height": 6},"anchor":{x:-2,y:-2}}}};
+
+	map.featureCollection.appendChild(marker);
+}
+
+function loadWay(way,type){
+	var id=way.getAttribute("id");
+        var url="proxynocache.php?url=/api/0.6/way/"+id+"/full";
+	var xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET",url,true);
+        xmlhttp.onreadystatechange=function(){
+                if(xmlhttp.readyState==4){
+                        document.getElementById("ajaxload").style.display="none";
+                        showWay(xmlhttp.responseXML,type);
+                }
+        }
+        document.getElementById("ajaxload").style.display="";
+        xmlhttp.send(null);
+
+}
+
+function showWay(dom,type){
+	var nodes=new Array();
+	for(var i=0;i<dom.documentElement.childNodes.length;i++){
+		var item=dom.documentElement.childNodes.item(i);
+		if(item.tagName=="node"){
+			var id=item.getAttribute("id");
+			var lat=item.getAttribute("lat");
+			var lng=item.getAttribute("lon");
+			nodes[id]=new khtml.maplib.geometry.LatLng(lat,lng);
+		}
+		if(item.tagName=="way"){
+			var nds=item.getElementsByTagName("nd");
+			wayNodes=new Array();
+			for(var n=0;n<nds.length;n++){
+				var ref=nds[n].getAttribute("ref");
+				wayNodes.push(nodes[ref]);
+			}
+			var linestring=map.featureCollection.appendChild({type:"LineString",coordinates:wayNodes});
+			switch(type){
+				case "create":
+					linestring.style.stroke="green";
+					break;
+				case "modify":
+					linestring.style.stroke="yellow";
+					break;
+				case "delete":
+					linestring.style.stroke="red";
+					break;
+
+			}
+			linestring.style.strokeWidth="2";
+			linestring.style.cursor="crosshair";
+			linestring.className="create";
+
+		}
+	}
+}
+
+function filter(){
+	var big=document.getElementById("showbig").checked;
+	var bot=document.getElementById("showbot").checked;
+	localStorage.big=big;
+	localStorage.bot=bot;
+	var classname="list";
+	if(!big){
+		classname+=" hidebig";
+	}
+	if(!bot){
+		classname+=" hidebot";
+	}
+	document.getElementById("list").className=classname;
+}
+
+function savePos(){
+	localStorage.zoom=map.zoom();
+	localStorage.lat=map.center().lat();
+	localStorage.lng=map.center().lng();
+}
+
+</script>
+</head>
+<body onload="init()" onunload="savePos()">
+<button onmousedown="load()">load</button><img id="ajaxload" src="images/ajaxload.gif" style="display:none"/>
+<div id="list">
+<h3>Changeset visualizer</h3>
+<ol>
+<li>Zoom the map to the area you are interested in </li>
+<li>Click the load button</li>
+<li>Click to an item in the list to visualize the changes</li>
+<li>Click again to get the previews map view</li>
+</ol>
+<h3>API</h3>
+This tool uses the openstreetmap API (not xapi) and produces high db load.
+<br/>
+To identify api connections done by this tool, the "userAgent" string is set.
+If the load is too high the admis are able to block this tool.
+<h3>bots and big</h3>
+If you don't want to have bot edits in the list, uncheck the checkbox at the bottom.
+
+
+</div>
+<div id="bigbot">
+<input type="checkbox" id="showbig" onclick="filter()">big
+<input type="checkbox" id="showbot" onclick="filter()">bot
+</div>
+<div id="map" tabIndex="1"></div>
+</body>
+</html>

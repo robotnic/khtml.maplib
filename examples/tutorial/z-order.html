@@ -1,0 +1,52 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+position:absolute;
+top:100px;
+left:50px;
+bottom:10px;
+right:10px;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+<script type="text/javascript" > 
+
+var map=null;
+function init(){
+	map=new khtml.maplib.base.Map(document.getElementById("map"));
+	map.centerAndZoom(new khtml.maplib.geometry.LatLng(0,0),3);
+
+	var fc=map.featureCollection;
+	var f=fc.appendChild({type:"Polygon",coordinates:[[-1,-1],[-1,10],[10,10],[10,-1]]});
+	f.style.fill="red";
+	f.style.opacity=0.9;
+	var f=fc.appendChild({type:"Polygon",coordinates:[[1,1],[1,-10],[-10,-10],[-10,1]]});
+	f.style.fill="green";
+	f.style.opacity=0.9;
+	var f=fc.appendChild({type:"Polygon",coordinates:[[-1,1],[-1,-10],[10,-10],[10,1]]});
+	f.style.fill="yellow";
+	f.style.opacity=0.9;
+	var f=fc.appendChild({type:"Polygon",coordinates:[[1,-1],[1,10],[-10,10],[-10,-1]]});
+	f.style.fill="blue";
+	f.style.opacity=0.9;
+
+	for(var i=0;i<fc.features.length;i++){
+		var f=fc.features[i];
+                f.eventAttach("mouseover",select,f,true);
+
+	}
+}
+
+function select(){
+	this.parentNode.appendChild(this);
+}
+
+</script>
+</head>
+<h1>Mouse over to bring feature to front</h1>
+<body onload="init()">
+<div id="map">
+</div>
+</body>
+</html>

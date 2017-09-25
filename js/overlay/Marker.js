@@ -23,13 +23,13 @@
 
 
 /**
- * generates a MarkerImage-object<br/>
- * used for custom-markers ans shadow
- * @param {string or Object} url url to an image or DOM-object
- * @param {Object} size size of the marker, contains two numbers: width and height in pixels
- * @param {Object} origin origin in an ImageSprite, contains two numbers: x and y in pixels
- * @param {Object} anchor anchorPoint of the marker, contains two numbers: x and y in pixels
- * @param {Object} scaledSize not used yet, only for compatibility to Google Markers
+ * Generates a MarkerImage-object.<br/>
+ * Used for custom-markers and shadow
+ * @param {string or Object} [url] url to an image or DOM-object
+ * @param {Object} [size] size of the marker, contains two numbers: width and height in pixels
+ * @param {Object} [origin] origin in an ImageSprite, contains two numbers: x and y in pixels
+ * @param {Object} [anchor] anchorPoint of the marker, contains two numbers: x and y in pixels
+ * @param {Object} [scaledSize] not used yet, only for compatibility to Google Markers
  * @class
  
  * @example
@@ -51,29 +51,29 @@ khtml.maplib.overlay.MarkerImage = function( url, size, origin, anchor, scaledSi
 }
 
 /**
- * generates a MarkerOptions-object<br/>
- * options for a marker
- * @param {number} animation not used yet, only for compatibility to Google Markers
- * @param {bool} clickable not used yet, only for compatibility to Google Markers
- * @param {string} cursor not used yet, only for compatibility to Google Markers
- * @param {bool} draggable if marker is draggable or not
- * @param {bool} flat not used yet, only for compatibility to Google Markers
- * @param {khtml.maplib.overlay.MarkerImage/String/DOM-Element} icon custom MarkerImage
+ * Generates a MarkerOptions-object.<br/>
+ * Options for a marker
+ * @param {number} [animation] not used yet, only for compatibility to Google Markers
+ * @param {bool} [clickable] not used yet, only for compatibility to Google Markers
+ * @param {string} [cursor] not used yet, only for compatibility to Google Markers
+ * @param {bool} [draggable] if marker is draggable or not
+ * @param {bool} [flat] not used yet, only for compatibility to Google Markers
+ * @param {khtml.maplib.overlay.MarkerImage/String/DOM-Element} [icon] custom MarkerImage
  * @param {khtml.maplib.Map} map map to place marker onto
- * @param optimized not used yet, only for compatibility to Google Markers
+ * @param [optimized] not used yet, only for compatibility to Google Markers
  * @param {khtml.maplib.LatLng} position LatLng where to place marker
- * @param {bool} raiseOnDrag lift marker and shadow from the map and show dragcross
- * @param {khtml.maplib.overlay.MarkerImage/String/DOM-Element} shadow MarkerImage for custom shadow
- * @param {Object} shape shape for custom marker
+ * @param {bool} [raiseOnDrag] lift marker and shadow from the map and show dragcross
+ * @param {khtml.maplib.overlay.MarkerImage/String/DOM-Element} [shadow] MarkerImage for custom shadow
+ * @param {Object} [shape] shape for custom marker
  * <pre> var marker_shape = {
  *		  type: 'circle', 'rect' or 'poly'
  *		  coord: [x, y, radius] for circle
  *			 [x1, y1, x2, y2] for rect
  *			 [x1, y1, x2, y2, x3, y3, ... xn, yn] for poly
  *		}; </pre>
- * @param {string} title title for mouseover
- * @param {bool} visible not used yet, only for compatibility to Google Markers
- * @param {number} zIndex not used yet, only for compatibility to Google Markers
+ * @param {string} [title] title for mouseover
+ * @param {bool} [visible] not used yet, only for compatibility to Google Markers
+ * @param {number} [zIndex] not used yet, only for compatibility to Google Markers
  * @class
  
  * @example
@@ -176,7 +176,9 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 	
 	
 	/**
-	 * set a new position for the marker
+	 * Set a new position for the marker.
+	 * @param {khtml.maplib.LatLng} pos The new position for the marker.
+	 * @return {khtml.maplib.LatLng} The current position of the marker.
 	*/
     this.setPosition=function(pos){	// not tested yet
 		if(pos){
@@ -188,14 +190,16 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
     }
 	
 	/**
-	 * get the current position of the marker
+	 * Get the current position of the marker.
+	 * @return {khtml.maplib.LatLng} The current position of the marker.
 	*/
 	this.getPosition = function(){
 		return this.position;
 	}
 	
 	/**
-	 * get the pixelOffset of the markers anchorpoint to the anchorpoint of the infowindow
+	 * Get the pixelOffset of the markers anchorpoint to the anchorpoint of the infowindow.
+	 * @return {point{x,y}} Object with two integers.
 	*/
 	this.pixelOffset=function(){
 		var point = new Array();
@@ -210,7 +214,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 
 
 	/**
-	 * remove the marker from the map
+	 * Remove the marker from the map. Marker still exists, will still be rendered.
 	*/
     this.clear=function(){
         if(this.marker){
@@ -223,6 +227,15 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 			}
         }
     }
+	
+	
+	/**
+	 * Destroy the marker. Will not be rendered any more.
+	*/
+	this.destroy=function(){
+		this.mapObj.removeOverlay(this);
+	}
+	
 /*
     this._mousemoveTo = function (point) {
         this.position = point;
@@ -232,7 +245,8 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 
 	this.callbackFunctions = new Array();
 	/**
-	 * add a callback function
+	 * Add a callback function.
+	 * @param {function} func The function to call.
 	*/
 	this.addCallbackFunction = function(func) {
 			if (typeof (func) == "function") {
@@ -240,7 +254,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 			}
 	}
 	/**
-	 * execute the callback functions
+	 * Execute the callback functions.
 	*/
 	this._executeCallbackFunctions = function() {
 	var that=this;
@@ -250,7 +264,8 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 	}
 	
 	/**
-	 * execute the callback functions
+	 * Set the cursor to show when mouse is over marker.
+	 * @param {String} string Accepts vendor specific cursors but no URLs. 
 	*/
 	this._setCursor = function(string){
 		if(this.MarkerOptions.shape  &&
@@ -335,8 +350,22 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 					this.dragcross.style.position = "absolute";
 					this.dragcross.dx = 8;
 					this.dragcross.dy = 8;
-					var el = document.createElement('img');
-					el.setAttribute('src', dragcross_image);				// data-URI
+					if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+					&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+						var el = document.createElement('div');
+						el.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + dragcross_image + "')";
+						el.style.width = "100%";
+						el.style.height = "100%";
+					}
+					else{
+						var el = document.createElement('img');
+						el.style.backgroundColor="transparent";
+						el.style.padding="0px";
+						el.style.margin="0px";
+						el.setAttribute('src', dragcross_image);				// data-URI
+					}
+					this.dragcross.style.width = "16px";
+					this.dragcross.style.height = "16px";
 					this.dragcross.appendChild(el);
 					//var xy = this.mapObj.latlngToXY(this.position);
 					this.dragcross.style.left = (this.x - this.dragcross.dx) + "px";
@@ -458,8 +487,22 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 					this.dragcross.style.position = "absolute";
 					this.dragcross.dx = 8;
 					this.dragcross.dy = 8;
-					var el = document.createElement('img');
-					el.setAttribute('src', dragcross_image);				// data-URI
+					if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+					&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+						var el = document.createElement('div');
+						el.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + dragcross_image + "')";
+						el.style.width = "100%";
+						el.style.height = "100%";
+					}
+					else{
+						var el = document.createElement('img');
+						el.style.backgroundColor="transparent";
+						el.style.padding="0px";
+						el.style.margin="0px";
+						el.setAttribute('src', dragcross_image);				// data-URI
+					}
+					this.dragcross.style.width = "16px";
+					this.dragcross.style.height = "16px";
 					this.dragcross.appendChild(el);
 					//var xy = this.mapObj.latlngToXY(this.position);
 					this.dragcross.style.left = (this.x - this.dragcross.dx) + "px";
@@ -659,7 +702,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 	
 	
 	/**
-	 * making the marker moveable by function
+	 * Make the marker moveable by function.
 	*/ 
 	this.makeMoveable=function(){
 		// attach handlers to shape area
@@ -738,8 +781,12 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 	
 	
 	/**
-	 * attaching Eventhandlers to the marker
+	 * Attaching Eventhandlers to the marker.
 	 * e.g. for showing infobox on a click on the marker
+	 * @param t
+	 * @param f
+	 * @param fc
+	 * @param c
 	*/  
 	this.attachEvent = function( t, f, fc, c) {
 		
@@ -786,7 +833,8 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 	
 	
 	/**
-	 * initialize the marker on the map
+	 * Initialize the marker on the map. Automatically called when adding the marker to the map.
+	 * @param {khtml.maplib.map} owner
 	*/ 
 	this.init = function (owner) {
         this.owner=owner;
@@ -854,7 +902,7 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 
 
 	/**
-	 * render marker, shadow, dragcross
+	 * Render marker, shadow and dragcross. Automatically called by map.
 	*/  
     this.render = function () {
         if(!this.marker)return;
@@ -971,6 +1019,9 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 			// object is a URL
 			if (typeof(MarkerOptions.icon.url) == "string") {
 				var el = document.createElement('img');
+				el.style.backgroundColor="transparent";
+				el.style.padding="0px";
+				el.style.margin="0px";
 				el.setAttribute('src', MarkerOptions.icon.url);
 				if (MarkerOptions.icon.origin) {
 					if (MarkerOptions.icon.origin.x)	el.style.left = MarkerOptions.icon.origin.x;
@@ -1083,6 +1134,9 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 					// image-URL
 					else if(typeof(MarkerOptions.shadow.url) == "string") {
 						var el = document.createElement('img');
+						el.style.backgroundColor="transparent";
+						el.style.padding="0px";
+						el.style.margin="0px";
 						el.setAttribute('src', MarkerOptions.shadow.url);
 						el.style.position = 'absolute';
 						if (MarkerOptions.shadow.origin.x)
@@ -1108,20 +1162,46 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 			shadowdiv.style.position = "absolute";
 			this.shadow = shadowdiv;
 			
-			var el = document.createElement('img');
-			el.setAttribute('src', standardmarker_shadow);						// data-URI
+			if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+			&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+				var el = document.createElement('div');
+				el.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',src='" + standardmarker_shadow + "')";
+				el.style.width = "100%";
+				el.style.height = "100%";
+			}
+			else{
+				var el = document.createElement('img');
+				el.style.backgroundColor="transparent";
+						el.style.padding="0px";
+						el.style.margin="0px";
+				el.setAttribute('src', standardmarker_shadow);						// data-URI
+			}
 			el.style.position = 'absolute';
 			el.style.left = '0px';
 			el.style.top = '0px';
 			khtml.maplib.base.helpers.imageNotSelectable(el);
 			
+			shadowdiv.style.width = "42px";
+			shadowdiv.style.height = "36px";
 			shadowdiv.appendChild(el);
 			this.shadow.dx = 2;
 			this.shadow.dy = 36;
 			
 			// standardmarker image	
-			var el = document.createElement('img');
-			el.setAttribute('src', standardmarker_image);					// data-URI
+			if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support transparent PNGs
+			&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
+				var el = document.createElement('div');
+				el.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',src='" + standardmarker_image + "')";
+				el.style.width = "100%";
+				el.style.height = "100%";
+			}
+			else{
+				var el = document.createElement('img');
+				el.style.backgroundColor="transparent";
+						el.style.padding="0px";
+						el.style.margin="0px";
+				el.setAttribute('src', standardmarker_image);					// data-URI
+			}
 			el.style.border = 0;
 			el.style.margin = 0;
 			el.style.padding = 0;
@@ -1134,6 +1214,8 @@ khtml.maplib.overlay.Marker = function(MarkerOptions) {
 				if (MarkerOptions.title)
 					el.setAttribute('title', MarkerOptions.title);
 			}
+			div.style.width = "20px";
+			div.style.height = "36px";
 			div.appendChild(el);
 			
 			// standardmarker shape
@@ -1197,12 +1279,12 @@ khtml.maplib.overlay.Marker.number = 0;
 
 if ((navigator.userAgent.indexOf("MSIE") != -1)	// IE 6-7 do not support data-URI
 	&& (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 7)){
-	if (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 6){
+	/*if (parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) <= 6){
 		dragcross_image = khtml.maplib.standardimagepath + './dragcross_red.png';		// special images with reduced colors for transparency in IE6
 		standardmarker_image = khtml.maplib.standardimagepath + './standardmarker_red.png';
 		standardmarker_shadow = khtml.maplib.standardimagepath + './standardmarkershadow_red.png';
 	}
-	else
+	else*/
 	{
 		dragcross_image = khtml.maplib.standardimagepath + './dragcross_nor.png';		// normal images
 		standardmarker_image = khtml.maplib.standardimagepath + './standardmarker_nor.png';

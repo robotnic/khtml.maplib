@@ -1,0 +1,33 @@
+<html>
+<head>
+<style type="text/css">
+#map{
+width:500px;
+height:400px;
+}
+</style>
+<script type="text/javascript" src="http://maplib.khtml.org/khtml.maplib/khtml_all.js"> </script>
+<script type="text/javascript" src="../../js/geometry/FeatureCollection.js"> </script>
+<script type="text/javascript" src="../../js/geometry/Feature.js"> </script>
+<script type="text/javascript">
+
+function init(){
+	var map=khtml.maplib.Map(document.getElementById("map"));
+	var center=khtml.maplib.LatLng(48.2,16.3);  //lat, lng like in google maps
+	map.centerAndZoom(center,12);
+	var m={type:"Point",
+		coordinates:[16.32,48.19],
+			draggable:true
+	};
+
+	map.featureCollection.appendChild(m);
+	map.featureCollection.appendChild({type:"Point",coordinates:[16.325,48.192]});
+	map.featureCollection.appendChild({type:"Point",coordinates:[16.321,48.195]});
+}
+
+</script>
+</head>
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>

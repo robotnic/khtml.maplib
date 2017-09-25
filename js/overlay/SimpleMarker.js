@@ -38,12 +38,12 @@
  * @class
 */
 khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
-	this.nodeType="Marker";
-	this.nodeName="Marker";
+	this.nodeType="SimpleMarker";
+	this.nodeName="SimpleMarker";
 	this.geometry=new Object();
 	this.geometry.coordinates=point;
 	this.geometry.type="Point";
-	this.type="Marker";
+	this.type="SimpleMarker";
 	var div = document.createElement("div");
 	div.appendChild(el);
 	div.style.position = "absolute";
@@ -55,18 +55,21 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 			}else{		
 				div.style.top = options.dy;
 			}
-		} else {
+		} 
+		if (options.dx) {
 			if(typeof(options.dx)=="number"){
 				div.style.left = options.dx+"px";
 			}else{		
 				div.style.left = options.dx;
 			}
 		}
+		/*
 		if (options.dx) {
 			div.style.left = options.dx;
 		} else {
 			div.style.left = "0px";
 		}
+		*/
 	} else {
 		div.style.top = "0px";
 		div.style.left = "0px";
@@ -81,6 +84,7 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 
 	this.init = function(owner) {
 		this.style=this.marker.style;
+		this.owner=owner;
 		this.marker.owner=this;
 		if(owner instanceof khtml.maplib.base.Map){
                         this.mapObj=owner;
@@ -101,7 +105,7 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 			return;
 		if (isNaN(this.point.lng()))
 			return;
-		var xy = this.mapObj.latlngToXY(this.geometry.coordinates);
+		var xy = this.mapObj.latlngToXY(this.point);
 		if (xy["x"] < 0 || xy["y"] < 0) { // <---- flag  ; workaround for overflow:hidden bug
 			this.marker.style.display = "none";
 		} else {
@@ -120,17 +124,27 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 		}
 		return this.point;
 	}
+	this.hide=function(){
+		this.marker.style.display="none";
+	}
 
 	this.clear = function() {
 		if (this.marker) {
 			if (this.marker.parentNode) {
-				try {
-					this.owner.overlayDiv.removeChild(this.marker);
-				} catch (e) {
-				}
+				this.marker.parentNode.removeChild(this.marker);
 			}
 		}
 	}
+	/**
+         * Destroy the marker. Will not be rendered any more.
+        */
+        this.destroy=function(){
+		this.clear();
+		//console.log(this.point);
+             //   this.mapObj.removeOverlay(this);
+        }
+
+
 	/*
 	 this.moveTo = function (point) {
 	 this.point = point;
@@ -143,7 +157,7 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 	this.moveable = function(enabled) {
 		this.enabled=enabled;
 		if(this.enabled){
-			this.downevent=khtml.maplib.base.helpers.eventAttach(this.marker, "mousedown", this.down, this, false);
+			this.downevent=khtml.maplib.base.helpers.eventAttach(this.marker, "mousedown", this.down, this, true);
 			this.moveevent=khtml.maplib.base.helpers.eventAttach(window, "mousemove", this.move, this, true);
 			this.upevent=khtml.maplib.base.helpers.eventAttach(window, "mouseup", this.up, this, true);
 		}else{
@@ -166,8 +180,10 @@ khtml.maplib.overlay.SimpleMarker = function(point, el, options) {
 			var y = this.mapObj.pageY(evt) + this.dy;
 			//this.marker.style.left=x+"px";
 			//this.marker.style.top=y+"px";
-			this.point.lat(this.mapObj.XYTolatlng(x, y).lat());
-			this.point.lng(this.mapObj.XYTolatlng(x, y).lng());
+			//var p=this.mapObj.XYTolatlng(x, y);
+			var p=this.mapObj.mouseToLatLng(evt);
+			this.point.lat(p.lat());
+			this.point.lng(p.lng());
 			this.render();
 			evt.stopPropagation();
 		}

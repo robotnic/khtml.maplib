@@ -36,6 +36,7 @@ this.parse=function(css){
 			ueberhang="";
 		}
 	}
+	console.log(parsedLines);
 
 	//parse
 	for(var i=0;i<parsedLines.length;i++){
@@ -45,6 +46,7 @@ this.parse=function(css){
 			continue;
 		}
 		var rules=trim(parts[1].split(/}/)[0]);
+		console.log(rules);
 		var selector=(parts[0]);
 		var newselector=splitSelectors(selector);
 		var newrules=doRules(rules);

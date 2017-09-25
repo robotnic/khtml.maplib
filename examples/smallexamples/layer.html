@@ -1,0 +1,109 @@
+<html>
+<head>
+<style type="text/css">
+body{
+margin:0px;
+font-family:Arial,Verdana;
+font-size:12px;
+margin:0;
+}
+#map{
+width:280px;
+height:183px;
+}
+#buttons{
+position:absolute;
+left:300px;
+top:20px;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+</head>
+<body>
+
+<h1>Bitmap overlays</h1>
+<div id="map">
+
+</div>
+<div id="buttons">
+<h4>Base Map</h4>
+<input type="radio" name="basemap" onmousedown="basemap('mapnic')"/>mapnic<br/>
+<input type="radio" name="basemap" onmousedown="basemap('osma')"/>osma<br/>
+<input type="radio" name="basemap" onmousedown="basemap('bikemap')"/>bikemap<br/>
+<h4>Overlays</h4>
+<input type="checkbox" onmousedown="tileoverlay('hillshade')"/>hillshade<br/>
+<input type="checkbox" onmousedown="tileoverlay('seamap')"/>seamap<br/>
+</div>
+<script type="text/javascript">
+map=khtml.maplib.Map(document.getElementById("map"));
+map.centerAndZoom(new khtml.maplib.LatLng(48.34958071625065,-4.555079),12);
+
+var tileOverlays=new Array();
+function tileoverlay(name){
+	if(tileOverlays[name]){
+		map.removeTilesOverlay(tileOverlays[name]);
+		tileOverlays[name]=null;
+	}else{
+		tileOverlays[name]=map.addTilesOverlay(overlays[name]);
+	}
+}
+function basemap(name){
+	map.tiles(overlays[name]);
+}
+
+
+var overlays={
+   mapnic:{
+                  maxzoom:18,
+                  minzoom:1,
+                  src:function(x,y,z){
+		     return "http://c.tile.openstreetmap.org/"+z+"/"+x+"/"+y+".png";
+                     return "http://a.tah.openstreetmap.org/Tiles/tile/"+z+"/"+x+"/"+y+".png";
+                  },
+                  copyright:"osm"
+   },
+
+   osma:{
+                  maxzoom:16,
+                  minzoom:1,
+                  src:function(x,y,z){
+                     return "http://a.tah.openstreetmap.org/Tiles/tile/"+z+"/"+x+"/"+y+".png";
+                  },
+                  copyright:"osm"
+   },
+   hiking:{
+        type:"overlay", 
+                  maxzoom:18,
+                  minzoom:1,
+                  src:function(x,y,z){
+                    return "http://osm.lonvia.de/hiking/"+z+"/"+x+"/"+y+".png";
+                  },
+                  copyright:"osm"
+    },
+        //hillshade
+    hillshade:{
+        type:"overlay",
+          maxzoom:18,
+          minzoom:4,
+          src:function(x,y,z){
+                 //return "http://blabla.openseamap.org/seamark/"+z+"/"+x+"/"+y+".png";
+                    return "http://toolserver.org/~cmarqu/hill/"+z+"/"+x+"/"+y+".png";
+          },
+          copyright:"shade"
+    },
+    seamap:{
+                  maxzoom:18,
+                  minzoom:11,
+                  src:function(x,y,z){
+                             return "http://tiles.openseamap.org/seamark/"+z+"/"+x+"/"+y+".png";
+                  },
+                  copyright:"openseamap"
+        }
+}
+
+
+
+
+</script>
+</body>
+</html>
