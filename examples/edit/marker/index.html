@@ -1,0 +1,107 @@
+<html>
+<head>
+<style type="text/css">
+.dragableMarker{
+border:2px solid white;
+}
+.dragableMarker:hover{
+border:2px solid red;
+}
+</style>
+<script type="text/javascript" src="http://maplib.khtml.org/maplib/v0.98.5/khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/base/Helpers.js"> </script>
+<script type="text/javascript" > 
+var map=null;
+var dragObject=null;
+function init(){
+	map=khtml.maplib.Map(document.getElementById("map"));
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+
+	dragObject=new makeDragable("dragableMarker",map);
+}
+
+function makeDragable(className,map){
+	this.map=map;
+	this.dragingMarker=null;
+	this.draging=false;
+
+		this.init=function(){
+		this.els=document.getElementsByClassName(className);
+		for(var i=0;i<this.els.length;i++){
+			khtml.maplib.base.helpers.eventAttach(this.els.item(i), "mousedown", this.down, this, false);
+			khtml.maplib.base.helpers.eventAttach(document, "mousemove", this.move, this, false);
+			khtml.maplib.base.helpers.eventAttach(document, "mouseup", this.up, this, false);
+		}
+	}
+	var that=this;
+
+	this.down=function(evt){
+		evt.preventDefault();
+		this.dragingMarker=evt.target;
+		this.map.mapParent.style.cursor="crosshair";	
+	}
+	this.move=function(evt){
+		evt.preventDefault();
+		if(this.dragingMarker!=null){
+			if(this.draging==false){
+				this.dragingMarker=this.dragingMarker.cloneNode(true);
+				document.body.appendChild(this.dragingMarker);	
+				this.dragingMarker.style.position="absolute";
+				this.dragingMarker.style.border="0px solid white";
+				this.draging=true;
+			}
+			this.dragingMarker.style.left=evt.clientX - 10+"px";
+			this.dragingMarker.style.top=evt.clientY -32+"px";
+		}
+	}
+	this.up=function(evt){
+		this.draging=false;
+		if(this.dragingMarker){
+			var url=this.dragingMarker.getAttribute("src");
+			var marker = new khtml.maplib.overlay.Marker({
+				position: map.mouseToLatLng(evt),
+				map: this.map,
+				title:"static marker",
+			        draggable: true,
+				icon:{
+					url:url,
+					size: {width: 26, height: 32},
+					origin: {x: 0, y: 0},
+					anchor: {
+						x: "-10px",
+						y: "-32px"
+					}
+				}
+			});
+			
+			this.dragingMarker.parentNode.removeChild(this.dragingMarker);
+			this.dragingMarker=null;
+			return marker;
+		}
+	}
+
+	this.init();
+}
+
+function drop(evt){
+	console.log(evt);
+	alert(999);
+}
+
+</script>
+</head>
+<body onload="init()"  ondrop="event.stopPropagation(); event.preventDefault(); drop(event);"
+     ondragenter="document.getElementById('output').textContent = ''; event.stopPropagation(); event.preventDefault();"  
+
+     ondragover="event.stopPropagation(); event.preventDefault();" 
+>
+<div id="map" style="width:400px;height:300px" ondrop="event.stopPropagation(); event.preventDefault(); drop(event);"> </div>
+Drag the markers onto the map:
+<img src="http://maps.gstatic.com/intl/de_de/mapfiles/ms/micons/red-pushpin.png" class="dragableMarker" >
+<img src="http://maps.gstatic.com/intl/de_de/mapfiles/ms/micons/blue-pushpin.png" class="dragableMarker" >
+<!--
+<img src="http://maps.gstatic.com/intl/de_de/mapfiles/ms/micons/blue-pushpin.png" onmousedown="onNewMarkerMouseDown()" onmouseover="onMarkerMouseOver()" onmouseout="onMarkerMouseOut()" >
+-->
+<div id="output">dd </div>
+</body>
+</html>

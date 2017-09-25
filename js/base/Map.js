@@ -55,7 +55,7 @@ khtml.maplib.base.Map = function(map) {
 	*/
 	this.addOverlay = function(obj) {
 		if(null == obj || obj instanceof Array) {
-			khtml.maplib.base.Log.warn('Map.addOverlay(): Illegal argument (was "null" or "Array")');
+			console.log('Map.addOverlay(): Illegal argument (was "null" or "Array")');
 			return false;
 		}
 		this.overlays.push(obj);
@@ -109,7 +109,7 @@ khtml.maplib.base.Map = function(map) {
 	 * Calls {render()} on all objects in "this.overlays".
 	*/
 	this.renderOverlays = function() {
-		//this.overlayDiv.style.display = "";
+		this.overlayDiv.style.display = "";
 		for (obj in this.overlays) {
 			this.overlays[obj].render();
 		}
@@ -118,11 +118,11 @@ khtml.maplib.base.Map = function(map) {
 	 * Calls {clear()} on all objects in "this.overlays".
 	*/
 	this._hideOverlays = function() {
+		this.overlayDiv.style.display="none";
 		for (obj in this.overlays) {
-			try {
-				this.overlays[obj].clear(that);
-			} catch (e) {
-			}
+			if(this.overlays[obj].hide) {
+				this.overlays[obj].hide(that);
+			} 
 		}
 	}
 	/**
@@ -152,7 +152,7 @@ khtml.maplib.base.Map = function(map) {
 		for ( var i = 0; i < this.overlays.length; i++) {
 			var overlay = this.overlays[i];
 			if (ov == overlay) {
-				ov.clear();
+				ov.clear();  //
 				this.overlays.splice(i, 1);
 				break;
 			}
@@ -255,6 +255,7 @@ khtml.maplib.base.Map = function(map) {
 	//  Bugs: if map is not fullscreen it will not work as it should. (see pageX, pageY)
 	this.oldMoveX = 0;
 	this.oldMoveY = 0;
+	this.moving=false;
 
 	this._start = function(evt) {
 		//khtml.maplib.base.Log.debug('this.start');
@@ -264,6 +265,8 @@ khtml.maplib.base.Map = function(map) {
 		} else {
 			evt.returnValue = false; // The IE way
 		}
+		this.moving=this.center();
+		this.downEvent=evt;
 		this.moveAnimationBlocked = true;
 		if (evt.touches.length == 1) {
 			this.startMoveX = this.moveX - this.pageX(evt.touches[0]) / this.faktor
@@ -317,6 +320,7 @@ khtml.maplib.base.Map = function(map) {
 		}
 
 		//	this.mousedownTime=null;
+		this.moveEvent=evt;
 		if (evt.touches.length == 1) {
 			if (this.moveok) {
 				this.lastMoveX = this.moveX;
@@ -415,8 +419,8 @@ khtml.maplib.base.Map = function(map) {
 					this.animateMove(speedX, speedY);
 						*/
 
-		var now = new Date(evt.timeStamp);
-		var timeDelta = now - this.lastMoveTime;
+					var now = new Date(evt.timeStamp);
+					var timeDelta = now - this.lastMoveTime;
                                         //speed in pixel per second
                                         var speedX = (this.lastMoveX - this.moveX) / timeDelta *4;
                                         var speedY = (this.lastMoveY - this.moveY) / timeDelta *4;
@@ -432,12 +436,7 @@ khtml.maplib.base.Map = function(map) {
                                                 speedY = -maxSpeed;
 
                                         var faktor=Math.pow(2,this.zoom());
-                                        if (Math.abs(speedX) > this.wheelSpeedConfig["animateMinSpeed"]/faktor
-                                                        || Math.abs(speedY) > this.wheelSpeedConfig["animateMinSpeed"]/faktor) {
-                                                this._animateMove(speedX, speedY,faktor);
-                                        } else {
-                                                //this.renderOverlays();
-                                        }
+					this._animateMove(speedX, speedY,faktor);
                                 }
 			}
 		}
@@ -446,7 +445,7 @@ khtml.maplib.base.Map = function(map) {
 		// sonst springt die Karte beim Auslassen eines Fingers
 		if (evt.touches.length == 1) {
 			this.startMoveX = this.moveX - evt.touches[0].pageX / this.faktor / this.sc;
-            this.startMoveY = this.moveY - evt.touches[0].pageY / this.faktor / this.sc;
+			this.startMoveY = this.moveY - evt.touches[0].pageY / this.faktor / this.sc;
 		}
 	}
 
@@ -458,7 +457,7 @@ khtml.maplib.base.Map = function(map) {
 	this.pageX = function(evt) {
 		try {
 			if (evt.pageX === undefined) {
-				var px = evt.clientX + document.body.scrollLeft;
+				var px = evt.clientX+ document.body.scrollLeft + document.documentElement.scrollLeft;
 			} else {
 				var px = evt.pageX;
 			}
@@ -471,7 +470,7 @@ khtml.maplib.base.Map = function(map) {
 	this.pageY = function(evt) {
 		try {
 			if (evt.pageY === undefined) {
-				var py = evt.clientY + document.body.scrollTop;
+				var py = evt.clientY+ document.body.scrollTop + document.documentElement.scrollTop;
 			} else {
 				var py = evt.pageY;
 			}
@@ -525,13 +524,13 @@ khtml.maplib.base.Map = function(map) {
 		} else {
 			window.event.returnValue = false; // The IE way
 		}
-
+		this.downEvent=evt;
 		this.lastMouseX = this.pageX(evt);
 		this.lastMouseY = this.pageY(evt);
 		this.moveAnimationBlocked = true;
 		if (this.mousedownTime2 != null) {
 			var now = (new Date()).getTime();
-			if (now - this.mousedownTime2 < this.doubleclickTime2) {
+			if (now - this.mousedownTime2 < this._doubleclickTime2) {
 				this._doubleclick(evt);
 				return;
 			}
@@ -557,6 +556,7 @@ khtml.maplib.base.Map = function(map) {
 			// ewi: cross-cursor
 			khtml.maplib.base.helpers.setCursor(this.mapParent, "crosshair");
 		} else {
+			this.moving=this.center();
 			this.startMoveX = this.moveX - (this.pageX(evt)) / this.faktor
 					/ this.sc;
 			this.startMoveY = this.moveY - (this.pageY(evt)) / this.faktor
@@ -574,6 +574,7 @@ khtml.maplib.base.Map = function(map) {
 		} else {
 			window.event.returnValue = false; // The IE way
 		}
+		this.moveEvent=evt;
 		//this.mousedownTime2=0; //if it's moved it's not a doubleclick
 		this.lastMouseX = this.pageX(evt);
 		this.lastMouseY = this.pageY(evt);
@@ -613,11 +614,13 @@ khtml.maplib.base.Map = function(map) {
 		return false;
 	}
 	this._mouseup = function(evt) {
+		/*
 		if (evt.preventDefault) {
 			evt.preventDefault(); // The W3C DOM way
 		} else {
 			evt.returnValue = false; // The IE way
 		}
+		*/
 		// ewi: hand-cursor
 		khtml.maplib.base.helpers.setCursor(this.mapParent, "grab");
 		this.lastMouseX = this.pageX(evt);
@@ -661,12 +664,7 @@ khtml.maplib.base.Map = function(map) {
 						speedY = -maxSpeed;
 
 					var faktor=Math.pow(2,this.zoom());
-					if (Math.abs(speedX) > this.wheelSpeedConfig["animateMinSpeed"]/faktor
-							|| Math.abs(speedY) > this.wheelSpeedConfig["animateMinSpeed"]/faktor) {
-						this._animateMove(speedX, speedY,faktor);
-					} else {
-						//this.renderOverlays();
-					}
+					this._animateMove(speedX, speedY,faktor);
 				}
 			}
 		} else {
@@ -764,7 +762,12 @@ khtml.maplib.base.Map = function(map) {
 
 		//var w=document.getElementById("map").getElementsByTagName("img").item(0).offsetWidth;
 		//console.log(delta,delta2);
-		var zoom = this.oldZoom + timedelta2 / 3000 * this.speed * direction;
+		if(evt.shiftKey){
+			var shiftSlowdown=0.1;
+		}else{
+			var shiftSlowdown=1;
+		}
+		var zoom = this.oldZoom + timedelta2 / 3000 * this.speed * direction*shiftSlowdown;
 		if (zoom > this.position.maxZoom)
 			zoom = this.position.maxZoom;
 		if (zoom < this.position.minZoom)
@@ -1008,10 +1011,14 @@ khtml.maplib.base.Map = function(map) {
 	 * Map continues moving after mouse up
 	*/
 	this._animateMove = function(speedX, speedY,faktor) {
+    if(this.internetExplorer)return;
 		clearTimeout(this.animateMoveTimeout);
 		//console.log("speed",speedX*faktor,speedY*faktor);
-		if (Math.abs(speedX) < this.wheelSpeedConfig["animateMinSpeed"]/faktor
-                                                        && Math.abs(speedY) < this.wheelSpeedConfig["animateMinSpeed"]/faktor)return;
+		if (Math.abs(speedX) < this.wheelSpeedConfig["animateMinSpeed"]/faktor && Math.abs(speedY) < this.wheelSpeedConfig["animateMinSpeed"]/faktor){
+			this.moving=false;
+			this.setCenter2(this.position.center, this.position.zoom);
+			return;
+		}
 		var framesPerSecond=50;
 		
 		/*
@@ -1324,7 +1331,7 @@ khtml.maplib.base.Map = function(map) {
 	}
 
 	this._getCenter = function() {
-		if (this.moveX != 0 || this.moveY != 0) {
+		if ((this.moveX && this.moveX != 0)|| (this.moveY && this.moveY != 0)){
 			var center = new khtml.maplib.LatLng(this.movedLat, this.movedLng);
 		} else {
 			if (!this.position.center) {
@@ -1499,7 +1506,7 @@ khtml.maplib.base.Map = function(map) {
 		if(lat >90) lat =lat -180;
 		if(lat <-90) lat =lat +180;
 		var intZoom = this._getIntZoom();
-		tileTest = getTileNumber(lat, lng, intZoom);
+		var tileTest = getTileNumber(lat, lng, intZoom);
 		var worldCenter = this._getCenter();
 
 		var tileCenter = getTileNumber(worldCenter.lat(), worldCenter.lng(),
@@ -1573,6 +1580,7 @@ khtml.maplib.base.Map = function(map) {
 	/**
 	 * read the size of the DIV that will contain the map
 	 * this method is buggy - no good
+	 * replaced by _calculateMapSize
 	 *
 	 * @deprecated
 	*/
@@ -1627,7 +1635,7 @@ khtml.maplib.base.Map = function(map) {
 
 	/*Start with properties*/
 	this.layerDrawLastFrame = null;
-	this.doTheOverlayes = true;
+	this.doTheOverlays = true;
 	this.finalDraw = false;
 	this.layerOldZoom = 0;
 	this.moveDelayedX = 0;
@@ -1655,21 +1663,29 @@ khtml.maplib.base.Map = function(map) {
 		if (!zoom) {
 			var zoom = this._getZoom();
 		}
-		//if (!this.css3d) {
+                if (this.wheelSpeedConfig["digizoom"]) {
+                        var intZoom = Math.floor(zoom);
+                } else {
+                        var intZoom = Math.round(zoom);
+                }
+
 		if (this.layerDrawLastFrame) {
-			//khtml.maplib.base.Log.debug('this.layer: clearTimeout(this.layerDrawLastFrame)');
 			window.clearTimeout(this.layerDrawLastFrame);
-			this.layerDrawLastFrame = null;
 		}
-		if (this.layerTimer.isTimeRunning() || this.finalDraw == false) {
+		if (this.layerTimer.isTimeRunning() || this.finalDraw == false ) {
 		//if (this.blocked || this.finalDraw == false) {
 			//the last frames must be drawn to have good result
 			var that = this;
 			var tempFunction = function() {
-				that.finalDraw = true;
+				if(intZoom == that.visibleZoom){
+					that.finalDraw = true;
+				}
 				that.layer(map, lat, lng, moveX, moveY, zoom);
 			};
 			//khtml.maplib.base.Log.debug('this.layer: setTimeout(tempFunction) => that.layer(..), final draw');
+			this.visibleZoom=parseInt(this.visibleZoom);	
+			//if(!that.finalDraw || intZoom !=this.visibleZoom){
+			this.visibleZoom=parseInt(this.visibleZoom);	
 			if(!that.finalDraw){
 			this.layerDrawLastFrame = window.setTimeout(tempFunction, 100);
 			}
@@ -1745,7 +1761,7 @@ khtml.maplib.base.Map = function(map) {
 		//Calculate the next displayed layer
 		this.loadingZoomLevel = intZoom;
 		if (this.visibleZoom < intZoom) {
-			if (Math.abs(this.visibleZoom - intZoom) < 4) {
+			if (Math.abs(this.visibleZoom - intZoom) < 4) {  //value should be 4 but its hanging :-(
 				this.loadingZoomLevel = parseInt(this.visibleZoom) + 1;
 			}
 
@@ -1831,7 +1847,7 @@ khtml.maplib.base.Map = function(map) {
 		}
 
 		//console.log("normalize",this.oldZoom,this.zoom(),this.moveX,this.moveY);
-		if (this.doTheOverlayes || this.finalDraw
+		if (this.doTheOverlays || this.finalDraw
 				|| this.layerOldZoom == this.zoom()) {
 			var startTime = new Date();
 			this.lastDX = this.moveX;
@@ -1840,9 +1856,10 @@ khtml.maplib.base.Map = function(map) {
 			this.layerOldZoom = this.zoom();
 			var duration = (new Date() - startTime);
 			if (duration > 10 && !this.finalDraw) {  //canvas does css on finaldraw
-				this.doTheOverlayes = false;
+				this.doTheOverlays = false;
+				//this._hideOverlays();
 			} else {
-				this.doTheOverlayes = true;
+				this.doTheOverlays = true;
 			}
 		} else {
 			this._hideOverlays();
@@ -2027,6 +2044,9 @@ khtml.maplib.base.Map = function(map) {
 					var img = document.createElement("img");
 					img.style.visibility = "hidden";
 					img.style.position = "absolute";
+					img.style.padding = "0px";
+					img.style.margin = "0px";
+					img.style.borderWidth = "0px";
 					img.style.left = i * this.tileW + "px";
 					//console.log(i,i*this.tileW);
 					img.style.top = j * this.tileH + "px";
@@ -2181,6 +2201,9 @@ khtml.maplib.base.Map = function(map) {
 
 		//set the visibleZoom to visible
 		layerDiv.style.visibility = "";
+		//ewi : problem with not showing layers in IE6
+		layerDiv.style.opacity = 1;
+		layerDiv.style.filter = "";
 
 		//not needed images are removed now. Lets check if all needed images are loaded already
 		var notLoaded = 0;
@@ -2395,6 +2418,30 @@ khtml.maplib.base.Map = function(map) {
 		//this method is very slow in 2010 browsers
 		var el = this.mapParent;
 
+		var size1= el.getBoundingClientRect();
+    if(size1.height){
+      var height=size1.height;
+    }else{
+      var height=size1.bottom - size1.top;
+    }
+    if(size1.width){
+      var width=size1.width;
+    }else{
+      var width=size1.right - size1.left;
+    }
+	//scrollTop seems to be useless;
+		var size = {
+			top : size1.top - document.body.scrollTop,
+			left : size1.left - document.body.scrollLeft,
+			width : width,
+			height : height,
+			deltaTop : size1.top - document.body.scrollTop,
+			deltaLeft : size1.left - document.body.scrollLeft,
+			deltaBottom : size1.bottom,
+			deltaRight : size1.right
+		};
+		return size;
+
 		if (el.currentStyle) {
 			var style = el.currentStyle;
 		} else if (window.getComputedStyle) {
@@ -2433,8 +2480,16 @@ khtml.maplib.base.Map = function(map) {
 		var _x = borderLeft + paddingLeft;
 		var doDelta = true;
 		while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-			_x += el.offsetLeft - el.scrollLeft;
-			_y += el.offsetTop - el.scrollTop;
+			_x += el.offsetLeft; // - el.scrollLeft;
+			_y += el.offsetTop; // - el.scrollTop;
+			console.log("xy",_x,_y);
+			var div=document.createElement("div");
+			div.style.top=_y+"px";
+			div.style.left=_x+"px";
+			div.style.position="absolute";
+			div.style.backgroundColor="green";
+			div.textContent="hier";
+			el.parentNode.appendChild(div);
 			if (el.currentStyle) {
 				var style = el.currentStyle;
 			} else if (window.getComputedStyle) {
@@ -2457,12 +2512,13 @@ khtml.maplib.base.Map = function(map) {
 					*/
 				}
 				if (doDelta) {
-					_dl += el.offsetLeft + el.scrollLeft;
-					_dt += el.offsetTop + el.scrollTop;
+					_dl += el.offsetLeft;// + el.scrollLeft;
+					_dt += el.offsetTop;// + el.scrollTop;
 				}
 				//console.log(borderLeft,borderTop);
 				_dl += borderLeft / 2; //no idea why
 				_dt += borderTop / 2;
+				console.log("dl dt",_dl,_dt,el.tagName);
 
 			}
 
@@ -2470,6 +2526,16 @@ khtml.maplib.base.Map = function(map) {
 			//el = el.parentNode;
 			el = el.offsetParent;
 		}
+
+		console.log("xy",_x,_y);
+			var div=document.createElement("div");
+			div.style.top=_dt+"px";
+			div.style.left=_dl+"px";
+			div.style.position="absolute";
+			div.style.backgroundColor="yellow";
+			div.textContent="da";
+			document.body.appendChild(div);
+
 		var size = {
 			top : _y,
 			left : _x,
@@ -2480,6 +2546,7 @@ khtml.maplib.base.Map = function(map) {
 			deltaBottom : _db,
 			deltaRight : _dr
 		};
+		console.log(size.top);
 		return size;
 	}
 	/**
@@ -2520,16 +2587,17 @@ khtml.maplib.base.Map = function(map) {
 		    }
 		 */
 
-		this.clone.style.top = relativetop + "px";
-		this.clone.style.left = relativeleft + "px";
-		this.clone.style.width = this.size.width + "px";
-		this.clone.style.height = this.size.height + "px";
+		this.clone.style.top = "0px"; //relativetop + "px";
+		this.clone.style.left = "0px"; //relativeleft + "px";
+		this.clone.style.width = "100%"; //this.size.width + "px";
+		this.clone.style.height = "100%"; //this.size.height + "px";
 
-		this.clone.style.position = "absolute";
+		this.clone.style.position = "relative";
 		this.clone.style.overflow = "hidden";
+//		this.clone.style.border="4px solid green";
 
-		this.map.style.left = this.size.width / 2 + "px";
-		this.map.style.top = this.size.height / 2 + "px";
+		this.map.style.left = "50%"; //this.size.width / 2 + "px";
+		this.map.style.top = "50%"; //this.size.height / 2 + "px";
 		//this.mapParent.appendChild(this.clone);
 		var center = this._getCenter();
 		if (center) {
@@ -2597,7 +2665,7 @@ khtml.maplib.base.Map = function(map) {
 	this._copyright=function(){
 		if(this.copyrightdiv==null){
 			this.copyrightdiv=document.createElement("div");
-			this.mapParent.appendChild(this.copyrightdiv);
+			this.overlayDiv.appendChild(this.copyrightdiv);
 		}
 		while(this.copyrightdiv.firstChild){this.copyrightdiv.removeChild(this.copyrightdiv.firstChild)}
 		var logo=document.createElement("img");
@@ -2605,11 +2673,14 @@ khtml.maplib.base.Map = function(map) {
 		a.setAttribute("href","http://maplib.khtml.org");
 		a.setAttribute("target","_blank");
 		logo.setAttribute("src","http://maplib.khtml.org/favicon.png");
-		logo.style.zIndex=10;
+		//logo.style.zIndex=10;
 		logo.style.border="0px solid black";
 		logo.style.position="absolute";
-		var top=this.size.height+this.size.deltaTop -24;
-		var left=this.size.deltaLeft +0;
+		logo.style.backgroundColor="transparent";
+		logo.style.margin="0px";
+		logo.style.padding="0px";
+		var top=this.size.height -26;
+		var left=3;
 		logo.style.top=top+"px";
 		logo.style.left=left+"px";
 		logo.style.width="24px";
@@ -2725,34 +2796,31 @@ khtml.maplib.base.Map = function(map) {
 
 	//this._setMapPosition();
 	this.map = document.createElement("div"); //this is the div that holds the layers, but no marker and svg overlayes
-	this.map.style.position = "absolute";
+	this.map.style.position = "relative";
 	this.clone.appendChild(this.map);
 	//this.getSize();
 
-	this._setMapPosition();
 
 	//div for markers
 	this.overlayDiv = document.createElement("div");
-	//this.overlayDiv.style.width = "100%";
-	//this.overlayDiv.style.height = "100%";
 	this.overlayDiv.style.position = "absolute";
-	//this.overlayDiv.style.overflow = "hidden";
-	//this.overlayDiv.style.border = "1px solid black";
 	this.clone.appendChild(this.overlayDiv);
+
+	this._setMapPosition();
 
 	//create base layer
 	this.overlays = new Array();
 
-	//base vector layer
-	if(khtml.maplib.overlay.FeatureCollection){
+	//base vector GeoJson layer
+	if(khtml.maplib.overlay.GeoJson){
 		/**
 		Spezial overlay for geoJson
 		*/
-		this.backend="svg";
-		this.featureCollection=new khtml.maplib.overlay.FeatureCollection();
-		this.featureCollection.realLayer=true;
-		this.featureCollection.map=this;
-		this.addOverlay(this.featureCollection);
+	
+		var geojson=new khtml.maplib.overlay.GeoJson();
+		this.addOverlay(geojson);
+		this.featureCollection=geojson.featureCollection;
+		//this.featureCollection.map=this;
 	}
 
 
@@ -2795,10 +2863,10 @@ khtml.maplib.base.Map = function(map) {
 
 	//touchscreen
 	this.mousedownTime = null;
-	this.doubleclickTime = 400;
+	this._doubleclickTime = 400;
 	//mouse
 	this.mousedownTime2 = null;
-	this.doubleclickTime2 = 500;
+	this._doubleclickTime2 = 500;
 
 	this.zoomOutTime = 1000;
 	this.zoomOutSpeed = 0.01;
@@ -2848,7 +2916,7 @@ khtml.maplib.base.Map = function(map) {
 	khtml.maplib.base.helpers.eventAttach(map, "touchend", this._end, this, false);
 	khtml.maplib.base.helpers.eventAttach(w, "mousemove", this._mousemove, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "mousedown", this._mousedown, this, false);
-	khtml.maplib.base.helpers.eventAttach(w, "mouseup", this._mouseup, this, false);
+	khtml.maplib.base.helpers.eventAttach(w, "mouseup", this._mouseup, this, true);
 	khtml.maplib.base.helpers.eventAttach(w, "orientationchange", this.reSize, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "DOMMouseScroll", this._mousewheel, this, false);
 	khtml.maplib.base.helpers.eventAttach(map, "dblclick", this._doubleclick, this, false);

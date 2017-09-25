@@ -201,11 +201,15 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Feature.html">khtml.maplib.geometry.Feature</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html">khtml.maplib.geometry.FeatureCollection</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.LatLng.html">khtml.maplib.geometry.LatLng</a></li>
 	
@@ -217,9 +221,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -227,19 +241,21 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.parser.Gpx.html">khtml.maplib.parser.Gpx</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.parser.Kml.html">khtml.maplib.parser.Kml</a></li>
-	
 	<li><a href="../symbols/khtml.maplib.parser.MapCSS.html">khtml.maplib.parser.MapCSS</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.parser.Osm.html">khtml.maplib.parser.Osm</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.html">khtml.maplib.util</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -258,7 +274,7 @@ ul.inheritsList
 				
 				
 			
-				
+				The center of everything
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/js_base_Map.js.html">Map.js</a>.
@@ -282,7 +298,9 @@ ul.inheritsList
 							<div class="fixedFont">
 								<b><a href="../symbols/khtml.maplib.base.Map.html#constructor">khtml.maplib.base.Map</a></b>(map)
 							</div>
-							<div class="description">THIS IS THE MAIN CLASS</div>
+							<div class="description">THIS IS THE MAIN CLASS
+
+This Class draws to map to a html div.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -304,52 +322,12 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
-							<td class="attributes">&nbsp;</td>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.base.Map.html#autoZoomInTimeout">autoZoomInTimeout</a></b>
+								<b><a href="../symbols/khtml.maplib.base.Map.html#-geojson">geojson</a></b>
 								</div>
-								<div class="description">zoom  animation</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.base.Map.html#layerDrawLastFrame">layerDrawLastFrame</a></b>
-								</div>
-								<div class="description">LAYERMANAGER (which layer is visible).</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.base.Map.html#oldMoveX">oldMoveX</a></b>
-								</div>
-								<div class="description">Touchscreen and Mouse EVENTS</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.base.Map.html#recordArray">recordArray</a></b>
-								</div>
-								<div class="description">for undo,redo</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.base.Map.html#setCenterNoLogCount">setCenterNoLogCount</a></b>
-								</div>
-								<div class="description">same as setCenter but no history item is generated (for undo, redo)</div>
+								<div class="description">Spezial overlay for geoJson</div>
 							</td>
 						</tr>
 					
@@ -397,7 +375,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_autoZoomIn">_autoZoomIn</a></b>(x, y, z)
 								</div>
-								<div class="description"></div>
+								<div class="description">zoom  animation</div>
 							</td>
 						</tr>
 					
@@ -405,6 +383,24 @@ ul.inheritsList
 							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_calculateMapSize">_calculateMapSize</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_copyright">_copyright</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_discretZoom">_discretZoom</a></b>(direction, x, y)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -422,7 +418,34 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_doubleclick">_doubleclick</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_end">_end</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_executeCallbackFunctions">_executeCallbackFunctions</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_fadeOut">_fadeOut</a></b>(div, alpha)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -449,10 +472,128 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_getIntZoom">_getIntZoom</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_getSize">_getSize</a></b>()
 								</div>
 								<div class="description">read the size of the DIV that will contain the map
-this method is buggy - no good</div>
+this method is buggy - no good
+replaced by _calculateMapSize</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_getZoom">_getZoom</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_hideLayer">_hideLayer</a></b>(zoomlevel)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_hideOverlays">_hideOverlays</a></b>()
+								</div>
+								<div class="description">Calls {clear()} on all objects in "this.overlays".</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_imgError">_imgError</a></b>(evt)
+								</div>
+								<div class="description">Image load error  (there maybe is an IE bug)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_imgLoaded">_imgLoaded</a></b>(evt)
+								</div>
+								<div class="description">method is called if an image has finished loading  (onload event)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_imgLoadInfo">_imgLoadInfo</a></b>(total, missing)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_mousedown">_mousedown</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_mousemove">_mousemove</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_mouseup">_mouseup</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_mouseupIE">_mouseupIE</a></b>(evt)
+								</div>
+								<div class="description">mouseup function for mobile IE to pan the map by clicking</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_mousewheel">_mousewheel</a></b>(evt)
+								</div>
+								<div class="description">Mouse wheel</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_move">_move</a></b>(evt)
+								</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
@@ -466,9 +607,45 @@ this method is buggy - no good</div>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&nbsp;</td>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#addCallbackFunction">addCallbackFunction</a></b>(func)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_setCenter3">_setCenter3</a></b>(center, zoom)
+								</div>
+								<div class="description">for internal use (speed related)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_setMapPosition">_setMapPosition</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_shiftkeydown">_shiftkeydown</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_shiftkeyup">_shiftkeyup</a></b>(evt)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;private&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#_start">_start</a></b>(evt)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -477,9 +654,18 @@ this method is buggy - no good</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#addCallbackFunction">addCallbackFunction</a></b>(func)
+								</div>
+								<div class="description">A callback function fires if zoom, latitute or longitude is changed.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#addOverlay">addOverlay</a></b>(obj)
 								</div>
-								<div class="description">Overlays handling</div>
+								<div class="description">Adds an Overlay and activates it.</div>
 							</td>
 						</tr>
 					
@@ -497,7 +683,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#addTilesOverlay">addTilesOverlay</a></b>(t)
 								</div>
-								<div class="description"></div>
+								<div class="description">add an overlay like opensemap, hillshade, hikemap</div>
 							</td>
 						</tr>
 					
@@ -506,7 +692,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#animatedGoto">animatedGoto</a></b>(newCenter, newZoom, time)
 								</div>
-								<div class="description"></div>
+								<div class="description">Time based animation.</div>
 							</td>
 						</tr>
 					
@@ -515,7 +701,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#bounds">bounds</a></b>(arg1)
 								</div>
-								<div class="description">read bounds.</div>
+								<div class="description">Set or Read the bounds.</div>
 							</td>
 						</tr>
 					
@@ -524,7 +710,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#center">center</a></b>(center)
 								</div>
-								<div class="description">read the map center (no zoom value)</div>
+								<div class="description">Set center of map a coordinate.</div>
 							</td>
 						</tr>
 					
@@ -551,43 +737,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#clearMap">clearMap</a></b>()
 								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#copyright">copyright</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#digizoom">digizoom</a></b>(mousex, mousey, delta)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#discretZoom">discretZoom</a></b>(direction, x, y)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#doubleclick">doubleclick</a></b>(evt)
-								</div>
-								<div class="description"></div>
+								<div class="description">Panik method if rendering makes problems.</div>
 							</td>
 						</tr>
 					
@@ -596,36 +746,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#draw">draw</a></b>(map, lat, lng, moveX, moveY, intZoom, zoom, tileFunc)
 								</div>
-								<div class="description">DRAW (speed optimized!!!)
-	
-	 This function draws one layer.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#end">end</a></b>(evt)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#fadeOut">fadeOut</a></b>(div, alpha)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#getIntZoom">getIntZoom</a></b>()
-								</div>
-								<div class="description"></div>
+								<div class="description">This Method is used internally.</div>
 							</td>
 						</tr>
 					
@@ -635,96 +756,6 @@ this method is buggy - no good</div>
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#-getTileNumber">getTileNumber</a></b>(lat, lon, zoom)
 								</div>
 								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#getZoom">getZoom</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#hideLayer">hideLayer</a></b>(zoomlevel)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#hideOverlays">hideOverlays</a></b>()
-								</div>
-								<div class="description">Calls {clear()} on all objects in "this.overlays".</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#imgError">imgError</a></b>(evt)
-								</div>
-								<div class="description">Image load error  (there maybe is an IE bug)</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#imgLoaded">imgLoaded</a></b>(evt)
-								</div>
-								<div class="description">method is called if an image has finished loading  (onload event)</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#imgLoadInfo">imgLoadInfo</a></b>(total, missing)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#interval">interval</a></b>(arg1)
-								</div>
-								<div class="description">Setter/getter</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#isTimeRunning">isTimeRunning</a></b>()
-								</div>
-								<div class="description">Is countdown running?</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#keypress">keypress</a></b>(evt)
-								</div>
-								<div class="description">Event: Key is pressed.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#keyup">keyup</a></b>(evt)
-								</div>
-								<div class="description">Does nothing</div>
 							</td>
 						</tr>
 					
@@ -751,34 +782,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#layer">layer</a></b>(map, lat, lng, moveX, moveY, zoom)
 								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#-mkbin">mkbin</a></b>(z, x, y)
-								</div>
-								<div class="description">this function was for BING tiles.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#mousedown">mousedown</a></b>(evt)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#mousemove">mousemove</a></b>(evt)
-								</div>
-								<div class="description"></div>
+								<div class="description">LAYERMANAGER (which layer is visible).</div>
 							</td>
 						</tr>
 					
@@ -794,81 +798,9 @@ this method is buggy - no good</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#mouseup">mouseup</a></b>(evt)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#mouseupIE">mouseupIE</a></b>(evt)
-								</div>
-								<div class="description">mouseup function for mobile IE to pan the map by clicking</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#mousewheel">mousewheel</a></b>(evt)
-								</div>
-								<div class="description">Mouse wheel</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#move">move</a></b>(evt)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#moveit">moveit</a></b>(x, y)
-								</div>
-								<div class="description">Call moveitexec 20 times to prepare the timeout's.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#moveitexec">moveitexec</a></b>(dx, dy, i)
-								</div>
-								<div class="description">Execute "moveXY" delayed by a timeout.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#moveXY">moveXY</a></b>(x, y)
 								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#myTimer">myTimer</a></b>(interval)
-								</div>
-								<div class="description">Timer: stop the time.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#ovImgLoaded">ovImgLoaded</a></b>(evt)
-								</div>
-								<div class="description"></div>
+								<div class="description">Use this method to move the map in pixel.</div>
 							</td>
 						</tr>
 					
@@ -905,7 +837,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#record">record</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">for undo,redo</div>
 							</td>
 						</tr>
 					
@@ -914,7 +846,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#redraw">redraw</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">If the size of the html div is changed, the redraw method has to be called.</div>
 							</td>
 						</tr>
 					
@@ -941,6 +873,15 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#removeTilesOverlay">removeTilesOverlay</a></b>(ov)
 								</div>
+								<div class="description">Remove tile overlays.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#render">render</a></b>()
+								</div>
 								<div class="description"></div>
 							</td>
 						</tr>
@@ -950,7 +891,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#renderOverlay">renderOverlay</a></b>(obj)
 								</div>
-								<div class="description">Calls {render()} on supplied object.</div>
+								<div class="description">Used Internal.</div>
 							</td>
 						</tr>
 					
@@ -960,15 +901,6 @@ this method is buggy - no good</div>
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#renderOverlays">renderOverlays</a></b>()
 								</div>
 								<div class="description">Calls {render()} on all objects in "this.overlays".</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#reset">reset</a></b>()
-								</div>
-								<div class="description">reset/stop countdown.</div>
 							</td>
 						</tr>
 					
@@ -993,36 +925,9 @@ this method is buggy - no good</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#setCenter3">setCenter3</a></b>(center, zoom)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#setCenterNoLog">setCenterNoLog</a></b>(center, zoom)
 								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#setMapPosition">setMapPosition</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#start">start</a></b>()
-								</div>
-								<div class="description">Start countdown.</div>
+								<div class="description">same as setCenter but no history item is generated (for undo, redo)</div>
 							</td>
 						</tr>
 					
@@ -1031,7 +936,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#stopRenderOverlays">stopRenderOverlays</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">Internaly used to stop rendering of slow overlays to prevent browser stall.</div>
 							</td>
 						</tr>
 					
@@ -1049,7 +954,21 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#tiles">tiles</a></b>(tileSource)
 								</div>
-								<div class="description"></div>
+								<div class="description">Defining the base layer 
+
+	The tile source must be in this format:
+	<pre>
+	map.tiles({
+	  maxzoom:18,
+	  minzoom:1,
+	  src:function(x,y,z){
+	     return "http://andy.sandbox.cloudmade.com/tiles/cycle/"+z+"/"+x+"/"+y+".png";
+	  },
+	  copyright:"osm"
+	}
+	</pre>
+
+	see also: <a href="http://wiki.openstreetmap.org/wiki/Simple_map_API#Changing_tile_source">Simple map API</a></div>
 							</td>
 						</tr>
 					
@@ -1076,7 +995,7 @@ this method is buggy - no good</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.base.Map.html#zoom">zoom</a></b>(zoom)
 								</div>
-								<div class="description"></div>
+								<div class="description">Set or get the zoomlevel.</div>
 							</td>
 						</tr>
 					
@@ -1102,6 +1021,10 @@ this method is buggy - no good</div>
 				
 				<div class="description">
 					THIS IS THE MAIN CLASS
+
+This Class draws to map to a html div.
+It handles mouse, mousewheel and touchscreen user actions.
+A simple overlay API is provided by this class
 					
 				</div>
 				
@@ -1126,6 +1049,17 @@ this method is buggy - no good</div>
 					
 					
 					
+						<dl class="detailList">
+						<dt class="heading">See:</dt>
+						
+							<dd>Example: <a href="../../../examples/base/start.html">Base</a>,</dd>
+						
+							<dd>BitmapOverlays: <a href="../../../examples/base/tileOverlay/start.html">seamap</a>,</dd>
+						
+							<dd>Combined overlays: <a href="../../../examples/base/tileOverlay/combined.html">osma,hikemap,hillshade</a></dd>
+						
+						</dl>
+					
 
 			</div>
 			
@@ -1136,108 +1070,15 @@ this method is buggy - no good</div>
 					Field Detail
 				</div>
 				
-					<a name="autoZoomInTimeout"> </a>
-					<div class="fixedFont">
+					<a name="-geojson"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
 					
 					
-					<b>autoZoomInTimeout</b>
-					
-					</div>
-					<div class="description">
-						zoom  animation
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="layerDrawLastFrame"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>layerDrawLastFrame</b>
+					<b>geojson</b>
 					
 					</div>
 					<div class="description">
-						LAYERMANAGER (which layer is visible).
-	
-	 Description: This method desides witch zoom layer is visible at the moment. 
-	 It has the same parameters as the "draw" method, but no "intZoom".
-
-	 This Layers are  NOT tile or vector overlays
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="oldMoveX"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>oldMoveX</b>
-					
-					</div>
-					<div class="description">
-						Touchscreen and Mouse EVENTS
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="recordArray"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>recordArray</b>
-					
-					</div>
-					<div class="description">
-						for undo,redo
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="setCenterNoLogCount"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>setCenterNoLogCount</b>
-					
-					</div>
-					<div class="description">
-						same as setCenter but no history item is generated (for undo, redo)
+						Spezial overlay for geoJson
 						
 						
 					</div>
@@ -1405,7 +1246,7 @@ this method is buggy - no good</div>
 					
 					</div>
 					<div class="description">
-						
+						zoom  animation
 						
 						
 					</div>
@@ -1460,6 +1301,79 @@ this method is buggy - no good</div>
 					
 					
 					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_copyright"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_copyright</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_discretZoom"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_discretZoom</b>(direction, x, y)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>direction</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
 						
 						
 						
@@ -1530,6 +1444,78 @@ this method is buggy - no good</div>
 
 					<hr />
 				
+					<a name="_doubleclick"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_doubleclick</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_end"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_end</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="_executeCallbackFunctions"> </a>
 					<div class="fixedFont">&lt;private&gt; 
 					
@@ -1545,6 +1531,48 @@ this method is buggy - no good</div>
 					
 					
 					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_fadeOut"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_fadeOut</b>(div, alpha)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>div</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>alpha</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
 						
 						
 						
@@ -1605,6 +1633,31 @@ this method is buggy - no good</div>
 
 					<hr />
 				
+					<a name="_getIntZoom"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_getIntZoom</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="_getSize"> </a>
 					<div class="fixedFont">&lt;private&gt; 
 					
@@ -1615,12 +1668,429 @@ this method is buggy - no good</div>
 					<div class="description">
 						read the size of the DIV that will contain the map
 this method is buggy - no good
+replaced by _calculateMapSize
 						
 						
 					</div>
 					
 					
 					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_getZoom"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_getZoom</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_hideLayer"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_hideLayer</b>(zoomlevel)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>zoomlevel</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_hideOverlays"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_hideOverlays</b>()
+					
+					</div>
+					<div class="description">
+						Calls {clear()} on all objects in "this.overlays".
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_imgError"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_imgError</b>(evt)
+					
+					</div>
+					<div class="description">
+						Image load error  (there maybe is an IE bug)
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_imgLoaded"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_imgLoaded</b>(evt)
+					
+					</div>
+					<div class="description">
+						method is called if an image has finished loading  (onload event)
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_imgLoadInfo"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_imgLoadInfo</b>(total, missing)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>total</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>missing</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mousedown"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mousedown</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mousemove"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mousemove</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mouseup"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mouseup</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mouseupIE"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mouseupIE</b>(evt)
+					
+					</div>
+					<div class="description">
+						mouseup function for mobile IE to pan the map by clicking
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_mousewheel"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_mousewheel</b>(evt)
+					
+					</div>
+					<div class="description">
+						Mouse wheel
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_move"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_move</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
 						
 						
 						
@@ -1667,6 +2137,181 @@ this method is buggy - no good
 
 					<hr />
 				
+					<a name="_setCenter3"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_setCenter3</b>(center, zoom)
+					
+					</div>
+					<div class="description">
+						for internal use (speed related)
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>center</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>zoom</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_setMapPosition"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_setMapPosition</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_shiftkeydown"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_shiftkeydown</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_shiftkeyup"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_shiftkeyup</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="_start"> </a>
+					<div class="fixedFont">&lt;private&gt; 
+					
+					
+					<b>_start</b>(evt)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>evt</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="addCallbackFunction"> </a>
 					<div class="fixedFont">
 					
@@ -1675,7 +2320,11 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						
+						A callback function fires if zoom, latitute or longitude is changed.
+	The callback funktion in defined in user space. You have to provide one.
+	The callback can also be a method.
+	The callback function will have set the "this" object whitch is
+	the map object.
 						
 						
 					</div>
@@ -1700,6 +2349,13 @@ this method is buggy - no good
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd>Example: <a href="../../../examples/base/callback/start.html">display coordinates</a></dd>
+							
+							</dl>
+						
 
 					<hr />
 				
@@ -1711,7 +2367,8 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						Overlays handling
+						Adds an Overlay and activates it. An Overlay was an init and a render method.
+For detailed description see: <a href="http://wiki.openstreetmap.org/wiki/Simple_map_API#Programming_Overlays">Simple map API</a>
 						
 						
 					</div>
@@ -1783,7 +2440,7 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						
+						add an overlay like opensemap, hillshade, hikemap
 						
 						
 					</div>
@@ -1808,6 +2465,15 @@ this method is buggy - no good
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../../../examples/base/tileOverlay/start.html">seamap</a>,</dd>
+							
+								<dd><a href="../../../examples/base/tileOverlay/combined.html">hikemap + hillshade</a></dd>
+							
+							</dl>
+						
 
 					<hr />
 				
@@ -1819,7 +2485,7 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						
+						Time based animation.
 						
 						
 					</div>
@@ -1856,6 +2522,13 @@ this method is buggy - no good
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd>Example: <a href="../../../examples/base/animate/index.html">Time based Animation</a></dd>
+							
+							</dl>
+						
 
 					<hr />
 				
@@ -1867,7 +2540,11 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						read bounds. The Coordinates at corners of the map div  sw, ne would be better (change it!)
+						Set or Read the bounds.
+this method will put the map view to the coordinates and zoomlevel
+where the given bounds are visible.
+If you call the method without parameter, the return value contains the corners of the visible map.
+See also "khtml.maplib.geometry.Bounds" Class
 						
 						
 					</div>
@@ -1903,7 +2580,7 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						read the map center (no zoom value)
+						Set center of map a coordinate. It is also possible to get the current map center if method is called without parameter.
 						
 						
 					</div>
@@ -2035,170 +2712,14 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="copyright"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>copyright</b>()
-					
-					</div>
-					<div class="description">
-						
+						Panik method if rendering makes problems.
+	Used internal.
 						
 						
 					</div>
 					
 					
 					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="digizoom"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>digizoom</b>(mousex, mousey, delta)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>mousex</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>mousey</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>delta</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="discretZoom"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>discretZoom</b>(direction, x, y)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>direction</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>x</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>y</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="doubleclick"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>doubleclick</b>(evt)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
 						
 						
 						
@@ -2217,7 +2738,8 @@ this method is buggy - no good
 					
 					</div>
 					<div class="description">
-						DRAW (speed optimized!!!)
+						This Method is used internally. You can use this method for benchmark tests.
+	 DRAW (speed optimized!!!)
 	
 	 This function draws one layer. It is highly opimized for iPhone. 
 	 Please DO NOT CHANGE things except you want to increase speed!
@@ -2227,8 +2749,12 @@ this method is buggy - no good
 	 The position of the images is fixed.
 	 The layer (not the images) is moved because of better performance
 	 Even zooming does not change position of the images, if 3D CSS is active (webkit).
+	 3D CSS provides a hardware accelerated zoom of divs.
 
 	 this method uses "this.layers" , "this.oldIntZoom", "this.width", "this.height";
+
+	 If you want to give better performance to a special rendering engine, be welcome to 
+	search milli seconds.
 						
 						
 					</div>
@@ -2298,109 +2824,6 @@ this method is buggy - no good
 
 					<hr />
 				
-					<a name="end"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>end</b>(evt)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="fadeOut"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>fadeOut</b>(div, alpha)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>div</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>alpha</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="getIntZoom"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>getIntZoom</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
 					<a name="-getTileNumber"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -2434,358 +2857,6 @@ this method is buggy - no good
 							
 								<dt>
 									<b>zoom</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="getZoom"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>getZoom</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="hideLayer"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>hideLayer</b>(zoomlevel)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>zoomlevel</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="hideOverlays"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>hideOverlays</b>()
-					
-					</div>
-					<div class="description">
-						Calls {clear()} on all objects in "this.overlays".
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="imgError"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>imgError</b>(evt)
-					
-					</div>
-					<div class="description">
-						Image load error  (there maybe is an IE bug)
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="imgLoaded"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>imgLoaded</b>(evt)
-					
-					</div>
-					<div class="description">
-						method is called if an image has finished loading  (onload event)
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="imgLoadInfo"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>imgLoadInfo</b>(total, missing)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>total</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>missing</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="interval"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>interval</b>(arg1)
-					
-					</div>
-					<div class="description">
-						Setter/getter
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>arg1</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="isTimeRunning"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>isTimeRunning</b>()
-					
-					</div>
-					<div class="description">
-						Is countdown running?
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="keypress"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>keypress</b>(evt)
-					
-					</div>
-					<div class="description">
-						Event: Key is pressed.
-Prefer 'keypress' over 'keydown' because 'keypress' allows to check which character was typed.
-Because 'a' != 'A'.
-We need this for the '-' and '+' signs (evt.which or evt.charCode).
-For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_ui_Keyboard.js.html">Keyboard.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">See:</dt>
-							
-								<dd>http://www.brain4.de/programmierecke/js/tastatur.php</dd>
-							
-								<dd>http://www.quirksmode.org/js/keys.html</dd>
-							
-							</dl>
-						
-
-					<hr />
-				
-					<a name="keyup"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>keyup</b>(evt)
-					
-					</div>
-					<div class="description">
-						Does nothing
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_ui_Keyboard.js.html">Keyboard.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
 									
 								</dt>
 								<dd></dd>
@@ -2881,7 +2952,15 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						LAYERMANAGER (which layer is visible).
+
+	 This is an internaly used method to switch the visiblity of tile sets. 
+	 If you are looking for Vector or Marker layers see "khtml.maplib.geometrey.Feature".
+	
+	 Description: This method desides witch zoom layer is visible at the moment. 
+	 It has the same parameters as the "draw" method, but no "intZoom".
+
+	 This Layers are  NOT tile or vector overlays
 						
 						
 					</div>
@@ -2939,126 +3018,6 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 
 					<hr />
 				
-					<a name="-mkbin"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>mkbin</b>(z, x, y)
-					
-					</div>
-					<div class="description">
-						this function was for BING tiles. It's not in use but I don't want to dump it.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>z</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>x</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>y</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="mousedown"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>mousedown</b>(evt)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="mousemove"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>mousemove</b>(evt)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
 					<a name="mouseToLatLng"> </a>
 					<div class="fixedFont">
 					
@@ -3092,245 +3051,12 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 						
 						
 						
-
-					<hr />
-				
-					<a name="mouseup"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>mouseup</b>(evt)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
 							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
+							<dt class="heading">See:</dt>
 							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
+								<dd>Example: <a href="../../../examples/base/callback/start.html">display coordinates</a></dd>
 							
 							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="mouseupIE"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>mouseupIE</b>(evt)
-					
-					</div>
-					<div class="description">
-						mouseup function for mobile IE to pan the map by clicking
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="mousewheel"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>mousewheel</b>(evt)
-					
-					</div>
-					<div class="description">
-						Mouse wheel
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="move"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>move</b>(evt)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="moveit"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>moveit</b>(x, y)
-					
-					</div>
-					<div class="description">
-						Call moveitexec 20 times to prepare the timeout's.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_ui_Keyboard.js.html">Keyboard.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>x</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>y</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="moveitexec"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>moveitexec</b>(dx, dy, i)
-					
-					</div>
-					<div class="description">
-						Execute "moveXY" delayed by a timeout.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_ui_Keyboard.js.html">Keyboard.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>dx</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>dy</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>i</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
 						
 
 					<hr />
@@ -3343,7 +3069,7 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						Use this method to move the map in pixel.
 						
 						
 					</div>
@@ -3374,77 +3100,12 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 						
 						
 						
-
-					<hr />
-				
-					<a name="myTimer"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>myTimer</b>(interval)
-					
-					</div>
-					<div class="description">
-						Timer: stop the time.
-						
-						
-					</div>
-					
-					
-					
-						
 							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
+							<dt class="heading">See:</dt>
 							
-								<dt>
-									<b>interval</b>
-									
-								</dt>
-								<dd></dd>
+								<dd>Example: <a href="../../../examples/base/movexy/index.html">move</a></dd>
 							
 							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="ovImgLoaded"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>ovImgLoaded</b>(evt)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>evt</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
 						
 
 					<hr />
@@ -3566,7 +3227,7 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						for undo,redo
 						
 						
 					</div>
@@ -3591,7 +3252,9 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						If the size of the html div is changed, the redraw method has to be called. 
+	For browser window size changes the map automaticaly calls the redraw.
+	Otherwise the redraw has to be called be the application.
 						
 						
 					</div>
@@ -3604,6 +3267,13 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd>Example:<a href="../../../examples/base/animate/zoom_resize.html">zoom + resize</a></dd>
+							
+							</dl>
 						
 
 					<hr />
@@ -3677,7 +3347,7 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						Remove tile overlays. Parameter is the returnvalue of addTileOverlay
 						
 						
 					</div>
@@ -3705,6 +3375,31 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 
 					<hr />
 				
+					<a name="render"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>render</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="renderOverlay"> </a>
 					<div class="fixedFont">
 					
@@ -3713,7 +3408,8 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						Calls {render()} on supplied object.
+						Used Internal.
+Calls {render()} on supplied object.
 						
 						
 					</div>
@@ -3750,31 +3446,6 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					</div>
 					<div class="description">
 						Calls {render()} on all objects in "this.overlays".
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="reset"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>reset</b>()
-					
-					</div>
-					<div class="description">
-						reset/stop countdown.
 						
 						
 					</div>
@@ -3858,48 +3529,6 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 
 					<hr />
 				
-					<a name="setCenter3"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>setCenter3</b>(center, zoom)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>center</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>zoom</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
 					<a name="setCenterNoLog"> </a>
 					<div class="fixedFont">
 					
@@ -3908,7 +3537,7 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						same as setCenter but no history item is generated (for undo, redo)
 						
 						
 					</div>
@@ -3932,56 +3561,6 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 								<dd></dd>
 							
 							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="setMapPosition"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>setMapPosition</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="start"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>start</b>()
-					
-					</div>
-					<div class="description">
-						Start countdown.
-						
-						
-					</div>
-					
-					
-					
 						
 						
 						
@@ -4000,7 +3579,8 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						Internaly used to stop rendering of slow overlays to prevent browser stall.
+	If an overlay needs more than 10ms it will not be rendered during animations.
 						
 						
 					</div>
@@ -4050,7 +3630,21 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						Defining the base layer 
+
+	The tile source must be in this format:
+	<pre>
+	map.tiles({
+	  maxzoom:18,
+	  minzoom:1,
+	  src:function(x,y,z){
+	     return "http://andy.sandbox.cloudmade.com/tiles/cycle/"+z+"/"+x+"/"+y+".png";
+	  },
+	  copyright:"osm"
+	}
+	</pre>
+
+	see also: <a href="http://wiki.openstreetmap.org/wiki/Simple_map_API#Changing_tile_source">Simple map API</a>
 						
 						
 					</div>
@@ -4171,7 +3765,8 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 					
 					</div>
 					<div class="description">
-						
+						Set or get the zoomlevel. Zoomlevel is a floating Point number. If Integer numbers are
+	used the bitmap layer will displayed more clear than on non integer zoomlevels.
 						
 						
 					</div>
@@ -4211,7 +3806,7 @@ For the arrow keys it does not matter - thus there is 'evt.keyCode' used.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Jul 20 2011 00:37:08 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Jan 27 2012 20:59:43 GMT+0100 (MEZ)
 		</div>
 	</body>
 </html>

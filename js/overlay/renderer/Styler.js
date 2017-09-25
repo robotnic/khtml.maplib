@@ -43,17 +43,16 @@ khtml.maplib.overlay.renderer.Styler=function(){
 
 	this.makeCanvasStyle=function(feature){
 		//var style=feature.style;
-		if(feature.canvasStyle && !feature.owner.map.finalDraw){
+		if(feature.canvasStyle && !feature.documentElement.map.finalDraw){
 			return feature.canvasStyle;
 		}
 		var feature2=feature;
 		var cssStyle=null;
 		var ancestors_or_self=new Array();
 		var style=feature.style;
-
-		while(feature2.owner){
+		while(!feature2.map){
 			ancestors_or_self.push(feature2);
-			feature2=feature2.owner;
+			feature2=feature2.parentNode;
 		}
 		for(var i=ancestors_or_self.length -1;i>=0;i--){
 			var f=ancestors_or_self[i];
@@ -146,7 +145,7 @@ this.cssToCanvas=function(style){
 		if(!style.strokeWidth)style.strokeWidth=1;
                 if (style.stroke) {
 			var alpha=style.opacity * style.strokeOpacity;
-			var name=style.stroke+"X"+alpha;
+			var name=style.stroke+"_"+alpha;
 			if(!this.rgba[name]){
 				this.rgba[name] = hex2rgba(style.stroke, alpha);
 			}else{
@@ -186,7 +185,7 @@ this.cssToCanvas=function(style){
                         } else {
                                 var rules = list.rules;
                         }
-
+			if(!rules)return styleObj;
                         // Loop through all rules in current style
                         for (r = 0; r < rules.length; r++) {
                                 var csstext = rules[r].style.cssText;

@@ -1,0 +1,42 @@
+<html>
+<head>
+<style type="text/css">
+body{
+margin:0px;
+font-family:Arial,Verdana;
+font-size:12px;
+margin:0;
+}
+#map{
+width:300px;
+height:183px;
+}
+</style>
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+</head>
+<body>
+
+<h1>Vectors</h1>
+<div id="map">
+
+</div>
+<script type="text/javascript">
+map=khtml.maplib.Map(document.getElementById("map"));
+map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.3),10);
+
+var l=map.featureCollection.appendChild({type:"LineString",coordinates:[[16.3,48.2],[16.32,48.23],[16.31,48.24]]});
+l.style.stroke="red";
+l.style.strokeWidth=6;
+l.style.fill="gray";
+l.style.opacity=0.8;
+
+var l2=map.featureCollection.appendChild({type:"Polygon",coordinates:[[16.35,48.2],[16.38,48.23],[16.35,48.24]]});
+l2.style.stroke="black";
+l2.style.strokeWidth=2;
+l2.style.fill="gray";
+l2.style.opacity=0.4;
+
+
+</script>
+</body>
+</html>

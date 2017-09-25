@@ -1,0 +1,108 @@
+<html>
+<head>
+<style type="text/css">
+
+#map{
+width:700px;
+height:400px;
+}
+
+
+
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../../khtml_all.js"> </script> 
+<script type="text/javascript" src="../../../js/overlay/GeoJson.js"> </script> 
+<script type="text/javascript" src="../../../js/geometry/Feature.js"> </script> 
+<script type="text/javascript" src="../../../js/geometry/FeatureCollection.js"> </script> 
+<script type="text/javascript" src="../../../js/overlay/renderer/Styler.js"> </script> 
+<script type="text/javascript">
+var map=null;
+var ov=null;
+var items=500;
+var time=10;
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+      map.wheelSpeedConfig["digizoom"]=false;
+
+
+	ov=new khtml.maplib.overlay.GeoJson();
+	ov.backend="svg";
+	map.addOverlay(ov);
+	for(var i=0;i<items;i++){
+		setTimeout("add()",i*time);
+	}
+	ov.featureCollection.style.stroke="black";
+	console.log(ov.featureCollection.style);
+
+	//remove again
+	setTimeout("deletef()",items*time +2000);
+}
+
+function deletef(){
+	var l=ov.featureCollection.features.length;
+	if(l >0){
+		if(l>10){anz=10}else{anz=l}
+		for(var i=0;i<anz;i++){
+		var rand=Math.floor(Math.random()*l)
+		ov.featureCollection.removeChild(ov.featureCollection.features[rand]);
+		}
+		setTimeout("deletef()",time);
+
+	}else{
+
+		for(var i=0;i<items;i++){
+			setTimeout("add()",i*time);
+		}
+		setTimeout("deletef()",items *time);
+	}
+}
+
+function add(){
+	var coords=new Array();
+	var lat=Math.random()*50;
+	var lng=Math.random()*50;
+	for(var i=0;i<10;i++){
+		lat+=3*(Math.random() -0.5);
+		lng+=3*(Math.random() -0.5);
+		var point=[lat,lng];
+		coords.push(point);
+	}
+	var f=new khtml.maplib.geometry.Feature({"type":"Polygon","coordinates":coords});
+	f.style.fill=randomColor();
+	f.style.opacity=Math.random();
+	if(ov.featureCollection.features.length==0){
+		ov.featureCollection.appendChild(f);
+	}else{
+		ov.featureCollection.insertBefore(f,ov.featureCollection.features[0]);
+	}
+}
+
+function randomColor(){
+	return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+
+}
+
+function addFeature(){
+	var geometry={type:"Feature",geometry:{type:"Polygon",coordinates:[[10,10],[12,12],[10,12]]}};
+	var geometry={type:"Polygon",coordinates:[[10,10],[12,12],[10,12]]};
+	var f=new khtml.maplib.geometry.Feature(geometry);
+	console.log(f);
+	f.style.fill="red";
+	ov.featureCollection.appendChild(f);
+	//f.style.fill="red";
+}
+
+</script>
+</head>
+<body onload="init()">
+<h1>Base Map</h1>
+Mouse move, mouse wheel, touchscreen
+<div id="map"> </div>
+<button onmousedown="addFeature()">add</button>
+</body>
+</html>

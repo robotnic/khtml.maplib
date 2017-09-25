@@ -1,0 +1,51 @@
+<html>
+<head>
+<style type="text/css">
+
+#map{
+position:absolute;
+top:90px;
+left:50px;
+width:700px;
+height:400px;
+}
+
+</style>
+<title>khtml base map</title>
+<script type="text/javascript" src="../../../khtml_all.js"> </script> 
+<script type="text/javascript" src="../../../js/ui/Keyboard.js"> </script>
+<script type="text/javascript" src="../../../js/ui/Zoombar.js"> </script>
+<script type="text/javascript" src="../../../js/base/Map.js"> </script>
+<script type="text/javascript">
+var map=null;
+function init(){
+	//initialize map
+	map=new khtml.maplib.Map(document.getElementById("map"));
+
+	//set map center and zoom
+	map.centerAndZoom(new khtml.maplib.LatLng(48.2,56.5),2);
+	var keyboard=new khtml.maplib.ui.KeyBoard();
+	map.addOverlay(keyboard);
+	var zoombar=new khtml.maplib.ui.Zoombar();
+	map.addOverlay(zoombar);
+	setInterval("debug()",5000);
+}
+
+function debug(){
+	document.getElementById("debug").textContent=map.intZoom+":"+map.visibleZoom;
+	if(map.intZoom==map.visibleZoom){
+			map.layers[map.intZoom]["layerDiv"].style.visibility = "";
+//			map.redraw();
+	}
+}
+
+
+</script>
+</head>
+<body onload="init()">
+<h1>Base Map</h1>
+cursor, page up/down, pos1, end, +, -
+<div id="map"  tabIndex="1"> </div>
+<div id="debug"> </div>
+</body>
+</html>

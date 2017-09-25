@@ -1,0 +1,671 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<meta http-equiv="content-type" content="application/xhtml+xml;charset=utf-8" /> 
+
+<style type="text/css">
+body{
+#overflow:hidden;
+font-family:sans-serif;
+}
+#map{
+position:absolute;
+top:40px;
+left:300px;
+right:300px;
+bottom:20px;
+overflow:hidden;
+}
+#jsondiv{
+position:absolute;
+top:40px;
+left:300px;
+right:260px;
+bottom:20px;
+overflow:auto;
+background-color:white;
+opacity:0.8;
+z-index:10;
+}
+#error{
+position:absolute;
+left:300px;
+bottom:3px;
+}
+#naviwindow{
+position:absolute;
+top:80px;
+left:20px;
+}
+#styleswindow{
+position:absolute;
+top:80px;
+right:20px;
+width:260px;
+}
+.window{
+overflow:auto;
+#border:1px solid #efefef;
+width:250px;
+padding:0px;
+background-color:#efefef;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+border-radius:5;
+box-shadow:1px 1px 16px lightgrey;
+overlow:hidden;
+}
+.window-header{
+background-color:lightblue;
+height:40px;
+border-top-right-radius:5;
+border-top-left-radius:5;
+padding:10;
+font-size:30px;
+}
+#navi{
+margin:2px;
+font-size:12px;
+}
+
+#navi:focus{
+border:1px solid gray;
+}
+#updown{
+position:absolute;
+top:2px;
+left:200px;
+}
+#updown img{
+height:20px;
+}
+#buttons{
+position:absolute;
+top:2px;
+left:500px;
+}
+.menuitem:hover{
+background-color:yellow;
+}
+#menuitemSelected{
+background-color:white;
+border-top-right-radius:5;
+border-top-left-radius:5;
+}
+.selectedDiv{
+border:1px solid white;
+border-radius:5;
+}
+.normalDiv{
+border:1px solid #efefef;
+border-radius:5;
+}
+.normalDiv:hover{
+border:1px solid #efefef;
+border-radius:5;
+}
+.textDiv{
+background-color:gray;
+color:white;
+border-top-left-radius:5;
+}
+#menuitemSelected:hover{
+background-color:gray;
+color:white;
+border-radius:0;
+}
+
+#styles{
+overflow:auto;
+#border:1px solid black;
+
+}
+#styles input{
+width:130px;
+}
+#benchmark_table{
+position:absolute;
+top:30px;
+right:0px;
+background-color:white;
+opacity:0.7;
+}
+input{
+border:1px solid lightgrey;
+}
+.line{
+stroke:green;
+stroke-width:4;
+fill:red;
+}
+.line2{
+stroke:black;
+stroke-width:4;
+fill:red;
+}
+.line3{
+stroke:purple;
+stroke-width:6;
+stroke-dasharray:8,12;
+}
+.line4{
+stroke:black;
+stroke-width:6;
+stroke-dasharray:8,2;
+fill:yellow;
+}
+.line5{
+stroke:gold;
+stroke-width:2;
+fill:yellow;
+}
+
+ppath{
+stroke:black;
+stroke-width:1;
+}
+ppath:hover{
+stroke:red;
+}
+
+path.editline{
+stroke:yellow;
+stroke-width:9;
+opacity:0.3
+}
+path.editline:hover{
+opacity:0.6;
+}
+
+
+</style>
+<script type="text/javascript" src="../../../khtml_all.js"> </script>
+<script type="text/javascript" src="../../../js/base/Helpers.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/GeoJson.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/Marker.js"> </script>
+<script type="text/javascript" src="../../../js/geometry/Feature.js"> </script>
+<script type="text/javascript" src="../../../js/geometry/FeatureCollection.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/GeoJson.js"> </script>
+<script type="text/javascript" src="../../../js/ui/Benchmark.js"> </script>
+<script type="text/javascript" src="../../../js/ui/VectorEditor.js"> </script>
+<script type="text/javascript" src="../../../js/overlay/renderer/Styler.js"> </script> 
+<script type="text/javascript" src="../../jscolor/jscolor.js"> </script> 
+
+
+<script type="text/javascript" src="json2.js"> </script>
+<script type="text/javascript">
+
+var map=null;
+var edit=null;
+var selectedFeature=null;
+
+function init(){
+	map=new khtml.maplib.Map(document.getElementById("map"));
+	map.centerAndZoom(khtml.maplib.LatLng(48.2,16.4),2);	
+
+	
+	properties=["stroke","fill","fillOpacity","strokeOpacity","strokeWidth","opacity","display","strokeDasharray","className"];
+	createForm(properties);
+	load();
+	setTimeout("startBenchmark()",2000);
+	stay();
+
+}
+
+function editor(){
+        edit=new VectorEditor(map.featureCollection);
+        map.addOverlay(edit);
+        setInterval("document.getElementById('mode').textContent=edit.mode+'; editlines:'+edit.editLines.length");
+
+}
+
+function stay(){
+	window.onunload=function(){
+		localStorage.khtml.maplib.map.center=[map.center().lat(),map.center().lat()];
+		localStorage.khtml.maplib.map.zoom=map.getZoom;
+
+
+
+	}
+}
+
+function startBenchmark(){
+
+	var table=document.getElementById("benchmark_tbody");
+	var benchmark=new khtml.maplib.ui.Benchmark(table);
+//	map.addOverlay(benchmark);
+}
+
+function load(){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","bunt2.json",true);
+	xmlhttp.onreadystatechange=function(){
+		if(xmlhttp.readyState==4){
+			var json=JSON.parse(xmlhttp.responseText);
+			loadjson(json);
+		}
+	}
+	xmlhttp.send(null);
+}
+ 
+function loadjson(json){
+  //      ov=new khtml.maplib.overlay.GeoJson();
+ //       map.addOverlay(ov);
+//	map.featureCollection=ov.featureCollection;
+	map.featureCollection.appendChild(json);
+       /* 
+	var navi=recurse(ov.featureCollection);
+	var naviDiv=document.getElementById("navi")
+	while(naviDiv.firstChild){naviDiv.removeChild(naviDiv.firstChild)};
+	naviDiv.appendChild(navi);
+	*/
+	renderNavi();
+
+}
+function renderNavi(){
+	map.render(true);
+	var navi=recurse(map.featureCollection);
+	var naviDiv=document.getElementById("navi")
+	while(naviDiv.firstChild){naviDiv.removeChild(naviDiv.firstChild)};
+	naviDiv.appendChild(navi);
+}
+
+
+function recurse(f,depth){
+	if(!depth)depth=0;
+
+        var div=document.createElement("div");
+
+        var textdiv=document.createElement("div");
+	if(f==selectedFeature){
+		div.className="selectedDiv";
+		textdiv.setAttribute("id","menuitemSelected");
+	}else{
+		div.className="normalDiv";
+	}
+        var clientdiv=document.createElement("div");
+	//clientdiv.style.border="1px solid green";
+        textdiv.style.paddingLeft=(depth*15)+"px";
+	textdiv.className="menuitem";
+        textdiv.style.cursor="pointer";
+	if(f.geometry){
+		var text=f.geometry.type;
+	}else{
+		var text=f.type;
+	}
+        textdiv.appendChild(document.createTextNode(text));
+	if(depth!=0){
+		div.appendChild(textdiv);
+	}
+        if(f.type=="FeatureCollection"){
+                var collapser=document.createElement("span");
+                var tn=document.createTextNode("▼");  //extra div machen
+                collapser.appendChild(tn);
+		textdiv.appendChild(collapser);
+        }
+
+	div.appendChild(clientdiv);
+	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseover",bboxShow,f,true);
+	khtml.maplib.base.helpers.eventAttach(textdiv,"mouseout",bboxHide,f,true);
+	khtml.maplib.base.helpers.eventAttach(textdiv,"mousedown",select,f,true);
+	if(collapser){
+		khtml.maplib.base.helpers.eventAttach(collapser,"mousedown",toggle,clientdiv,true);
+	}
+		//khtml.maplib.base.helpers.eventAttach(f.element,"mousedown",selectByPath,div,true);
+	if(!f.type || f.type!="FeatureCollection"){
+//		f.eventAttach("mousedown",selectByPath,div,true);
+		if(f.eventAttach){
+		f.eventAttach("mousedown",select,f,true);
+		f.eventAttach("mouseover",bboxShow,f,true);
+		f.eventAttach("mouseout",bboxHide,f,true);
+		}
+	}
+        if(f.features){
+                for(var i=0;i <f.features.length;i++){
+                        clientdiv.appendChild(recurse(f.features[i],depth+1));
+                }
+        }
+        return div;
+}
+var oldtarget=null;
+function selectByPath(evt){	
+	if(oldtarget)oldtarget.style.backgroundColor="white";
+	this.style.backgroundColor="#efefef";
+	this.scrollIntoView();
+	oldtarget=this;
+	fillStyleForm(evt.target.feature);
+}
+var collapsed=false;
+function toggle(el){
+	if(el.type=='mousedown'){
+		var textdiv=el.target;
+		var text=textdiv.textContent;
+		var last=text.substring(text.length -1,text.length);
+		if(last=="▼" || last=="►"){
+			var text=text.substring(0,text.length -1);
+			
+			el=this;
+			
+			if(el.collapsed){
+				textdiv.textContent=text+"▼";
+			}else{
+				textdiv.textContent=text+"►";
+			}
+		}else{
+			return;
+		}
+	}
+	var height=el.offsetHeight;
+	if(!el.origOffsetHeight){
+		el.origOffsetHeight=height;
+	}
+	if(el.collapsed){
+		height=height +10;
+	}else{
+		height=height -10;
+	}
+	el.style.overflow="hidden";
+	if(height >0 && height < el.origOffsetHeight){
+		var tempFunc=function(){
+			toggle(el);
+		}
+		setTimeout(tempFunc,10);
+	}else{
+		if(el.collapsed){	
+			el.collapsed=false;
+		}else{
+			el.collapsed=true;
+		}
+	}
+	if(height >=el.origOffsetHeight) height=el.origOffsetHeight-0;
+	if(height <0) height=0;
+	el.style.height=height+"px";
+	return;
+	if(this.style.display=="none"){
+		this.style.display="";
+	}else{
+		this.style.display="none";
+	}
+}
+var bboxUI=null;
+function bboxShow(evt){
+        if(!bboxUI){
+		bboxUI=new khtml.maplib.base.helpers.Boundingbox(map);
+        }
+        bboxUI.show(this.bbox);
+	return;
+}	
+
+function bboxHide(evt){
+	bboxUI.hide();
+}
+
+function select(evt){
+
+	if(evt.target){
+		var target=evt.target;
+	}else{
+		var target=evt.srcElement;
+	}
+	oldtarget=target;
+	selectByFeature(this);
+}
+
+function selectByFeature(contextNode){
+//	if(oldtarget)oldtarget.style.backgroundColor="white";
+	//contextNode.element.style.backgroundColor="#efefef";
+	if(!contextNode.style){
+		//return;
+	}
+	fillStyleForm(contextNode);
+	selectedFeature=contextNode;
+	renderNavi();
+	document.getElementById("navi").focus();
+        bboxUI.show(contextNode.bbox);
+	updateJSON(selectedFeature);
+}
+
+function stylePropName(p){
+	var pos=p.indexOf("-");
+	if(pos!=-1){
+		var prop1=p.substring(0,pos);
+		var prop2=p.substring(pos+2,p.length);
+		var upper=p[pos+1].toUpperCase();
+		p=prop1+upper+prop2;
+	}
+	return p;
+}
+
+function fillStyleForm(feature){
+	for(var p =0;p<properties.length;p++){
+		var prop=properties[p];
+		//prop=stylePropName(prop);
+		//this.style.fill="blue";
+		var style=feature.style[prop];
+		if(typeof(style) == "undefined"){
+			prop=stylePropName(prop);
+			var style=feature.style[prop];
+		}
+		if(inputs[prop]){
+			if(prop=="className"){
+				if(feature.className.baseVal !=undefined){
+					inputs[prop].value=feature.className.baseVal;
+				}else{
+					inputs[prop].value="";
+				}
+			}else{
+				if(typeof(style) != "undefined"){
+					if(inputs[prop].className=="color"){
+						if(style==""){
+							inputs[prop].value="";
+							inputs[prop].style.backgroundColor="white";
+						}else{
+							inputs[prop].picker.fromString(style);
+						}
+					}else{
+						inputs[prop].value=style;
+					}
+				}else{
+					inputs[prop].value="";
+					inputs[prop].style.backgroundColor="white";
+				}
+			}
+			if(eventlist[prop]){
+				khtml.maplib.base.helpers.eventRemove(eventlist[prop]);
+			}
+//			eventlist[prop]=khtml.maplib.base.helpers.eventAttach(inputs[prop],"keyup",changeStyle,feature,false);
+			eventlist[prop]=khtml.maplib.base.helpers.eventAttach(inputs[prop],"change",changeStyle,feature,false);
+		}
+
+	}
+}
+
+function changeStyle(evt){
+	if(evt.target){
+		var input=evt.target;
+	}else{
+		var input=evt.srcElement;
+	}
+	var prop=input.getAttribute("name");
+	if(prop=="className"){
+		this.className.baseVal=input.value;
+		if(input.value==""){
+			this.className.baseVal=null;
+		}
+	}else{
+		this.style[prop]=input.value;
+	}
+	//map.featureCollection.render();
+	map.render();
+	updateJSON(true);	
+}
+
+var eventlist=new Array();
+var inputs=new Array();
+function createForm(properties){
+	var tbody=document.getElementById("tbody");
+	while(tbody.firstChild){
+		tbody.removeChild(tbody.firstChild);
+	}
+	for(var i=0;i<properties.length;i++){
+		var property=properties[i];
+		var tr=document.createElement("tr");
+		var td=document.createElement("td");
+		td.appendChild(document.createTextNode(property));
+		tr.appendChild(td);
+
+		var td=document.createElement("td");
+		var input=document.createElement("input");
+		input.setAttribute("name",property);
+		if(input.getAttribute("name")=="fill" || input.getAttribute("name")=="stroke"){
+			input.setAttribute("class","color");
+			var myPicker = new jscolor.color(input, {required:false,})
+		}
+		input.picker=myPicker;
+		//myPicker.fromString('99FF33')  // now you can access API via 'myPicker' variable
+
+		inputs[property]=input;
+		td.appendChild(input);
+		tr.appendChild(td);
+		tbody.appendChild(tr);
+	}
+
+}
+
+function setBackend(){
+	var inputs=document.getElementById("backend").getElementsByTagName("input");
+	for(var i=0; i <inputs.length;i++){
+		if(inputs.item(i).checked){
+			if(inputs.item(i).value=="vml"){
+				//alert("Sorry VML implementation is very buggy");
+			}
+			map.featureCollection.documentElement.renderbackend(inputs.item(i).value);
+		}
+	}
+}
+function redraw(){
+	map.featureCollection.documentElement.draw();
+}
+
+function bottom(){
+	selectedFeature.parentNode.appendChild(selectedFeature);
+	renderNavi();
+}
+function top(){
+	selectedFeature.parentNode.insertBefore(selectedFeature,selectedFeature.parentNode.firstChild);
+	renderNavi();
+}
+
+function up(){
+	selectedFeature.parentNode.insertBefore(selectedFeature,selectedFeature.precedingSibling);
+	renderNavi();
+}
+function down(){
+	if(selectedFeature.followingSibling && selectedFeature.followingSibling.followingSibling){
+		selectedFeature.parentNode.insertBefore(selectedFeature,selectedFeature.followingSibling.followingSibling);
+	}else{
+		selectedFeature.parentNode.appendChild(selectedFeature);
+	}
+	renderNavi();
+}
+
+function sort(evt){
+	switch(evt.keyCode){
+		case 40:  //cursor down
+			selectByFeature(selectedFeature.following);
+			break;
+		case 38:  //cursor up
+			selectByFeature(selectedFeature.preceding);
+			break;
+		default:return;
+	}
+	evt.preventDefault();
+}
+
+function showJson(display){
+	var jsondiv=document.getElementById("jsondiv");
+	if(display || jsondiv.style.display=="none"){
+		jsondiv.style.display="";
+		updateJSON(selectedFeature);
+	}else{
+		jsondiv.style.display="none";
+	}
+}
+function updateJSON(selectedFeatrue){
+                var json=selectedFeature.toJSON();
+                jsonstring=JSON.stringify(json,replacer, 2);
+                jsonstring=jsonstring.replace(/\">>>>/g,"");
+                jsonstring=jsonstring.replace(/<<<<\"/g,"");
+                jsondiv.value=jsonstring;
+
+}
+function replacer(key,value){
+	if(key=="coordinates"){
+		return ">>>>"+JSON.stringify(value)+"<<<<" //on indent;
+	}else{
+		return value;
+	}
+}
+function jsonupdate(el){
+	var jsonstring=el.value;
+	var error="";
+	try{
+		selectedFeature=selectedFeature.parentNode.replaceChild(JSON.parse(jsonstring),selectedFeature);
+	}catch(e){
+		error=e.message;
+	}
+//		selectedFeature=selectedFeature.parentNode.replaceChild(JSON.parse(jsonstring),selectedFeature);
+	document.getElementById("error").textContent=error;
+	fillStyleForm(selectedFeature)
+}
+
+</script>
+</head>
+<body onload="init()" onkeydown="sort(event)">
+<div id="backend" onclick="setBackend()">
+<input type="radio" name="backend" value="svg"/>svg
+<input type="radio" name="backend" value="canvas"/>canvas
+<input type="radio" name="backend" value="vml"/>vml
+</div> 
+<div id="buttons">
+<button onmousedown="editor()">edit</button>
+<button onmousedown="showJson()">json</button>
+<button onmousedown="renderNavi()">render navi</button>
+<button onmousedown="redraw()">redraw</button>
+</div>
+<div id="mode">mode</div>
+<div id="naviwindow" class="window">
+<div class="window-header">Tree</div>
+<div id="navi" tabIndex="2000" >
+</div>
+</div>
+<div id="updown">
+<img src="images/bottom.png" onmousedown="bottom()"/>
+<img src="images/down.png" onmousedown="down()"/>
+<img src="images/up.png" onmousedown="up()"/>
+<img src="images/top.png" onmousedown="top()"/>
+</div>
+<div id="styleswindow" class="window">
+	<div class="window-header">Styles</div>
+	<div id="styles">
+	<table><tbody id="tbody">
+	</tbody>
+	</table>
+	</div>
+	</div>
+</div>
+<div id="map"> </div>
+<textarea id="jsondiv" style="display:none" onkeyup="jsonupdate(this)"> </textarea>
+<table id="benchmark_table"> 
+<thead>
+</thead>
+<tbody id="benchmark_tbody">
+
+</tbody>
+<div id="error" style="color:red"> </div>
+</table>
+</table>
+</body>
+</html>

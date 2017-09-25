@@ -201,11 +201,15 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.base.Map.html">khtml.maplib.base.Map</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.base.Map%23myTimer.html">khtml.maplib.base.Map#myTimer</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.geometry.html">khtml.maplib.geometry</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Bounds.html">khtml.maplib.geometry.Bounds</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.Feature.html">khtml.maplib.geometry.Feature</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.geometry.FeatureCollection.html">khtml.maplib.geometry.FeatureCollection</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.geometry.LatLng.html">khtml.maplib.geometry.LatLng</a></li>
 	
@@ -217,9 +221,19 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.overlay.GroundOverlay.html">khtml.maplib.overlay.GroundOverlay</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindow.html">khtml.maplib.overlay.InfoWindow</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.InfoWindowOptions.html">khtml.maplib.overlay.InfoWindowOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.Marker.html">khtml.maplib.overlay.Marker</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerImage.html">khtml.maplib.overlay.MarkerImage</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.MarkerOptions.html">khtml.maplib.overlay.MarkerOptions</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.overlay.renderer.html">khtml.maplib.overlay.renderer</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.overlay.SimpleMarker.html">khtml.maplib.overlay.SimpleMarker</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.overlay.WMS.html">khtml.maplib.overlay.WMS</a></li>
 	
@@ -227,19 +241,21 @@ ul.inheritsList
 	
 	<li><a href="../symbols/khtml.maplib.parser.Gpx.html">khtml.maplib.parser.Gpx</a></li>
 	
-	<li><a href="../symbols/khtml.maplib.parser.Kml.html">khtml.maplib.parser.Kml</a></li>
-	
 	<li><a href="../symbols/khtml.maplib.parser.MapCSS.html">khtml.maplib.parser.MapCSS</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.parser.Osm.html">khtml.maplib.parser.Osm</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.ui.html">khtml.maplib.ui</a></li>
 	
+	<li><a href="../symbols/khtml.maplib.ui.KeyBoard.html">khtml.maplib.ui.KeyBoard</a></li>
+	
 	<li><a href="../symbols/khtml.maplib.ui.Zoombar.html">khtml.maplib.ui.Zoombar</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.html">khtml.maplib.util</a></li>
 	
 	<li><a href="../symbols/khtml.maplib.util.Http.html">khtml.maplib.util.Http</a></li>
+	
+	<li><a href="../symbols/khtml.maplib.util.Urlparam.html">khtml.maplib.util.Urlparam</a></li>
 	
 </ul>
 <hr />
@@ -258,26 +274,7 @@ ul.inheritsList
 				
 				
 			
-				Feature
-
-Call like this:
-var geometry={
-	type:"LineString",
-	coordinates:[[10,01],[20,20]],
-	properties:["name":"Bahnhofstrasse"]
-}
-
-khtml.maplib.geometry.Feature(geometry);
-
-or
-
-khtml.maplib.geometry.Feature({type:"LineString",coordinates:[[10,01],[20,20]],properties:["name":"Bahnhofstrasse"]}); //UTF-8!!!!!
-
-or
-
-var feature=khtml.maplib.geometry.Feature("LineString");
-feature.geometry.coordinates=khtml.maplib.helpers.parseLine([[10,01],[20,20]]);
-feature.properties.name="blabla";
+				
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/js_geometry_Feature.js.html">Feature.js</a>.
@@ -299,9 +296,9 @@ feature.properties.name="blabla";
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/khtml.maplib.geometry.Feature.html#constructor">khtml.maplib.geometry.Feature</a></b>(geometry)
+								<b><a href="../symbols/khtml.maplib.geometry.Feature.html#constructor">khtml.maplib.geometry.Feature</a></b>(feature, optional)
 							</div>
-							<div class="description"></div>
+							<div class="description">This class renders a single feature like Polygon, LineString,.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -328,7 +325,16 @@ feature.properties.name="blabla";
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#geojson">geojson</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#doCanvasPath">doCanvasPath</a></b>(type, context, coordinates, close, depth, num)
+								</div>
+								<div class="description">Canvas Backend</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#doSVGPath">doSVGPath</a></b>(feature, coordinates, close)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -337,9 +343,110 @@ feature.properties.name="blabla";
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#setPoints">setPoints</a></b>(points)
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#doVMLPath">doVMLPath</a></b>(feature, coordinates, close)
 								</div>
-								<div class="description">depressiated</div>
+								<div class="description">VML Backend</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#eventAttach">eventAttach</a></b>(eventType, method, context, bubble)
+								</div>
+								<div class="description">Event Interface</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#eventRemove">eventRemove</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#init">init</a></b>(parentNode)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#makeBounds">makeBounds</a></b>(coordinates)
+								</div>
+								<div class="description">calcualte bounding box (for lacy rendering)
+	Looks like duplicated code, should be moved to helpers class</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#-reduce">reduce</a></b>(origObj, depth)
+								</div>
+								<div class="description">Not in use anymore
+	moved to helpers</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#render">render</a></b>()
+								</div>
+								<div class="description">Bring it to the screen.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#renderCanvas">renderCanvas</a></b>(feature)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#renderMarker">renderMarker</a></b>(domParent)
+								</div>
+								<div class="description">khtml.maplib provides 2 marker interface.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#renderSVG">renderSVG</a></b>(feature)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#renderVML">renderVML</a></b>(feature)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/khtml.maplib.geometry.Feature.html#toJSON">toJSON</a></b>()
+								</div>
+								<div class="description">Remove Methods,.</div>
 							</td>
 						</tr>
 					
@@ -360,11 +467,14 @@ feature.properties.name="blabla";
 				</div>
 				
 				<div class="fixedFont">
-						<b>khtml.maplib.geometry.Feature</b>(geometry)
+						<b>khtml.maplib.geometry.Feature</b>(feature, optional)
 				</div>
 				
 				<div class="description">
-					
+					This class renders a single feature like Polygon, LineString,...
+Ducktyping in use.
+The initializition process is a bit complicated.
+Maybe there the feature should be cloned completely.
 					
 				</div>
 				
@@ -376,10 +486,16 @@ feature.properties.name="blabla";
 						<dt class="heading">Parameters:</dt>
 						
 							<dt>
-								 <b>geometry</b>
+								 <b>feature</b>
 								
 							</dt>
-								<dd></dd>
+								<dd>- an object that repesents the feature</dd>
+						
+							<dt>
+								 <b>optional</b>
+								
+							</dt>
+								<dd>- the featureCollection</dd>
 						
 						</dl>
 					
@@ -402,11 +518,227 @@ feature.properties.name="blabla";
 					Method Detail
 				</div>
 				
-					<a name="geojson"> </a>
+					<a name="doCanvasPath"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>geojson</b>()
+					<b>doCanvasPath</b>(type, context, coordinates, close, depth, num)
+					
+					</div>
+					<div class="description">
+						Canvas Backend
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>type</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>context</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>coordinates</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>close</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>depth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>num</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="doSVGPath"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>doSVGPath</b>(feature, coordinates, close)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>feature</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>coordinates</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>close</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="doVMLPath"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>doVMLPath</b>(feature, coordinates, close)
+					
+					</div>
+					<div class="description">
+						VML Backend
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>feature</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>coordinates</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>close</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="eventAttach"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>eventAttach</b>(eventType, method, context, bubble)
+					
+					</div>
+					<div class="description">
+						Event Interface
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>eventType</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>method</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>context</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>bubble</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="eventRemove"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>eventRemove</b>()
 					
 					</div>
 					<div class="description">
@@ -427,15 +759,15 @@ feature.properties.name="blabla";
 
 					<hr />
 				
-					<a name="setPoints"> </a>
+					<a name="init"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>setPoints</b>(points)
+					<b>init</b>(parentNode)
 					
 					</div>
 					<div class="description">
-						depressiated
+						
 						
 						
 					</div>
@@ -447,12 +779,290 @@ feature.properties.name="blabla";
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>points</b>
+									<b>parentNode</b>
 									
 								</dt>
 								<dd></dd>
 							
 							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="makeBounds"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>makeBounds</b>(coordinates)
+					
+					</div>
+					<div class="description">
+						calcualte bounding box (for lacy rendering)
+	Looks like duplicated code, should be moved to helpers class
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>coordinates</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-reduce"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>reduce</b>(origObj, depth)
+					
+					</div>
+					<div class="description">
+						Not in use anymore
+	moved to helpers
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>origObj</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>depth</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="render"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>render</b>()
+					
+					</div>
+					<div class="description">
+						Bring it to the screen. 
+        Canvas Holes in Polygon rendering is still buggy.
+        VML missing
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="renderCanvas"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>renderCanvas</b>(feature)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>feature</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="renderMarker"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>renderMarker</b>(domParent)
+					
+					</div>
+					<div class="description">
+						khtml.maplib provides 2 marker interface. No idea how to do the interface.
+        The simple interface takes a DOM element.
+        The other is the Ewald GSoC interface (google API)
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>domParent</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="renderSVG"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>renderSVG</b>(feature)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>feature</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="renderVML"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>renderVML</b>(feature)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>feature</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="toJSON"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>toJSON</b>()
+					
+					</div>
+					<div class="description">
+						Remove Methods,... to make transfer and storable able (JSON)
+						
+						
+					</div>
+					
+					
+					
 						
 						
 						
@@ -475,7 +1085,7 @@ feature.properties.name="blabla";
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Wed Jul 20 2011 00:37:08 GMT+0200 (MESZ)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Jan 27 2012 20:59:44 GMT+0100 (MEZ)
 		</div>
 	</body>
 </html>

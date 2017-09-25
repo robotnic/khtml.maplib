@@ -1,0 +1,99 @@
+<html>
+<head>
+<style type="text/css">
+body{
+margin:0px;
+font-family:Arial,Verdana;
+font-size:12px;
+margin:0;
+}
+#map{
+width:300px;
+height:183px;
+}
+#styles{
+position:absolute;
+top:50px;
+left:302px;
+overflow:auto;
+height:180px;
+width:80px;
+}
+#styles input{
+border:1px solid lightgrey;
+width:60px;
+font-size:10px;
+box-shadow:inset 2px 2px 2px #efefef;
+margin:0px;
+padding:0px;
+}
+#styles p{
+margin:0px;
+margin-top:2px;
+padding:0px;
+font-size:9px;
+}
+</style>
+<script type="text/javascript" src="../jscolor/jscolor.js"> </script> 
+<script type="text/javascript" src="../../khtml_all.js"> </script>
+</head>
+<body>
+
+<h1>Vector Styling</h1>
+<div id="map">
+
+</div>
+<div id="styles">
+<p>style</p>
+<input title="fill" name="fill" class="color" onchange="changeStyle(evt);"/><br/>
+<p>stroke</p>
+<input title="stroke" name="stroke" class="color" onchange="changeStyle(evt);"/><br/>
+<p>strokeWidth</p>
+<input title="strokeWidth" name="strokeWidth"  onchange="changeStyle(evt);"/><br/>
+<p>opacity</p>
+<input title="opacity" name="opacity"  onchange="changeStyle(evt);"/><br/>
+<p>fillOpacity</p>
+<input title="fillOpacity" name="fillOpacity"  onchange="changeStyle(evt);"/><br/>
+<p>strokeOpacity</p>
+<input title="strokeOpacity" name="strokeOpacity"  onchange="changeStyle(evt);"/><br/>
+<p>strokeLinecap</p>
+<input title="strokeLinecap" name="strokeLinecap"  onchange="changeStyle(evt);"/><br/>
+<p>strokeLinejoin</p>
+<input title="strokeLinejoin" name="strokeLinejoin"  onchange="changeStyle(evt);"/><br/>
+<p>display</p>
+<input title="display" name="display"  onchange="changeStyle(evt);"/><br/>
+</div>
+<script type="text/javascript">
+map=khtml.maplib.Map(document.getElementById("map"));
+map.centerAndZoom(new khtml.maplib.LatLng(48.2,16.3),10);
+
+var l=map.featureCollection.appendChild({type:"LineString",coordinates:[[16.3,48.2],[16.32,48.23],[16.31,48.24]]});
+l.style.stroke="red";
+l.style.strokeWidth=6;
+l.style.fill="gray";
+l.style.opacity=0.8;
+
+var l2=map.featureCollection.appendChild({type:"Polygon",coordinates:[[16.35,48.2],[16.38,48.23],[16.35,48.24]]});
+l2.style.stroke="black";
+l2.style.strokeWidth=2;
+l2.style.fill="gray";
+l2.style.opacity=0.4;
+
+function styleToForm(l2){
+	var inputs=document.getElementById("styles").getElementsByTagName("input");
+	for(var i=0;i<inputs.length;i++){
+		var name=inputs[i].getAttribute("name");
+		inputs[i].value=l2.style[name];
+	}
+}
+styleToForm(l2);
+
+function changeStyle(evt){
+	var target=evt.target;
+	var name=target.getAttribute("name");
+	l2.style[name]=evt.target.value;
+}
+
+</script>
+</body>
+</html>
